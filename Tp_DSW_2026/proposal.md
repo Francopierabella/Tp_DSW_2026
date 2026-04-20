@@ -32,7 +32,7 @@ Regularidad:
 |:-|:-|
 |CRUD simple|1. CRUD Cliente <br>2. CRUD Producto<br>3. CRUD Proveedor|
 |CRUD dependiente|1. CRUD Venta {depende de} CRUD Cliente<br>2. CRUD ItemVenta {depende de} CRUD Producto|
-|Listado<br>+<br>detalle| 1. Listado de productos filtrado por categoria, muestra nombre,precio y Stock => detalle: Muestra informacion de producto br> 2. Listado de ventas filtradas por fecha o rango de fechas, muestra fechaVenta, ProductoVendido y cantidad, nombre del cliente y precioFinal => detalle muestra datos completos de la venta realizada en tal fecha o rango de fechas|
+|Listado<br>+<br>detalle| 1. Listado de productos filtrado por categoria, muestra nombre,precio y Stock => detalle: Muestra informacion de producto <br> 2. Listado de ventas filtradas por fecha o rango de fechas, muestra fechaVenta, ProductoVendido y cantidad, nombre del cliente y precioFinal => detalle muestra datos completos de la venta realizada en tal fecha o rango de fechas|
 |CUU/Epic|1. Registrar una venta <br>2. Iniciar sesion como Cliente|
 
 
