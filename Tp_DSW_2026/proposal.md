@@ -25,8 +25,6 @@ El sistema consiste en una aplicación web para la gestión de una farmacia, que
 
 ### Alcance Mínimo
 
-*Nota*: el siguiente es un ejemplo para un grupo de 3 integrantes para un sistema de hotel. El 
-
 Regularidad:
 |Req|Detalle|
 |:-|:-|
