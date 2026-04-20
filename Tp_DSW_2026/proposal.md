@@ -14,7 +14,7 @@
 
 ## Tema
 ### Descripción
-*2 a 6 líneas describiendo el negocio (menos es más)*
+El sistema consiste en una aplicación web para la gestión de una farmacia, que permitirá administrar productos, controlar el stock de medicamentos, registrar ventas a clientes y facilitarles la consulta de disponibilidad de productos.
 
 ### Modelo
 ![imagen del modelo]()
@@ -30,17 +30,17 @@
 Regularidad:
 |Req|Detalle|
 |:-|:-|
-|CRUD simple|1. CRUD Tipo Habitacion<br>2. CRUD Servicio<br>3. CRUD Localidad|
-|CRUD dependiente|1. CRUD Habitación {depende de} CRUD Tipo Habitacion<br>2. CRUD Cliente {depende de} CRUD Localidad|
-|Listado<br>+<br>detalle| 1. Listado de habitaciones filtrado por tipo de habitación, muestra nro y tipo de habitación => detalle CRUD Habitacion<br> 2. Listado de reservas filtrado por rango de fecha, muestra nro de habitación, fecha inicio y fin estadía, estado y nombre del cliente => detalle muestra datos completos de la reserva y del cliente|
-|CUU/Epic|1. Reservar una habitación para la estadía<br>2. Realizar el check-in de una reserva|
+|CRUD simple|1. CRUD Cliente <br>2. CRUD Producto<br>3. CRUD Proveedor|
+|CRUD dependiente|1. CRUD Venta {depende de} CRUD Cliente<br>2. CRUD ItemVenta {depende de} CRUD Producto|
+|Listado<br>+<br>detalle| 1. Listado de productos filtrado por categoria, muestra nombre,precio y Stock => detalle: Muestra informacion de producto br> 2. Listado de ventas filtradas por fecha o rango de fechas, muestra fechaVenta, ProductoVendido y cantidad, nombre del cliente y precioFinal => detalle muestra datos completos de la venta realizada en tal fecha o rango de fechas|
+|CUU/Epic|1. Registrar una venta <br>2. Iniciar sesion como Cliente|
 
 
 Adicionales para Aprobación
 |Req|Detalle|
 |:-|:-|
-|CRUD |1. CRUD Tipo Habitacion<br>2. CRUD Servicio<br>3. CRUD Localidad<br>4. CRUD Provincia<br>5. CRUD Habitación<br>6. CRUD Empleado<br>7. CRUD Cliente|
-|CUU/Epic|1. Reservar una habitación para la estadía<br>2. Realizar el check-in de una reserva<br>3. Realizar el check-out y facturación de estadía y servicios|
+|CRUD |1. CRUD Cliente <br>2. CRUD Producto <br>3. CRUD Proveedor<br>4. CRUD Venta <br>5. CRUD ItemVenta<br>6. CRUD Categoria <br>7. CRUD Farmaceutico|
+|CUU/Epic|1. Registrar una venta<br>2. Iniciar sesion como Cliente <br>3. Actualizar Stock despues de venta realizada. |
 
 
 ### Alcance Adicional Voluntario
@@ -49,7 +49,7 @@ Adicionales para Aprobación
 
 |Req|Detalle|
 |:-|:-|
-|Listados |1. Estadía del día filtrado por fecha muestra, cliente, habitaciones y estado <br>2. Reservas filtradas por cliente muestra datos del cliente y de cada reserve fechas, estado cantidad de habitaciones y huespedes|
+|Listados |1. Ventas realizadas por fecha <br>2.Productos con Stock bajo|
 |CUU/Epic|1. Consumir servicios<br>2. Cancelación de reserva|
 |Otros|1. Envío de recordatorio de reserva por email|
 
