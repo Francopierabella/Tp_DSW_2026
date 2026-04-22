@@ -3,9 +3,9 @@
 ## Grupo
 ### Integrantes
 * 53755 - Pierabella, Franco
-* 54354 - Cristofoli, Fabricio Damian
+* 54356 - Cristofoli, Fabricio Damian
 * 53800 - Guarc, Joaquin Ismael
-* 57831 - Melano, Iara
+* 53831 - Melano, Iara
 
 ### Repositorios
 * [frontend app](http://hyperlinkToGihubOrGitlab)
