@@ -3,9 +3,9 @@
 ## Grupo
 ### Integrantes
 * 53755 - Pierabella, Franco
-* legajo - Cristofoli, Fabricio Damian
-* legajo - Guarc, Joaquin Ismael
-* legajo - Melano, Iara
+* 54354 - Cristofoli, Fabricio Damian
+* 53800 - Guarc, Joaquin Ismael
+* 57831 - Melano, Iara
 
 ### Repositorios
 * [frontend app](http://hyperlinkToGihubOrGitlab)
@@ -48,6 +48,6 @@ Adicionales para Aprobación
 |Req|Detalle|
 |:-|:-|
 |Listados |1. Ventas realizadas por fecha <br>2.Productos con Stock bajo|
-|CUU/Epic|1. Consumir servicios<br>2. Cancelación de reserva|
-|Otros|1. Envío de recordatorio de reserva por email|
+|CUU/Epic|Ver |
+|Otros|Ver|
 
