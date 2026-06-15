@@ -48,6 +48,6 @@ Adicionales para Aprobación
 |Req|Detalle|
 |:-|:-|
 |Listados |1. Ventas realizadas por fecha <br>2.Productos con Stock bajo|
-|CUU/Epic|Ver |
-|Otros|Ver|
+|CUU/Epic| |
+|Otros||
 
