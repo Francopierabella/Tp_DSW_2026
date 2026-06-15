@@ -17,7 +17,7 @@
 El sistema consiste en una aplicación web para la gestión de una farmacia, que permitirá administrar productos, controlar el stock de medicamentos, registrar ventas a clientes y facilitarles la consulta de disponibilidad de productos.
 
 ### Modelo
-![imagen del modelo](MD_FArmacia_DSW.drawio%20(1).png)
+![imagen del modelo](MD-Farmacia-DSW.png)
 
 
 

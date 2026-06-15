@@ -1,0 +1,2 @@
+2. A ver, no está mal los CUU propuestos, pero han quedado medio pobres en comparación a otros proyectos que estuve revisando. Lo que podemos hacer es trabajar un sistema de alertas al usuario administrador por email por ejemplo, en caso de estar cerca de llegar a un faltante de stock. A su vez, esto se debería ver en el lado cliente para el usuario Administrador en un tablero de control mediante alertas o notificaciones.
+
