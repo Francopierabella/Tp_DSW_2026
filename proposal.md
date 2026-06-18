@@ -10,6 +10,7 @@
 ### Repositorios
 * [frontend app](http://hyperlinkToGihubOrGitlab)
 * [backend app](http://hyperlinkToGihubOrGitlab)
+<br>
 *Nota*: si utiliza un monorepo indicar un solo link con fullstack app.
 
 ## Tema
@@ -38,7 +39,7 @@ Adicionales para Aprobación
 |Req|Detalle|
 |:-|:-|
 |CRUD |1. CRUD Cliente <br>2. CRUD Producto <br>3. CRUD Proveedor<br>4. CRUD Venta <br>5. CRUD ItemVenta<br>6. CRUD Categoria <br>7. CRUD Administrador|
-|CUU/Epic|1. Registrar una venta<br>2. Informar faltantes de stock a administrador <br>3. Actualizar Stock despues de venta realizada. |
+|CUU/Epic|1. Realizar consulta siendo cliente a administrador <br>2. Informar faltantes de stock a administrador <br>3. Actualizar Stock despues de venta realizada. |
 
 
 ### Alcance Adicional Voluntario
@@ -47,7 +48,7 @@ Adicionales para Aprobación
 
 |Req|Detalle|
 |:-|:-|
-|Listados |1. Ventas realizadas por fecha <br>2.Productos con Stock bajo|
+|Listados |1. Ventas realizadas por fecha <br> 2.Productos con Stock bajo|
 |CUU/Epic| |
 |Otros||
 
