@@ -1,7 +1,7 @@
-// export class ProductCategory {
-//     constructor(
-//         public name : string,
-//         public id : string
-//     ){}
-// }
+export class ProductCategory {
+    constructor(
+        public name : string,
+        public id? : number
+    ){}
+}
 
