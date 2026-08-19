@@ -3,9 +3,11 @@ import "./CategoryTable.css"
 
 interface CategoryTableProps {
     productCategories: ProductCategory[];
+    onEdit : (category:ProductCategory) => void;
+    onDelete : (id:number) => void;
 }
 
-export default function CategoryTable({productCategories} : CategoryTableProps){
+export default function CategoryTable({productCategories,onEdit,onDelete} : CategoryTableProps){
     return  <div className="card">
         <h2>Categorías</h2>
 
@@ -24,8 +26,8 @@ export default function CategoryTable({productCategories} : CategoryTableProps){
             <td>{category.id}</td>
             <td>{category.name}</td>
             <td>
-              <button>Editar</button>
-              <button>Eliminar</button>
+              <button onClick={() => onEdit(category)}>Editar</button>
+              <button onClick={()=> onDelete(category.id)}>Eliminar</button>
             </td>
           </tr>
         ))}

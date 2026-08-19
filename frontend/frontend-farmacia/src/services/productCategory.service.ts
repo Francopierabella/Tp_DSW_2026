@@ -55,3 +55,31 @@ entonces  nuestro frontend recibe:
 Luego lo que nos interesa a nosotors es "data", no message. por eso el .data
   */
 }
+
+export async function updateProductCategory( id: number, name: string): Promise<ProductCategory> {
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Error updating the category");
+  }
+
+  const result = await response.json();
+
+  return result.data;
+}
+
+export async function deleteProductCategory(id:number) : Promise<void> {
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error("Error deleting the category");
+  }
+}
