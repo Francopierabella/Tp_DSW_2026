@@ -12,7 +12,6 @@ export default function App(
 ){
   const [productCategories, setProductCategories] = useState<ProductCategory[]>([]);
   const [editingCategory,setEditingCategory] = useState<ProductCategory | null> (null);
-  const [deletingCategory,setDeletingCategory] = useState<ProductCategory | null> (null);
   
   const handleProductCategoryCreated = (productCategory:ProductCategory) => {
     setProductCategories((currentProductCategories) => [
