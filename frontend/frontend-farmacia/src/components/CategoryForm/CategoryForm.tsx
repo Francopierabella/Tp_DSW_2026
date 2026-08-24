@@ -20,6 +20,8 @@ export default function CategoryForm({onProductCategoryCreated} : ProductCategor
             onProductCategoryCreated(newProductCategory);
             setName("");
         }catch(error){
+            // Verificamos que el objeto capturado sea una instancia de Error
+            // para poder acceder de forma segura a su propiedad message.
             if(error instanceof Error)
             setError(error.message);
         }
