@@ -7,7 +7,7 @@ import {BaseEntity} from "../shared/baseEntity.entity.js";
 @Entity()
 export class ProductCategory extends BaseEntity {
 // ! => Atributo obligatorio
-    @Property({nullable: false,unique: true,})
+    @Property({nullable: false,unique: true})
     name!:string;
     constructor(name:string){
         super();
