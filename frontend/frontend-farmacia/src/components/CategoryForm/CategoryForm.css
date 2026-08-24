@@ -21,6 +21,15 @@
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 16px;
+  margin-bottom:10px ;
+}
+.error-message {
+  color: #dc2626;
+  font-size: 14px;
+  margin-top: 5px;
+  text-align:center;
+  font-weight: bold;
+  text-decoration:underline;
 }
 
 button {

@@ -22,9 +22,15 @@ async function findOne(req : Request, res : Response){
 }
 
 async function create (req: Request , res: Response){
-    const productCategory = await service.create(req.body.sanitizedProductCategoryInput);
-    return res.status(201).send({message: "ProductCategory created", data: productCategory});
-}
+    try{
+        const productCategory = await service.create(req.body.sanitizedProductCategoryInput);
+        return res.status(201).json({message:"ProductCategory created successfully",data: productCategory});
+    }catch(error:any){
+        if (error.message === "Ya existe una categoría con ese nombre"){
+            return res.status(409).send({message:error.message});
+    }
+    return res.status(500).send({message: "Error interno del servidor"});
+}}
 
 async function update(req : Request, res: Response) {
     const id = Number(req.params.id);

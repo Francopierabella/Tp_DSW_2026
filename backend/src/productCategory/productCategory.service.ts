@@ -14,10 +14,18 @@ export class ProductCategoryService {
         return await this.repo.findOne({id});
     }
     async create(input : Omit<ProductCategory,"id">) : Promise<ProductCategory | undefined> {
-        const productCategory = new ProductCategory(
-            input.name,
-        ); // Constructoor
-        return await this.repo.add(productCategory);
+        try{
+            const newProductCategory = new ProductCategory(input.name);
+            return await this.repo.add(newProductCategory);
+        } catch(error : any){
+            if (error.code === "ER_DUP_ENTRY"){
+                throw new Error("Ya existe una categoría con ese nombre");
+                // MySQL utiliza ER_DUP_ENTRY cuando intentamos insertar un valor que viola una restricción UNIQUE.
+            }
+            throw error;
+            //Si el error no era un duplicado 
+            //  que sea tratado como otro error
+        }
     }
     async update(id:number, input : ProductCategory) : Promise< ProductCategory | undefined> {
          return await this.repo.update(id, input);

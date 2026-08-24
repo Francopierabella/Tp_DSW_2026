@@ -6,13 +6,15 @@ import { useEffect, useState } from "react";
 import type { ProductCategory } from "./types/productCategory";
 import { getProductCategories,deleteProductCategory } from "./services/productCategory.service";
 import EditCategoryModal from "./components/EditCategoryModal/EditCategoryModal.tsx";
+import DeleteCategoryModal from "./components/DeleteCategoryModal/DeleteCategoryModal.tsx";
 
 
 export default function App(
 ){
   const [productCategories, setProductCategories] = useState<ProductCategory[]>([]);
   const [editingCategory,setEditingCategory] = useState<ProductCategory | null> (null);
-  
+  const [deletingCategory,setDeletingCategory] = useState<ProductCategory | null> (null);
+
   const handleProductCategoryCreated = (productCategory:ProductCategory) => {
     setProductCategories((currentProductCategories) => [
       ...currentProductCategories,productCategory,
@@ -22,20 +24,29 @@ const hanldeProductCategoryUpdated = (updatedCategory : ProductCategory) => {
    setProductCategories((currentCategories) => currentCategories.map((category) => 
       category.id === updatedCategory.id ? updatedCategory : category));
   }
+const handleDeleteClick = (productCategory: ProductCategory) => {
+  setDeletingCategory(productCategory);
+}
+const handleCancelDelete = () =>{
+  setDeletingCategory(null);
+}
+const handleConfirmDelete = async () => {
+    if (!deletingCategory) return;
 
-const handleProductCategoryDeleted = async (id: number) => {
-  try {
-    await deleteProductCategory(id);
+    try {
+        await deleteProductCategory(deletingCategory.id);
 
-    setProductCategories((currentCategories) =>
-      currentCategories.filter(
-        (category) => category.id !== id
-      )
-    );
+        setProductCategories((currentCategories) =>
+            currentCategories.filter(
+                (category) => category.id !== deletingCategory.id
+            )
+        );
 
-  } catch (error) {
-    console.error(error);
-  }
+        setDeletingCategory(null);
+
+    } catch (error) {
+        console.error(error);
+    }
 };
 
   useEffect(() => {
@@ -49,14 +60,15 @@ const handleProductCategoryDeleted = async (id: number) => {
       <Header />
       <main className="container">
         <CategoryForm onProductCategoryCreated = {handleProductCategoryCreated}/>
-        <CategoryTable productCategories = {productCategories} onEdit = {setEditingCategory} onDelete={handleProductCategoryDeleted}/>
+        <CategoryTable productCategories = {productCategories} onEdit = {setEditingCategory} onDelete={handleDeleteClick}/>
       </main>
 
       {editingCategory && (<EditCategoryModal productCategory={editingCategory} 
                               onUpdated={hanldeProductCategoryUpdated}
-                              onClose={() => setEditingCategory(null)}/>    
-                  
-      )}
+                              onClose={() => setEditingCategory(null)}/>)}
+      {deletingCategory && (<DeleteCategoryModal categoryName={deletingCategory.name}
+                              onConfirm={handleConfirmDelete}
+                              onCancel={handleCancelDelete}/>)}
   </div>
 
 }

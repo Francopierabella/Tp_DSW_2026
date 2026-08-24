@@ -1,5 +1,8 @@
 import type { ProductCategory } from "../types/productCategory";
 
+// l frontend se relaciona con el backend exactamente en el momento en que ejecuta fetch() hacia una URL de tu API,
+//  y el backend responde con datos en formato JSON.
+
 const API_URL = "http://localhost:3000/api/productCategories";
 
 export async function getProductCategories(): Promise<ProductCategory[]> {
@@ -34,7 +37,8 @@ export async function createProductCategory(name:string) : Promise<ProductCatego
     //convierto el objeto {name:name} a JSON = {"name":name}
   });
   if(!response.ok){
-    throw new Error("Error creating the category");
+    const error = await response.json();
+    throw new Error(error.message);
   }
   const result = await response.json();
   return result.data;

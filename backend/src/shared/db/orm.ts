@@ -1,12 +1,15 @@
 import { MikroORM } from "@mikro-orm/core";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 export const orm = await MikroORM.init({
     entities: ['dist/**/*.entity.js'],
     entitiesTs: ['src/**/*.entity.ts'],
-    dbName: 'farmacia',
+    dbName: process.env.DB_NAME,
     type: 'mysql',
-    clientUrl: 'mysql://root:franpier10@localhost:3306/farmacia',
+    clientUrl: `mysql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
     highlighter: new SqlHighlighter(),
     debug: true,
     schemaGenerator: {
