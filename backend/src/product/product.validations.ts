@@ -1,22 +1,66 @@
-// To be updated
+import { NextFunction, Request, Response } from "express";
 
+export const sanitizedProductInput = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
 
-// import { NextFunction, Request, Response } from "express";
+    const {
+        name,
+        description,
+        stock,
+        price,
+        brand,
+        gender,
+        categoryId
+    } = req.body;
 
-// export const sanitizedProductInput = (req : Request,res : Response, next: NextFunction) => {
-//     req.body.sanitizedProductInput = {
-//         name : req.body.name,
-//         description : req.body.description,
-//         stock : req.body.stock,
-//         price : req.body.price,
-//         brand : req.body.brand,
-//         gender : req.body.gender,
-//         categoryId : req.body.categoryId
-//     }
-//     Object.keys(req.body.sanitizedProductInput).forEach((key) => {
-//         if(req.body.sanitizedProductInput[key] === undefined){
-//             delete req.body.sanitizedProductInput[key]
-//         }
-//     })
-//     next()
-// }
+    if (!name || name.trim() === "") {
+        return res.status(400).send({
+            message: "Name is required"
+        });
+    }
+
+    if (!description || description.trim() === "") {
+        return res.status(400).send({
+            message: "Description is required"
+        });
+    }
+
+    if (typeof stock !== "number" || stock < 0) {
+        return res.status(400).send({
+            message: "Stock must be a positive number or zero"
+        });
+    }
+
+    if (typeof price !== "number" || price < 0) {
+        return res.status(400).send({
+            message: "Price must be a positive number or zero"
+        });
+    }
+
+    if (gender !== "Male" && gender !== "Female") {
+        return res.status(400).send({
+            message: "Gender must be Male or Female"
+        });
+    }
+
+    if (!categoryId || typeof categoryId !== "number") {
+        return res.status(400).send({
+            message: "Category is required"
+        });
+    }
+
+    req.body.sanitizedProductInput = {
+        name: name.trim(),
+        description: description.trim(),
+        stock,
+        price,
+        brand: brand.trim(),
+        gender,
+        categoryId
+    };
+
+    next();
+};
