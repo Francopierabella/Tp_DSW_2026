@@ -40,7 +40,7 @@ export class ProductService {
             return await this.repo.add(newProduct);
         } catch (error: any) {
             if (error.code === "ER_DUP_ENTRY") {
-                throw new Error("Ya existe un producto con ese nombre");
+                throw new Error("A product with that name already exists.");
             }
             throw error;
         }

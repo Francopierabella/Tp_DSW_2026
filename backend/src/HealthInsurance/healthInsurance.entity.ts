@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, Property } from "@mikro-orm/core";
+import { Entity, Property } from "@mikro-orm/core";
 import { BaseEntity } from "../shared/baseEntity.entity.js";
 
 @Entity()
@@ -7,11 +7,11 @@ export class HealthInsurance extends BaseEntity {
     name!: string;
 
     @Property({ nullable: false })
-    coverageAmount: number
+    coveragePercentage: number
 
-    constructor(name: string, coverageAmount: number) {
+    constructor(name: string, coveragePercentage: number) {
         super();
         this.name = name;
-        this.coverageAmount = coverageAmount;
+        this.coveragePercentage = coveragePercentage;
     }
 }

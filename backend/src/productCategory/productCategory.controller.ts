@@ -25,10 +25,10 @@ async function create(req: Request, res: Response) {
         const productCategory = await service.create(req.body.sanitizedProductCategoryInput);
         return res.status(201).json({ message: "ProductCategory created successfully", data: productCategory });
     } catch (error: any) {
-        if (error.message === "Ya existe una categoría con ese nombre") {
+        if (error.message === "A product category with this name already exists.") {
             return res.status(409).send({ message: error.message });
         }
-        return res.status(500).send({ message: "Error interno del servidor" });
+        return res.status(500).send({ message: "Internal server error" });
     }
 }
 
@@ -45,11 +45,10 @@ async function update(req: Request, res: Response) {
 async function remove(req: Request, res: Response) {
     const id = Number(req.params.id);
     const result = await service.remove(id);
-
     if (!result) {
         return res.status(404).send({ message: "ProductCategory not Found" });
     }
-    return res.json({ message: `ProductCategory with id = ${result?.id} and name = ${result?.name} successfully deleted` })
+    return res.json({ message: `ProductCategory, with id: ${result.id} and name: ${result.name}, successfully deleted` })
 }
 
 export { create, findAll, findOne, update, remove }
