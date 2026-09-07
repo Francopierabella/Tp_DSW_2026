@@ -8,8 +8,8 @@ export class ProductRepository implements IRepository<Product> {
         return await orm.em.find(Product, {});
     }
     public async findOne(item: { id: number }): Promise<Product | undefined> {
-        const productFinded = await orm.em.findOne(Product, { id: item.id });
-        return productFinded ?? undefined;
+        const productfound = await orm.em.findOne(Product, { id: item.id });
+        return productfound ?? undefined;
     }
     public async add(item: Product): Promise<Product | undefined> {
         const productNew = orm.em.create(Product, item);

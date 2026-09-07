@@ -8,8 +8,5 @@ productRouter.get('/', findAll);
 productRouter.get('/:id', findOne);
 productRouter.post('/', sanitizedProductInput, create);
 productRouter.put('/:id', sanitizedProductInput, update);
-productRouter.post('/:id', sanitizedProductInput, update);
 productRouter.delete('/:id', remove);
-
-
 

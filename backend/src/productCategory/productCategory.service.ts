@@ -19,7 +19,7 @@ export class ProductCategoryService {
             return await this.repo.add(newProductCategory);
         } catch (error: any) {
             if (error.code === "ER_DUP_ENTRY") {
-                throw new Error("Ya existe una categoría con ese nombre");
+                throw new Error("A product category with this name already exists.");
                 // MySQL utiliza ER_DUP_ENTRY cuando intentamos insertar un valor que viola una restricción UNIQUE.
             }
             throw error;
