@@ -7,8 +7,8 @@ import { orm, syncSchema } from './shared/db/orm.js';
 import { RequestContext } from '@mikro-orm/core';
 import cors from "cors";
 import { productRouter } from './product/product.routes.js';
-import { HealthInsurance } from './HealthInsurance/healthInsurance.entity.js';
-import { HealthInsuranceRouter } from './HealthInsurance/healthInsurance.routes.js';
+import { healthInsuranceRouter } from './HealthInsurance/healthInsurance.routes.js';
+import { customerRouter } from './customer/customer.routes.js';
 // CORS (Cross-Origin Resource Sharing) es un mecanismo de seguridad de los navegadores web.
 //  Permite que una página web pida datos a un servidor que está en un dominio, puerto o protocolo diferente al de la página.
 
@@ -35,7 +35,8 @@ app.use((req, res, next) => {
 // app.use("/api/customers",customerRouter);
 app.use("/api/productCategories", productCategoryRouter);
 app.use("/api/products", productRouter);
-app.use("/api/healthInsurances", HealthInsuranceRouter);
+app.use("/api/healthInsurances", healthInsuranceRouter);
+app.use("/api/customers", customerRouter);
 app.use((_, res) => {
     return res.status(404).send({ message: "Resource not Found" })
 })

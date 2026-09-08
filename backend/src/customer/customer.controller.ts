@@ -1,47 +1,51 @@
-// To be updated
+import { Request, Response } from "express";
+import { CustomerService } from "./customer.service.js";
+import { CustomerRepository } from "./customer.repository.js";
 
-// import { Request , Response } from "express";
-// import { CustomerRepository } from "./customer.repository.js";
-// import { CustomerService } from "./customer.service.js";
+const service = new CustomerService(new CustomerRepository);
 
-// const service = new CustomerService(new CustomerRepository());
+export async function findAll(req: Request, res: Response) {
+    return res.json(await service.findAll());
+}
 
-// async function findAll (req : Request, res: Response) {
-//     res.json(await service.findAll());
-// }
+export async function findOne(req: Request, res: Response) {
+    const customerId = Number(req.params.id);
+    const customerFound = await service.findOne(customerId);
+    if (!customerFound) {
+        return res.status(400).send({ message: "Customer not found" });
+    }
+    return res.json(customerFound);
+}
 
-// async function findOne (req : Request, res : Response) {
-//     const id = Number(req.params.id as string);
-//     const customer =  await service.findOne(id);
-//     if (!customer){
-//         return res.status(404).send({message : "Customer not found"})
-//     }
-//     return res.json(customer);
-// }
+export async function create(req: Request, res: Response) {
+    try {
 
-// async function create (req: Request , res: Response) {
-//     const customer = await service.create(req.body.sanitizedCustomerInput);
-//     return res.status(201).send({message: "Customer created", data: customer});
-// }
+        const customerData = req.body.sanitizedCustomerInput;
+        const customerToCreate = await service.create(customerData);
+        return res.status(201).json(customerToCreate);
+    } catch (error: any) {
+        if (error.message === "A Customer with that e-mail or phone number already exists.") {
+            return res.status(409).send({ message: error.message });
+        }
+        return res.status(500).send({ message: "Internal server error" });
+    }
+}
 
-// async function update (req : Request, res: Response) {
-//     const id = Number(req.params.id);
-//     const customer = await service.update(id,req.body.sanitizedCustomerInput);
-    
-//     if(!customer) {
-//         return res.status(404).send({message : "Customer not found"});
-//     }
-//     return res.json({message: "Customer updated successfully",data: customer});
-// }
+export async function update(req: Request, res: Response) {
+    const customerIdToUpdate = Number(req.params.id);
+    const customerData = req.body.sanitizedCustomerInput;
+    const customerWithThisId = await service.update(customerIdToUpdate, customerData);
+    if (!customerWithThisId) {
+        return res.status(400).send({ message: "Customer not found" });
+    }
+    return res.json({ "message": "Customer updated successfully", customerWithThisId });
+}
 
-// async function remove (req: Request, res: Response){
-//     const id = Number(req.params.id);
-//     const result = await service.remove(id);
-
-//     if(!result){
-//         res.status(404).send({message: "Customer not Found"});
-//     }
-//      res.json({message : `Customer with id = ${result?.id} successfully deleted`})
-// }
-
-// export {create,findAll,findOne,update,remove}
+export async function remove(req: Request, res: Response) {
+    const idToRemove = Number(req.params.id);
+    const customerRemoved = await service.remove(idToRemove);
+    if (!customerRemoved) {
+        return res.status(400).send({ message: "Customer not found" });
+    }
+    return res.json({ message: `Customer, with id ${customerRemoved.id}, named: ${customerRemoved.firstName} ${customerRemoved.lastName}, successfully deleted` });
+}

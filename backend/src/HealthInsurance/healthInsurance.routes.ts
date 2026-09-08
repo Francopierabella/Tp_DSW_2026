@@ -2,10 +2,10 @@ import { create, findAll, findOne, update, remove } from "./healthInsurance.cont
 import { Router } from "express";
 import { SanitizedHealthInsuranceInput } from "./healthInsurance.validations.js";
 
-export const HealthInsuranceRouter = Router();
+export const healthInsuranceRouter = Router();
 
-HealthInsuranceRouter.get('/', findAll);
-HealthInsuranceRouter.get('/:id', findOne);
-HealthInsuranceRouter.post('/', SanitizedHealthInsuranceInput, create);
-HealthInsuranceRouter.put('/:id', SanitizedHealthInsuranceInput, update);
-HealthInsuranceRouter.delete('/:id', remove);
+healthInsuranceRouter.get('/', findAll);
+healthInsuranceRouter.get('/:id', findOne);
+healthInsuranceRouter.post('/', SanitizedHealthInsuranceInput, create);
+healthInsuranceRouter.put('/:id', SanitizedHealthInsuranceInput, update);
+healthInsuranceRouter.delete('/:id', remove);
