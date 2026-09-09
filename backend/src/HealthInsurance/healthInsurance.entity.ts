@@ -1,5 +1,6 @@
-import { Entity, Property } from "@mikro-orm/core";
+import { Collection, Entity, OneToMany, Property } from "@mikro-orm/core";
 import { BaseEntity } from "../shared/baseEntity.entity.js";
+import { Customer } from "../customer/customer.entity.js";
 
 @Entity()
 export class HealthInsurance extends BaseEntity {
@@ -7,7 +8,10 @@ export class HealthInsurance extends BaseEntity {
     name!: string;
 
     @Property({ nullable: false })
-    coveragePercentage: number
+    coveragePercentage!: number
+
+    @OneToMany(() => Customer, customer => customer.healthInsuranceId)
+    customers = new Collection<Customer>(this);
 
     constructor(name: string, coveragePercentage: number) {
         super();
