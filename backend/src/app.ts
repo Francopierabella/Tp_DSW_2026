@@ -6,7 +6,7 @@ import { orm, syncSchema } from './shared/db/orm.js';
 import { RequestContext } from '@mikro-orm/core';
 import cors from "cors";
 import { productRouter } from './product/product.routes.js';
-import { healthInsuranceRouter } from './HealthInsurance/healthInsurance.routes.js';
+import { healthInsuranceRouter } from './healthInsurance/healthInsurance.routes.js';
 import { customerRouter } from './customer/customer.routes.js';
 
 dotenv.config(); // importo la config de mi .env ( variables de entorno => Enviroment Variables)

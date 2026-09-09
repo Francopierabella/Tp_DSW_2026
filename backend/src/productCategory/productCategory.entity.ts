@@ -9,7 +9,7 @@ export class ProductCategory extends BaseEntity {
     @Property({ nullable: false, unique: true })
     name!: string;
 
-    @OneToMany(() => Product, product => product.categoryId)
+    @OneToMany(() => Product, product => product.category)
     // Colección de productos asociados a esta categoría.
     // `this` indica que esta categoría es la entidad propietaria de la colección.
     products = new Collection<Product>(this);
