@@ -1,6 +1,5 @@
 import 'reflect-metadata';
 import express from "express";
-// import {customerRouter} from "./customer/customer.routes.js";
 import { productCategoryRouter } from "./productCategory/productCategory.routes.js";
 import dotenv from 'dotenv';
 import { orm, syncSchema } from './shared/db/orm.js';
@@ -9,14 +8,14 @@ import cors from "cors";
 import { productRouter } from './product/product.routes.js';
 import { healthInsuranceRouter } from './HealthInsurance/healthInsurance.routes.js';
 import { customerRouter } from './customer/customer.routes.js';
-// CORS (Cross-Origin Resource Sharing) es un mecanismo de seguridad de los navegadores web.
-//  Permite que una página web pida datos a un servidor que está en un dominio, puerto o protocolo diferente al de la página.
 
-dotenv.config();
+dotenv.config(); // importo la config de mi .env ( variables de entorno => Enviroment Variables)
 const app = express();
 // registra un middleware de Express.
 // Un middleware es una función que se ejecuta durante el procesamiento de una petición.
 app.use(cors());
+// CORS (Cross-Origin Resource Sharing) es un mecanismo de seguridad de los navegadores web.
+//  Permite que una página web pida datos a un servidor que está en un dominio, puerto o protocolo diferente al de la página.
 
 const PORT = 3000;
 app.use(express.json());
