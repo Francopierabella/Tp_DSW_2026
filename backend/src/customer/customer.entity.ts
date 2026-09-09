@@ -14,7 +14,7 @@ export class Customer extends User {
     @Property({ nullable: false })
     address!: string;
     @ManyToOne(() => HealthInsurance)
-    healthInsuranceId?: number;
+    healthInsurance?: number;
 
     constructor(
         firstName: string,
@@ -23,13 +23,13 @@ export class Customer extends User {
         address: string,
         e_mail: string,
         password: string,
-        healthInsuranceId?: number,
+        healthInsurance?: number,
     ) {
         super(e_mail, password);
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.address = address;
-        this.healthInsuranceId = healthInsuranceId;
+        this.healthInsurance = healthInsurance;
     }
 }

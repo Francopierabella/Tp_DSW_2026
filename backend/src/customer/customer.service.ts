@@ -18,7 +18,7 @@ export class CustomerService {
             input.address,
             input.e_mail,
             input.password,
-            input.healthInsuranceId
+            input.healthInsurance
         );
         return await this.repo.add(customer);
     }
