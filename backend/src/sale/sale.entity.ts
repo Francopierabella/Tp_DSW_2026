@@ -8,8 +8,7 @@ export enum typesPayment {
     CASH = 'CASH',
     CREDIT_CARD = 'CREDIT_CARD',
     DEBIT_CARD = 'DEBIT_CARD',
-    TRANSFER = 'TRANSFER',
-    OTHER = 'OTHER'
+    TRANSFER = 'TRANSFER'
 }
 export enum typesStatus {
     PENDING = 'PENDING',
@@ -21,6 +20,9 @@ export enum typesStatus {
 export class Sale extends BaseEntity {
     @Property({ nullable: false })
     date!: Date
+
+    @Property({ nullable: true })
+    paidDate?: Date
 
     @Property({ nullable: false })
     totalAmount!: number
@@ -40,11 +42,11 @@ export class Sale extends BaseEntity {
     @OneToMany(() => SaleItem, saleItem => saleItem.sale)
     saleItems = new Collection<SaleItem>(this)
 
-    constructor(date: Date, paymentMethod: typesPayment, status: typesStatus, customer: number, manager: number) {
+    constructor(date: Date, paymentMethod: typesPayment, customer: number, manager: number) {
         super()
         this.date = date
+        this.status = typesStatus.PENDING
         this.paymentMethod = paymentMethod
-        this.status = status
         this.totalAmount = 0
         this.customer = customer
         this.manager = manager

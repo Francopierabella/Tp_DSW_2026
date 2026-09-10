@@ -29,12 +29,6 @@ export const sanitizedSaleInput = (
         });
     }
 
-    if (!Object.values(typesStatus).includes(status)) {
-        return res.status(400).send({
-            message: "The sale status entered is invalid"
-        });
-    }
-
     if (typeof customer !== "number" || customer <= 0) {
         return res.status(400).send({
             message: "The customer ID entered is invalid"

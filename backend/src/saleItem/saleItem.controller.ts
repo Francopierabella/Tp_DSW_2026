@@ -38,10 +38,7 @@ export async function update(req: Request, res: Response) {
         return res.status(200).json(saleItemToUpdate);
     }
     catch (error: any) {
-        if (error.message === "A sale item with that name already exists") {
-            return res.status(409).send({ message: error.message });
-        }
-        return res.status(500).send({ message: "Internal server error" });
+        return res.status(500).send({ message: error.message });
     }
 }
 export async function remove(req: Request, res: Response) {
