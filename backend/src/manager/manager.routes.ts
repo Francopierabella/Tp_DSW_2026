@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { findAll, findOne, create, update, remove } from "./manager.controller.js";
-import { sanitizedManagerInput } from "./manager.validations";
+import { sanitizedManagerInput } from "./manager.validations.js";
 
 export const managerRouter = Router();
 

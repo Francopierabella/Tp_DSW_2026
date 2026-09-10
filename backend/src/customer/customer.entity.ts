@@ -1,5 +1,5 @@
 
-import { HealthInsurance } from "../HealthInsurance/healthInsurance.entity.js";
+import { HealthInsurance } from "../healthInsurance/healthInsurance.entity.js";
 import { User } from "../user/user.entity.js"
 import { Entity, ManyToOne, Property } from "@mikro-orm/core";
 

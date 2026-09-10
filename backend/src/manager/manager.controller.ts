@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { ManagerService } from "./manager.service.js";
-import { ManagerRepository } from "./manager.repository";
+import { ManagerRepository } from "./manager.repository.js";
 
 const service = new ManagerService(new ManagerRepository);
 
