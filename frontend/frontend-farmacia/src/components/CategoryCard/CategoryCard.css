@@ -1,0 +1,39 @@
+.category-card {
+    padding: 25px;
+    background-color: white;
+    border: 1px solid #e1eeee;
+    border-radius: 14px;
+    text-align: center;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.category-card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.category-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(21, 85, 104, 0.10);
+}
+
+.category-icon {
+    width: 55px;
+    height: 55px;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e5f7f6;
+    border-radius: 50%;
+    font-size: 25px;
+}
+
+.category-card h3 {
+    margin: 0;
+    color: #155568;
+    font-size: 16px;
+    font-weight: 600;
+}
