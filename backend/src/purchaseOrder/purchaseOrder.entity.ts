@@ -30,12 +30,12 @@ export class PurchaseOrder extends BaseEntity {
   @OneToMany(() => PurchaseOrderItem, purchaseOrderItem => purchaseOrderItem.purchaseOrder)
   purchaseOrderItems = new Collection<PurchaseOrderItem>(this);
 
-  constructor(date: Date, status: PurchaseOrderStatus, totalAmount: number, supplier: number) {
+  constructor(date: Date, status: PurchaseOrderStatus, supplier: number) {
     super();
     this.date = date;
     this.status = status;
-    this.totalAmount = totalAmount;
     this.supplier = supplier;
+    this.totalAmount = 0;
   }
 
 }

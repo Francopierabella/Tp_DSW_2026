@@ -23,7 +23,7 @@ export class ManagerRepository implements IRepository<Manager> {
         }
     }
     public async update(id: number, input: Manager): Promise<Manager | undefined> {
-        const found = await this.findOne({ id });
+        const found = await this.findOne({ id }); // ese this hace referencia al findOne de arriba.
         if (!found) {
             return undefined;
         }

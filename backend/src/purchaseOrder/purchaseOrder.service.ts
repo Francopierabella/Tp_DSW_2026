@@ -10,15 +10,14 @@ export class PurchaseOrderService {
     async findOne(item: { id: number }): Promise<PurchaseOrder | undefined> {
         return this.repo.findOne({ id: item.id });
     }
-    async create(item: PurchaseOrder): Promise<PurchaseOrder | undefined> {
+    async create(input: PurchaseOrder): Promise<PurchaseOrder | undefined> {
         try {
-            const newPurchaseOrder = new PurchaseOrder(
-                item.date,
-                item.status,
-                item.totalAmount,
-                item.supplier
+            const order = new PurchaseOrder(
+                input.date,
+                input.status,
+                input.supplier
             )
-            return this.repo.add(newPurchaseOrder);
+            return await this.repo.add(order);
         } catch (error: any) {
             if (error.code === "ER_DUP_ENTRY") {
                 throw new Error("A purchase order with that name already exists.");
@@ -30,9 +29,16 @@ export class PurchaseOrderService {
         }
     }
     async update(id: number, input: PurchaseOrder): Promise<PurchaseOrder | undefined> {
-        return await this.repo.update(id, input);
+        const order = await this.repo.findOne({ id });
+        if (!order) {
+            return undefined;
+        }
+        order.date = input.date;
+        order.status = input.status;
+        order.supplier = input.supplier;
+        return await this.repo.update(id, order);
     }
     async remove(id: number): Promise<PurchaseOrder | undefined> {
-        return this.repo.delete({ id });
+        return await this.repo.delete({ id });
     }
 }

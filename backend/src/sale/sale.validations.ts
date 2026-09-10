@@ -7,14 +7,7 @@ export const sanitizedSaleInput = (
     next: NextFunction
 ) => {
 
-    const {
-        date,
-        paymentMethod,
-        status,
-        totalAmount,
-        customer,
-        manager
-    } = req.body;
+    const { date, paymentMethod, status, customer, manager } = req.body;
 
     if (!date) {
         return res.status(400).send({
@@ -42,12 +35,6 @@ export const sanitizedSaleInput = (
         });
     }
 
-    if (typeof totalAmount !== "number" || totalAmount < 0) {
-        return res.status(400).send({
-            message: "The sale total amount entered is invalid"
-        });
-    }
-
     if (typeof customer !== "number" || customer <= 0) {
         return res.status(400).send({
             message: "The customer ID entered is invalid"
@@ -63,7 +50,6 @@ export const sanitizedSaleInput = (
         date: saleDate,
         paymentMethod,
         status,
-        totalAmount,
         customer,
         manager
     };

@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
 import { SaleItemService } from "./saleItem.service.js";
 import { SaleItemRepository } from "./saleItem.repository.js";
+import { ProductRepository } from "../product/product.repository.js";
+import { SaleRepository } from "../sale/sale.repository.js";
 
-const service = new SaleItemService(new SaleItemRepository());
+const service = new SaleItemService(new SaleItemRepository(), new SaleRepository(), new ProductRepository());
 
 export async function findAll(req: Request, res: Response) {
     return res.json(await service.findAll());
@@ -11,7 +13,7 @@ export async function findOne(req: Request, res: Response) {
     const id = Number(req.params.id);
     const saleItemFound = await service.findOne(id);
     if (!saleItemFound) {
-        return res.status(400).send({ message: "Sale Item not Found" });
+        return res.status(404).send({ message: "Sale Item not Found" });
     }
     return res.json(saleItemFound);
 }

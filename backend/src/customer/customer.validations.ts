@@ -2,12 +2,7 @@
 import { NextFunction, Request, Response } from "express";
 
 
-export const sanitizedCustomerInput = (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-
+export const sanitizedCustomerInput = (req: Request, res: Response, next: NextFunction) => {
     const {
         firstName,
         lastName,

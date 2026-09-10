@@ -11,7 +11,7 @@ export async function findOne(req: Request, res: Response) {
     const id = Number(req.params.id);
     const saleFound = await service.findOne(id);
     if (!saleFound) {
-        return res.status(400).send({ message: "Sale not Found" });
+        return res.status(404).send({ message: "Sale not Found" });
     }
     return res.json(saleFound);
 }
@@ -31,13 +31,14 @@ export async function update(req: Request, res: Response) {
         const data = req.body.sanitizedSaleInput
         const saleToUpdate = await service.update(id, data);
         if (!saleToUpdate) {
-            return res.status(400).send({ message: "Sale not Found" });
+            return res.status(404).send({ message: "Sale not Found" });
         }
         return res.status(200).json(saleToUpdate);
     }
     catch (error: any) {
+        console.error("ERROR UPDATE SALE:", error);
         if (error.message === "A sale with that name already exists") {
-            return res.status(409).send({ message: error.message });
+            return res.status(404).send({ message: error.message });
         }
         return res.status(500).send({ message: "Internal server error" });
     }
@@ -47,13 +48,13 @@ export async function remove(req: Request, res: Response) {
         const id = Number(req.params.id);
         const saleRemoved = await service.remove(id);
         if (!saleRemoved) {
-            return res.status(400).send({ message: "Sale not Found" });
+            return res.status(404).send({ message: "Sale not Found" });
         }
         return res.status(200).json(saleRemoved);
     }
     catch (error: any) {
         if (error.message === "A sale with that name already exists") {
-            return res.status(409).send({ message: error.message });
+            return res.status(404).send({ message: error.message });
         }
         return res.status(500).send({ message: "Internal server error" });
     }
