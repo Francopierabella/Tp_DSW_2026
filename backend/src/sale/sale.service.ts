@@ -1,3 +1,4 @@
+import { SaleItemRepository } from "../saleItem/saleItem.repository.js";
 import { IRepository } from "../shared/base.repository.js";
 import { Sale, typesStatus } from "./sale.entity.js";
 
@@ -5,7 +6,10 @@ import { Sale, typesStatus } from "./sale.entity.js";
 // el SaleService es el encargado de decidir qué se puede hacer según el estado de la venta.
 export class SaleService {
 
-    constructor(private readonly repo: IRepository<Sale>) { };
+    constructor(
+        private readonly repo: IRepository<Sale>,
+        private readonly saleItemRepo: SaleItemRepository
+    ) { };
 
     async findAll(): Promise<Sale[] | undefined> {
         return await this.repo.findAll();
@@ -83,6 +87,10 @@ export class SaleService {
         }
         if (sale.status === typesStatus.CONFIRMED) {
             throw new Error("Confirmed sales cannot be deleted");
+        }
+        const saleItems = await this.saleItemRepo.findBySale(id);
+        for (const item of saleItems) {
+            await this.saleItemRepo.delete({ id: item.id! });
         }
         return await this.repo.delete({ id });
     }
