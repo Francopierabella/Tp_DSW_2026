@@ -13,6 +13,7 @@ export const sanitizedProductInput = (
         price,
         brand,
         gender,
+        isFeatured,
         categoryId
     } = req.body;
 
@@ -59,6 +60,7 @@ export const sanitizedProductInput = (
         price,
         brand: brand.trim(),
         gender,
+        isFeatured,
         categoryId
     };
 

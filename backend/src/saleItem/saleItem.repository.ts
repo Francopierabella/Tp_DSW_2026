@@ -19,7 +19,7 @@ export class SaleItemRepository implements IRepository<SaleItem> {
             throw error;
         }
     }
-    public async update(id: number, input: SaleItem): Promise<SaleItem | undefined> {
+    public async update(id: number, input: Partial<SaleItem>): Promise<SaleItem | undefined> {
         const found = await orm.em.findOne(SaleItem, { id });
         if (!found) {
             return undefined;
@@ -35,5 +35,8 @@ export class SaleItemRepository implements IRepository<SaleItem> {
         }
         await orm.em.removeAndFlush(found)
         return found;
+    }
+    async findBySale(saleId: number): Promise<SaleItem[]> {
+        return await orm.em.find(SaleItem, { sale: saleId });
     }
 }

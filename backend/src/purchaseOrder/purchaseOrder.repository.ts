@@ -18,12 +18,23 @@ export class PurchaseOrderRepository implements IRepository<PurchaseOrder> {
         return created;
     }
 
-    public async update(id: number, input: PurchaseOrder): Promise<PurchaseOrder | undefined> {
+    public async update(id: number, input: Partial<PurchaseOrder>): Promise<PurchaseOrder | undefined> {
         const found = await orm.em.findOne(PurchaseOrder, { id });
         if (!found) {
             return undefined;
         }
-        orm.em.assign(found, input);
+        if (input.date !== undefined) {
+            found.date = input.date;
+        }
+        if (input.status !== undefined) {
+            found.status = input.status;
+        }
+        if (input.totalAmount !== undefined) {
+            found.totalAmount = input.totalAmount;
+        }
+        if (input.supplier !== undefined) {
+            found.supplier = input.supplier;
+        }
         await orm.em.flush();
         return found;
     }

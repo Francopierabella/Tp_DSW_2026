@@ -26,12 +26,33 @@ export class SaleRepository implements IRepository<Sale> {
         }
     }
     public async update(id: number, input: Sale): Promise<Sale | undefined> {
-        const found = await orm.em.findOne(Sale, { id }); // es lo mismo que hacer this.findOne({id})
+        const found = await orm.em.findOne(Sale, { id });
         if (!found) {
             return undefined;
         }
-        orm.em.assign(found, input);
+        if (input.date !== undefined) {
+            found.date = input.date;
+        }
+        if (input.paymentMethod !== undefined) {
+            found.paymentMethod = input.paymentMethod;
+        }
+        if (input.status !== undefined) {
+            found.status = input.status;
+        }
+        if (input.customer !== undefined) {
+            found.customer = input.customer;
+        }
+        if (input.manager !== undefined) {
+            found.manager = input.manager;
+        }
+        if (input.totalAmount !== undefined) {
+            found.totalAmount = input.totalAmount;
+        }
+        if (input.paidDate !== undefined) {
+            found.paidDate = input.paidDate;
+        }
         await orm.em.flush();
+
         return found;
     }
 

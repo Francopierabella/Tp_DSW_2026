@@ -1,8 +1,13 @@
 import { Request, Response } from "express";
 import { PurchaseOrderItemService } from "./purchaseOrderItem.service.js";
 import { PurchaseOrderItemRepository } from "./purchaseOrderItem.repository.js";
+import { PurchaseOrderRepository } from "../purchaseOrder/purchaseOrder.repository.js";
+import { ProductRepository } from "../product/product.repository.js";
 
-const service = new PurchaseOrderItemService(new PurchaseOrderItemRepository());
+const service = new PurchaseOrderItemService
+    (new PurchaseOrderItemRepository(),
+        new PurchaseOrderRepository(),
+        new ProductRepository());
 
 export async function findAll(req: Request, res: Response) {
     return res.json(await service.findAll());
@@ -27,6 +32,7 @@ export async function create(req: Request, res: Response) {
 }
 export async function update(req: Request, res: Response) {
     try {
+        console.log("SDAD");
         const id = Number(req.params.id);
         const data = req.body.sanitizedPurchaseOrderItemInput;
         const updated = await service.update(id, data);
@@ -36,6 +42,7 @@ export async function update(req: Request, res: Response) {
         return res.status(200).json(updated);
     }
     catch (error: any) {
+        console.error("ERROR UPDATE PURCHASEORDERITEM:", error);
         if (error.message === "A purchase order item with that id does not exist") {
             return res.status(404).send({ message: error.message });
         }

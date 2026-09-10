@@ -1,7 +1,7 @@
 export interface IRepository<T> {
-    findAll() : Promise<T[] | undefined>,
-    findOne(item : {id : number}) : Promise<T | undefined>,
-    add(item : T) : Promise <T | undefined>,
-    update(id : number,item :T): Promise <T | undefined>,
-    delete (item : {id:number}) : Promise <T | undefined >
+    findAll(): Promise<T[] | undefined>,
+    findOne(item: { id: number }): Promise<T | undefined>,
+    add(item: T): Promise<T | undefined>,
+    update(id: number, item: Partial<T>): Promise<T | undefined>,
+    delete(item: { id: number }): Promise<T | undefined>
 }
