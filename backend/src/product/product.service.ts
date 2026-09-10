@@ -35,7 +35,7 @@ export class ProductService {
                 input.gender,
                 input.price,
                 input.stock,
-                input.categoryId
+                input.category
             );
             return await this.repo.add(newProduct);
         } catch (error: any) {

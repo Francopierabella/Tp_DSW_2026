@@ -10,7 +10,7 @@ export class HealthInsurance extends BaseEntity {
     @Property({ nullable: false })
     coveragePercentage!: number
 
-    @OneToMany(() => Customer, customer => customer.healthInsuranceId)
+    @OneToMany(() => Customer, customer => customer.healthInsurance)
     customers = new Collection<Customer>(this);
 
     constructor(name: string, coveragePercentage: number) {

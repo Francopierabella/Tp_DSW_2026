@@ -1,13 +1,26 @@
 import 'reflect-metadata';
 import express from "express";
-import { productCategoryRouter } from "./productCategory/productCategory.routes.js";
+import cors from "cors";
 import dotenv from 'dotenv';
 import { orm, syncSchema } from './shared/db/orm.js';
 import { RequestContext } from '@mikro-orm/core';
-import cors from "cors";
+
+// ===============================
+
+// ROUTES IMPORTS
+
+import { productCategoryRouter } from "./productCategory/productCategory.routes.js";
 import { productRouter } from './product/product.routes.js';
-import { healthInsuranceRouter } from './HealthInsurance/healthInsurance.routes.js';
+import { healthInsuranceRouter } from './healthInsurance/healthInsurance.routes.js';
 import { customerRouter } from './customer/customer.routes.js';
+import { saleRouter } from './sale/sale.routes.js';
+import { managerRouter } from './manager/manager.routes.js';
+import { saleItemRouter } from './saleItem/saleItem.routes.js';
+import { purchaseOrderRouter } from './purchaseOrder/purchaseOrder.routes.js';
+import { purchaseOrderItemRouter } from './purchaseOrderItem/purchaseOrderItem.routes.js';
+import { supplierRouter } from './supplier/supplier.routes.js';
+
+// ===============================
 
 dotenv.config(); // importo la config de mi .env ( variables de entorno => Enviroment Variables)
 const app = express();
@@ -31,11 +44,17 @@ app.use((req, res, next) => {
 // Una vez creado el contexto, next() continúa con el siguiente middleware o ruta.
 
 
-// app.use("/api/customers",customerRouter);
 app.use("/api/productCategories", productCategoryRouter);
 app.use("/api/products", productRouter);
 app.use("/api/healthInsurances", healthInsuranceRouter);
 app.use("/api/customers", customerRouter);
+app.use("/api/sales", saleRouter);
+app.use("/api/managers", managerRouter);
+app.use("/api/purchaseOrders", purchaseOrderRouter);
+app.use("/api/purchaseOrderItems", purchaseOrderItemRouter);
+app.use("/api/saleItems", saleItemRouter);
+app.use("/api/suppliers", supplierRouter);
+
 app.use((_, res) => {
     return res.status(404).send({ message: "Resource not Found" })
 })

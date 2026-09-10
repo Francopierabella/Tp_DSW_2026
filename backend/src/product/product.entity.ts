@@ -20,9 +20,9 @@ export class Product extends BaseEntity {
     @Property({ nullable: false })
     stock!: number
     @ManyToOne(() => ProductCategory)
-    categoryId!: number
+    category!: number
 
-    constructor(name: string, description: string, brand: string, gender: string, price: number, stock: number, categoryId: number) {
+    constructor(name: string, description: string, brand: string, gender: string, price: number, stock: number, category: number) {
         super();
         this.name = name;
         this.description = description;
@@ -30,6 +30,6 @@ export class Product extends BaseEntity {
         this.gender = gender;
         this.price = price;
         this.stock = stock;
-        this.categoryId = categoryId
+        this.category = category
     }
 }
