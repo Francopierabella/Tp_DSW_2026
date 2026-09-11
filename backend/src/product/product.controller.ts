@@ -29,6 +29,7 @@ export async function findOne(req: Request, res: Response) {
 
 export async function create(req: Request, res: Response) {
     try {
+        console.log(req.body);
         const newProduct = await service.create(req.body.sanitizedProductInput);
         return res.status(201).send({ message: "Product created successfully", data: newProduct });
     }

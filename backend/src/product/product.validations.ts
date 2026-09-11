@@ -14,7 +14,7 @@ export const sanitizedProductInput = (
         brand,
         gender,
         isFeatured,
-        categoryId
+        category
     } = req.body;
 
     if (!name || name.trim() === "") {
@@ -46,8 +46,9 @@ export const sanitizedProductInput = (
             message: "Gender must be Male or Female"
         });
     }
-
-    if (!categoryId || typeof categoryId !== "number") {
+    console.log(!category);
+    console.log(typeof category);
+    if (!category || typeof category !== "number") {
         return res.status(400).send({
             message: "Category is required"
         });
@@ -61,7 +62,7 @@ export const sanitizedProductInput = (
         brand: brand.trim(),
         gender,
         isFeatured,
-        categoryId
+        category
     };
 
     next();
