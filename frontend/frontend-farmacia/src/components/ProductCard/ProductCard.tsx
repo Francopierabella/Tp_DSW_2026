@@ -1,31 +1,31 @@
 import { Link } from "react-router-dom";
 import "./ProductCard.css";
+import type { Product } from "../../types/product";
+import { useCart } from "../../context/CartContext";
 
 interface ProductCardProps {
-    id: number;
-    name: string;
+    product: Product;
     category: string;
-    price: number;
     image: string;
 }
 
 export default function ProductCard({
-    id,
-    name,
+    product,
     category,
-    price,
     image
 }: ProductCardProps) {
 
+    const { addToCart } = useCart();
+
     return (
         <Link
-            to={`/productos/${id}`}
+            to={`/productos/${product.id}`}
             className="product-card-link"
         >
             <article className="product-card">
 
                 <div className="product-image">
-                    <img src={image} alt={name} />
+                    <img src={image} alt={product.name} />
                 </div>
 
                 <div className="product-info">
@@ -35,13 +35,13 @@ export default function ProductCard({
                     </span>
 
                     <h3>
-                        {name}
+                        {product.name}
                     </h3>
 
                     <div className="product-bottom">
 
                         <span className="product-price">
-                            ${price.toLocaleString("es-AR")}
+                            ${product.price.toLocaleString("es-AR")}
                         </span>
 
                         <button
@@ -49,6 +49,7 @@ export default function ProductCard({
                             onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
+                                addToCart(product);
                             }}
                         >
                             Agregar

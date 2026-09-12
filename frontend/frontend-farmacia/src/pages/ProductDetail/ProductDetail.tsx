@@ -2,35 +2,26 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
+import { getProductById } from "../../services/product.service";
+import { useCart } from "../../context/CartContext";
+import type { Product } from "../../types/product";
 import "./ProductDetail.css";
-
-interface Product {
-    id: number;
-    name: string;
-    description: string;
-    brand: string;
-    gender: string;
-    price: number;
-    stock: number;
-    category: number;
-}
 
 export default function ProductDetail() {
 
     const { id } = useParams();
-
     const [product, setProduct] = useState<Product | null>(null);
+    const { addToCart } = useCart();
 
     useEffect(() => {
 
-        fetch(`http://localhost:3000/api/products/${id}`)
-            .then(response => response.json())
-            .then(data => {
-                setProduct(data);
-            })
-            .catch(error => {
-                console.error("Error al obtener el producto:", error);
-            });
+        if (!id) return;
+
+        getProductById(Number(id))
+            .then(data => setProduct(data))
+            .catch(error =>
+                console.error("Error al obtener el producto:", error)
+            );
 
     }, [id]);
 
@@ -66,7 +57,6 @@ export default function ProductDetail() {
                         </p>
 
                         <div className="product-detail-data">
-
                             <p>
                                 <strong>Marca:</strong> {product.brand}
                             </p>
@@ -78,14 +68,16 @@ export default function ProductDetail() {
                             <p>
                                 <strong>Stock disponible:</strong> {product.stock}
                             </p>
-
                         </div>
 
                         <span className="product-detail-price">
                             ${product.price.toLocaleString("es-AR")}
                         </span>
 
-                        <button className="product-detail-button">
+                        <button
+                            className="product-detail-button"
+                            onClick={() => addToCart(product)}
+                        >
                             Agregar al carrito
                         </button>
 

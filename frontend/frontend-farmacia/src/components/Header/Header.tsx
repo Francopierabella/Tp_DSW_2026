@@ -1,17 +1,26 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useCart } from "../../context/CartContext";
+import Cart from "../Cart/Cart";
 import "./Header.css";
 
 export default function Header() {
 
     const [menuOpen, setMenuOpen] = useState(false);
+    const [cartOpen, setCartOpen] = useState(false);
+
+    const { cartItems } = useCart();
+
+    const cartItemCount = cartItems.reduce(
+        (total, item) => total + item.quantity,
+        0
+    );
 
     return (
         <header className="header">
 
             <div className="header-container">
 
-                {/* Logo */}
                 <a href="/" className="logo">
                     <div className="logo-icon">+</div>
 
@@ -20,7 +29,7 @@ export default function Header() {
                         <strong>Pierabella</strong>
                     </div>
                 </a>
-                {/* Navegación desktop */}
+
                 <nav className="nav">
 
                     <NavLink to="/" className="nav-link">
@@ -34,11 +43,11 @@ export default function Header() {
                     <NavLink to="/categorias" className="nav-link">
                         Categorías
                     </NavLink>
+
                 </nav>
-                {/* Acciones */}
+
                 <div className="header-actions">
 
-                    {/* Usuario */}
                     <button
                         className="icon-button"
                         aria-label="Mi cuenta"
@@ -55,11 +64,10 @@ export default function Header() {
                         </svg>
                     </button>
 
-
-                    {/* Carrito */}
                     <button
                         className="cart-button"
                         aria-label="Carrito"
+                        onClick={() => setCartOpen(true)}
                     >
                         <svg
                             viewBox="0 0 24 24"
@@ -74,12 +82,10 @@ export default function Header() {
                         </svg>
 
                         <span className="cart-badge">
-                            0
+                            {cartItemCount}
                         </span>
                     </button>
 
-
-                    {/* Botón hamburguesa */}
                     <button
                         className={`menu-button ${menuOpen ? "open" : ""}`}
                         onClick={() => setMenuOpen(!menuOpen)}
@@ -95,8 +101,6 @@ export default function Header() {
 
             </div>
 
-
-            {/* Menú mobile */}
             <nav className={`mobile-nav ${menuOpen ? "show" : ""}`}>
 
                 <NavLink
@@ -124,6 +128,14 @@ export default function Header() {
                 </NavLink>
 
             </nav>
+
+            {cartOpen && (
+                <Cart
+                    onClose={() => setCartOpen(false)}
+                />
+            )}
+
         </header>
     );
 }
+
