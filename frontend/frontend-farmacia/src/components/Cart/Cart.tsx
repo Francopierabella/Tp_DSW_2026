@@ -132,21 +132,16 @@ export default function Cart({ onClose }: CartProps) {
                                     ${total.toLocaleString("es-AR")}
                                 </strong>
                             </div>
-
                             <button
                                 className="checkout-button"
-                                onClick={() => navigate("/productos")}
+                                onClick={() => navigate("/checkout")}
                             >
                                 Continuar con la compra
                             </button>
-
                         </div>
                     </>
-
                 )}
-
             </aside>
-
         </div>
     );
 }

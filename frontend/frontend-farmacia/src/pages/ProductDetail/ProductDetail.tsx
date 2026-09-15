@@ -6,11 +6,13 @@ import { getProductById } from "../../services/product.service";
 import { useCart } from "../../context/CartContext";
 import type { Product } from "../../types/product";
 import "./ProductDetail.css";
+import Toast from "../../components/Toast/Toast";
 
 export default function ProductDetail() {
 
     const { id } = useParams();
     const [product, setProduct] = useState<Product | null>(null);
+    const [toastMessage, setToastMessage] = useState<string | null>(null);
     const { addToCart } = useCart();
 
     useEffect(() => {
@@ -76,7 +78,12 @@ export default function ProductDetail() {
 
                         <button
                             className="product-detail-button"
-                            onClick={() => addToCart(product)}
+                            onClick={(e) => {
+                                e.preventDefault(); // evita que el enlace se ejecute
+                                e.stopPropagation(); // evita que el clic se propague al enlace del card
+                                addToCart(product);
+                                setToastMessage(`${product.name} agregado al carrito!`);
+                            }}
                         >
                             Agregar al carrito
                         </button>
@@ -84,6 +91,13 @@ export default function ProductDetail() {
                     </div>
 
                 </div>
+
+                {toastMessage && (
+                    <Toast
+                        message={toastMessage}
+                        onClose={() => setToastMessage(null)}
+                    />
+                )}
 
             </main>
 

@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import "./ProductCard.css";
 import type { Product } from "../../types/product";
 import { useCart } from "../../context/CartContext";
+import Toast from "../Toast/Toast";
+import { useState } from "react";
 
 interface ProductCardProps {
     product: Product;
@@ -16,7 +18,7 @@ export default function ProductCard({
 }: ProductCardProps) {
 
     const { addToCart } = useCart();
-
+    const [toastMessage, setToastMessage] = useState<string | null>(null);
     return (
         <Link
             to={`/productos/${product.id}`}
@@ -50,6 +52,7 @@ export default function ProductCard({
                                 e.preventDefault();
                                 e.stopPropagation();
                                 addToCart(product);
+                                setToastMessage(`${product.name} agregado al carrito!`)
                             }}
                         >
                             Agregar
@@ -58,7 +61,11 @@ export default function ProductCard({
                     </div>
 
                 </div>
-
+                {toastMessage && (
+                    <Toast
+                        message={toastMessage}
+                        onClose={() => setToastMessage(null)} />
+                )}
             </article>
         </Link>
     );

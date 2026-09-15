@@ -4,6 +4,7 @@ import Home from "./pages/Home/Home";
 import Products from "./pages/Products/Products";
 import CategoriesPage from "./pages/Categories/CategoriesPage";
 import ProductDetail from "./pages/ProductDetail/ProductDetail";
+import Checkout from "./pages/Checkout/Checkout";
 
 //React Router se encarga de relacionar una URL con un componente de React.
 function App() {
@@ -20,6 +21,8 @@ function App() {
         <Route path="/categorias" element={<CategoriesPage />} />
 
         <Route path="/productos/:id" element={<ProductDetail />} />
+
+        <Route path="/checkout" element={<Checkout />} />
 
       </Routes>
 
