@@ -48,14 +48,12 @@ export default function FeaturedProducts() {
 
                             <ProductCard
                                 key={product.id}
-                                id={product.id}
-                                name={product.name}
+                                product={product}
                                 category={
                                     categories.find(
                                         category => category.id === product.category
                                     )?.name ?? "Sin categoría"
                                 }
-                                price={product.price}
                                 image="https://placehold.co/400x300?text=Producto"
                             />
 

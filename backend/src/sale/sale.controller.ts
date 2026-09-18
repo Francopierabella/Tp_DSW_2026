@@ -1,7 +1,8 @@
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 import { SaleService } from "./sale.service.js";
 import { SaleRepository } from "./sale.repository.js";
 import { SaleItemRepository } from "../saleItem/saleItem.repository.js";
+import { AppError } from "../shared/appError.js";
 
 const service = new SaleService(new SaleRepository(), new SaleItemRepository());
 
@@ -12,7 +13,7 @@ export async function findOne(req: Request, res: Response) {
     const id = Number(req.params.id);
     const saleFound = await service.findOne(id);
     if (!saleFound) {
-        return res.status(404).send({ message: "Sale not Found" });
+        throw new AppError(`Sale with id ${id} not found`, 404);
     }
     return res.json(saleFound);
 }
@@ -23,8 +24,10 @@ export async function create(req: Request, res: Response) {
         return res.status(201).json(saleCreated);
     }
     catch (error: any) {
-        console.error("Error create:", error);
-        return res.status(500).send({ message: error.message });
+        if (error.message === "A customer or manager id is invalid") {
+            throw new AppError(error.message, 400);
+        }
+        throw new AppError("Internal server error", 500);
     }
 }
 export async function update(req: Request, res: Response) {
@@ -33,16 +36,15 @@ export async function update(req: Request, res: Response) {
         const data = req.body.sanitizedSaleInput
         const saleToUpdate = await service.update(id, data);
         if (!saleToUpdate) {
-            return res.status(404).send({ message: "Sale not Found" });
+            throw new AppError(`Sale with id ${id} not found`, 404);
         }
         return res.status(200).json(saleToUpdate);
     }
     catch (error: any) {
-        console.error("ERROR: ", error);
-        if (error.message === "A sale with that name already exists") {
-            return res.status(404).send({ message: error.message });
+        if (error.message === "The customer or manager ID entered is invalid") {
+            throw new AppError(error.message, 409);
         }
-        return res.status(500).send({ message: "Internal server error" });
+        throw new AppError("Internal server error", 500);
     }
 }
 export async function confirm(req: Request, res: Response) {
@@ -50,16 +52,14 @@ export async function confirm(req: Request, res: Response) {
         const id = Number(req.params.id);
         const saleConfirmed = await service.confirm(id);
         if (!saleConfirmed) {
-            return res.status(404).send({
-                message: "Sale not Found"
-            });
+            throw new AppError(`Sale with id ${id} not found`, 404);
         }
         return res.status(200).json(saleConfirmed);
     } catch (error: any) {
-        if (error.message === "Only pending sales can be confirmed") {
-            return res.status(409).send({ message: error.message });
+        if (error.message === "Only pending sales can be confirmed" || error.message === "Cannot confirm a sale with no items") {
+            throw new AppError(error.message, 409);
         }
-        return res.status(500).send({ message: "Internal server error" });
+        throw new AppError("Internal server error", 500);
     }
 }
 export async function cancel(req: Request, res: Response) {
@@ -67,16 +67,14 @@ export async function cancel(req: Request, res: Response) {
         const id = Number(req.params.id);
         const saleCancelled = await service.cancel(id);
         if (!saleCancelled) {
-            return res.status(404).send({
-                message: "Sale not Found"
-            });
+            throw new AppError(`Sale with id ${id} not found`, 404);
         }
         return res.status(200).json(saleCancelled);
     } catch (error: any) {
         if (error.message === "Only pending sales can be cancelled") {
-            return res.status(409).send({ message: error.message });
+            throw new AppError(error.message, 409);
         }
-        return res.status(500).send({ message: "Internal server error" });
+        throw new AppError("Internal server error", 500);
     }
 }
 export async function remove(req: Request, res: Response) {
@@ -84,15 +82,13 @@ export async function remove(req: Request, res: Response) {
         const id = Number(req.params.id);
         const saleRemoved = await service.remove(id);
         if (!saleRemoved) {
-            return res.status(404).send({
-                message: "Sale not Found"
-            });
+            throw new AppError(`Sale with id ${id} not found`, 404);
         }
         return res.status(200).json(saleRemoved);
     } catch (error: any) {
         if (error.message === "Confirmed sales cannot be deleted") {
-            return res.status(409).send({ message: error.message });
+            throw new AppError(error.message, 409);
         }
-        return res.status(500).send({ message: "Internal server error" });
+        throw new AppError("Internal server error", 500);
     }
-}
+}   

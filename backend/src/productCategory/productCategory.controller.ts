@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { ProductCategoryRepository } from "./productCategory.repository.js";
 import { ProductCategoryService } from "./productCategory.service.js";
-
+import { AppError } from "../shared/appError.js";
 //Controller: manejar HTTP (req, res).
 
 // Controller crea el Service y le inyecta el Repository
@@ -15,7 +15,7 @@ async function findOne(req: Request, res: Response) {
     const id = Number(req.params.id);
     const productCategory = await service.findOne(id);
     if (!productCategory) {
-        return res.status(404).send({ message: "ProductCategory not found" })
+        throw new AppError(`ProductCategory with id ${id} not found`, 404);
     }
     return res.json(productCategory);
 }
@@ -26,9 +26,9 @@ async function create(req: Request, res: Response) {
         return res.status(201).json({ message: "ProductCategory created successfully", data: productCategory });
     } catch (error: any) {
         if (error.message === "A product category with this name already exists.") {
-            return res.status(409).send({ message: error.message });
+            throw new AppError(error.message, 409);
         }
-        return res.status(500).send({ message: "Internal server error" });
+        throw new AppError("Internal server error", 500);
     }
 }
 
@@ -37,7 +37,7 @@ async function update(req: Request, res: Response) {
     const productCategory = await service.update(id, req.body.sanitizedProductCategoryInput);
 
     if (!productCategory) {
-        return res.status(404).send({ message: "ProductCategory not found" });
+        throw new AppError(`ProductCategory with id ${id} not found`, 404);
     }
     return res.json({ message: "ProductCategory updated successfully", data: productCategory });
 }
@@ -46,7 +46,7 @@ async function remove(req: Request, res: Response) {
     const id = Number(req.params.id);
     const result = await service.remove(id);
     if (!result) {
-        return res.status(404).send({ message: "ProductCategory not Found" });
+        throw new AppError(`ProductCategory with id ${id} not found`, 404);
     }
     return res.json({ message: `ProductCategory, with id: ${result.id} and name: ${result.name}, successfully deleted` })
 }

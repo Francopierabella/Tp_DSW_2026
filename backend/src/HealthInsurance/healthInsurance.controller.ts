@@ -1,6 +1,7 @@
 import { HealthInsuranceService } from "./healthInsurance.service.js";
 import { HealthInsuranceRepository } from "./healthInsurance.repository.js";
 import { Request, Response } from "express";
+import { AppError } from "../shared/appError.js";
 
 const service = new HealthInsuranceService(new HealthInsuranceRepository);
 
@@ -12,7 +13,7 @@ export async function findOne(req: Request, res: Response) {
     const id = Number(req.params.id);
     const healthInsuranceWithThisId = await service.findOne(id);
     if (!healthInsuranceWithThisId) {
-        return res.status(400).send({ message: "HealthInsurance not found." });
+        throw new AppError(`HealthInsurance with id ${id} not found`, 404);
     }
     return res.json(healthInsuranceWithThisId);
 }
@@ -23,9 +24,9 @@ export async function create(req: Request, res: Response) {
         return res.status(201).json(newHealthInsurance);
     } catch (error: any) {
         if (error.message === "A health insurance with that name already exists.") {
-            return res.status(409).send({ message: error.message });
+            throw new AppError(error.message, 409);
         }
-        return res.status(500).send({ message: "Internal server error" });
+        throw new AppError("Internal server error", 500);
     }
 }
 
@@ -34,7 +35,7 @@ export async function update(req: Request, res: Response) {
     const healthInsuranceData = req.body.sanitizedHealthInsuranceInput;
     const healthInsuranceWithThisId = await service.update(id, healthInsuranceData);
     if (!healthInsuranceWithThisId) {
-        return res.status(404).send({ message: "HealthInsurance not found" });
+        throw new AppError(`HealthInsurance with id ${id} not found`, 404);
     }
     return res.json(healthInsuranceWithThisId);
 }
@@ -42,7 +43,7 @@ export async function remove(req: Request, res: Response) {
     const id = Number(req.params.id);
     const healthInsuranceWithThisId = await service.remove(id);
     if (!healthInsuranceWithThisId) {
-        return res.status(404).send({ message: "HealthInsurance not found" });
+        throw new AppError(`HealthInsurance with id ${id} not found`, 404);
     }
     return res.json({ message: `HealthInsurance, with id ${healthInsuranceWithThisId.id} and name: ${healthInsuranceWithThisId.name} , successfully deleted` });
 }

@@ -53,13 +53,11 @@ export default function ProductGrid() {
                     {filteredProducts.map(product => (
                         <ProductCard
                             key={product.id}
-                            id={product.id}
-                            name={product.name}
+                            product={product}
                             category={
                                 categories.find(c => c.id === product.category)?.name
                                 ?? "Sin categoría"
                             }
-                            price={product.price}
                             image="https://placehold.co/400x300?text=Producto"
                         />
                     ))}

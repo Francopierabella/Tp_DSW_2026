@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { ProductRepository } from './product.repository.js';
 import { ProductService } from './product.service.js';
+import { AppError } from '../shared/appError.js';
 
 // CONTROLLER => Su función principal es recibir las peticiones HTTP, 
 // comunicarse con el Service y devolver una respuesta al cliente.
@@ -22,7 +23,7 @@ export async function findOne(req: Request, res: Response) {
     const id = Number(req.params.id); // req.params.id is a string => Number.
     const product = await service.findOne(id);
     if (!product) {
-        return res.status(404).send({ message: "Product not Found" });
+        throw new AppError(`Product with id ${id} not found`, 404);
     }
     return res.json(product);
 }
@@ -34,16 +35,16 @@ export async function create(req: Request, res: Response) {
     }
     catch (error: any) {
         if (error.message === "A product with that name already exists.") {
-            return res.status(409).send({ message: error.message });
+            throw new AppError(error.message, 409);
         }
-        return res.status(500).send({ message: "Internal server error" });
+        throw new AppError("Internal server error", 500);
     }
 }
 export async function update(req: Request, res: Response) {
     const id = Number(req.params.id);
     const product = await service.update(id, req.body.sanitizedProductInput);
     if (!product) {
-        return res.status(404).send({ message: "Product not Found" });
+        throw new AppError(`Product with id ${id} not found`, 404);
     }
     return res.json(product);
 }
@@ -51,7 +52,7 @@ export async function remove(req: Request, res: Response) {
     const id = Number(req.params.id);
     const product = await service.remove(id);
     if (!product) {
-        return res.status(404).send({ message: "Product not Found" });
+        throw new AppError(`Product with id ${id} not found`, 404);
     }
     return res.json({ message: `Product, with id ${product.id} and name: ${product.name}, successfully deleted` });
 }

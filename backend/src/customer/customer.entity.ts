@@ -13,7 +13,7 @@ export class Customer extends User {
     phoneNumber!: string;
     @Property({ nullable: false })
     address!: string;
-    @ManyToOne(() => HealthInsurance)
+    @ManyToOne(() => HealthInsurance, { nullable: true })
     healthInsurance?: number;
 
     constructor(

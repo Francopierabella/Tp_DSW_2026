@@ -1,0 +1,40 @@
+.toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    background-color: white;
+    color: #155568;
+    border: 1px solid #dce8e8;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(21, 85, 104, 0.15);
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 3000;
+}
+
+.toast-icon {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #16aaa5;
+    color: white;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+@media (max-width: 600px) {
+
+    .toast {
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+        justify-content: center;
+    }
+}

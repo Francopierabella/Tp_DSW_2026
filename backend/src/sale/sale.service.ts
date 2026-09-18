@@ -24,6 +24,7 @@ export class SaleService {
         const sale = new Sale(
             input.date,
             input.paymentMethod,
+            input.deliveryMethod,
             input.customer,
             input.manager
         );
@@ -40,9 +41,9 @@ export class SaleService {
         } else {
             sale.date = input.date;
             sale.paymentMethod = input.paymentMethod;
-            sale.status = input.status;
             sale.customer = input.customer;
             sale.manager = input.manager;
+            sale.deliveryMethod = input.deliveryMethod;
         }
         return await this.repo.update(id, sale);
     }

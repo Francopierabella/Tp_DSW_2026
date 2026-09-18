@@ -1,0 +1,139 @@
+.checkout-page {
+    min-height: calc(100vh - 72px);
+    background-color: #f7fbfb;
+    padding: 50px 0 70px;
+}
+
+.checkout-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.checkout-header {
+    margin-bottom: 35px;
+}
+
+.checkout-header h1 {
+    margin: 0 0 8px;
+    color: #155568;
+    font-size: 32px;
+}
+
+.checkout-header p {
+    margin: 0;
+    color: #718282;
+    font-size: 15px;
+}
+
+.checkout-content {
+    display: grid;
+    grid-template-columns: 1.4fr 0.8fr;
+    gap: 30px;
+    align-items: start;
+}
+
+.checkout-form,
+.checkout-summary {
+    background-color: white;
+    border: 1px solid #e3eeee;
+    border-radius: 14px;
+    padding: 28px;
+}
+
+.checkout-form h2,
+.checkout-summary h2 {
+    margin: 0 0 24px;
+    color: #155568;
+    font-size: 20px;
+}
+
+.checkout-placeholder {
+    color: #718282;
+    font-size: 14px;
+}
+
+.checkout-items {
+    display: flex;
+    flex-direction: column;
+}
+
+.checkout-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 0;
+    border-bottom: 1px solid #e8eeee;
+}
+
+.checkout-item-info {
+    min-width: 0;
+}
+
+.checkout-item-info h3 {
+    margin: 0 0 5px;
+    color: #155568;
+    font-size: 15px;
+}
+
+.checkout-item-info span {
+    color: #718282;
+    font-size: 13px;
+}
+
+.checkout-item strong {
+    color: #159b9a;
+    font-size: 15px;
+    white-space: nowrap;
+}
+
+.checkout-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid #e3eeee;
+    color: #155568;
+}
+
+.checkout-total span {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.checkout-total strong {
+    font-size: 23px;
+}
+
+@media (max-width: 800px) {
+
+    .checkout-page {
+        padding: 35px 0 50px;
+    }
+
+    .checkout-content {
+        grid-template-columns: 1fr;
+    }
+
+    .checkout-header h1 {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .checkout-form,
+    .checkout-summary {
+        padding: 20px;
+    }
+
+    .checkout-header {
+        margin-bottom: 25px;
+    }
+
+    .checkout-header h1 {
+        font-size: 25px;
+    }
+}

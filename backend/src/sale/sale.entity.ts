@@ -15,6 +15,10 @@ export enum typesStatus {
     CONFIRMED = 'CONFIRMED',
     CANCELLED = 'CANCELLED'
 }
+export enum typesDelivery {
+    PICKUP = 'PICKUP',
+    DELIVERY = 'DELIVERY'
+}
 
 @Entity()
 export class Sale extends BaseEntity {
@@ -27,11 +31,17 @@ export class Sale extends BaseEntity {
     @Property({ nullable: false })
     totalAmount!: number
 
+    // @Property({nullable: false})
+    // shippingCost!: number
+
     @Enum({ items: () => typesPayment, nullable: false })
     paymentMethod!: typesPayment;
 
     @Enum({ items: () => typesStatus, nullable: false })
     status!: typesStatus;
+
+    @Enum({ items: () => typesDelivery, nullable: false })
+    deliveryMethod!: typesDelivery;
 
     @ManyToOne(() => Customer)
     customer!: number
@@ -42,10 +52,12 @@ export class Sale extends BaseEntity {
     @OneToMany(() => SaleItem, saleItem => saleItem.sale)
     saleItems = new Collection<SaleItem>(this)
 
-    constructor(date: Date, paymentMethod: typesPayment, customer: number, manager: number) {
+    constructor(date: Date, paymentMethod: typesPayment, deliveryMethod: typesDelivery, customer: number, manager: number) {
         super()
         this.date = date
+        this.paidDate = undefined
         this.status = typesStatus.PENDING
+        this.deliveryMethod = deliveryMethod
         this.paymentMethod = paymentMethod
         this.totalAmount = 0
         this.customer = customer

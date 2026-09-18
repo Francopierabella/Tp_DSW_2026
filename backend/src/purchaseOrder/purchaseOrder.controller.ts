@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { PurchaseOrderService } from "./purchaseOrder.service.js";
 import { PurchaseOrderRepository } from "./purchaseOrder.repository.js";
-
+import { AppError } from "../shared/appError.js";
 const service = new PurchaseOrderService(new PurchaseOrderRepository());
 
 export async function findAll(req: Request, res: Response) {
@@ -11,7 +11,7 @@ export async function findOne(req: Request, res: Response) {
     const id = Number(req.params.id);
     const found = await service.findOne({ id });
     if (!found) {
-        return res.status(404).send({ message: "Purchase Order not found" });
+        throw new AppError(`Purchase Order with id ${id} not found`, 404);
     }
     return res.json(found);
 }
@@ -23,9 +23,9 @@ export async function create(req: Request, res: Response) {
     }
     catch (error: any) {
         if (error.message === "A supplier with that id does not exist") {
-            return res.status(400).send({ message: error.message });
+            throw new AppError(error.message, 400);
         }
-        return res.status(500).send({ message: "Internal server error" });
+        throw new AppError("Internal server error", 500);
     }
 }
 export async function update(req: Request, res: Response) {
@@ -34,15 +34,15 @@ export async function update(req: Request, res: Response) {
         const data = req.body.sanitizedPurchaseOrderInput;
         const updated = await service.update(id, data);
         if (!updated) {
-            return res.status(404).send({ message: "Purchase Order not found" });
+            throw new AppError(`Purchase Order with id ${id} not found`, 404);
         }
         return res.status(200).json(updated);
     }
     catch (error: any) {
         if (error.message === "A supplier with that id does not exist") {
-            return res.status(400).send({ message: error.message });
+            throw new AppError(error.message, 400);
         }
-        return res.status(500).send({ message: "Internal server error" });
+        throw new AppError("Internal server error", 500);
     }
 }
 export async function remove(req: Request, res: Response) {
@@ -50,11 +50,11 @@ export async function remove(req: Request, res: Response) {
         const id = Number(req.params.id);
         const removed = await service.remove(id);
         if (!removed) {
-            return res.status(404).send({ message: "Purchase Order not found" });
+            throw new AppError(`Purchase Order with id ${id} not found`, 404);
         }
         return res.status(200).json(removed);
     }
     catch (error: any) {
-        return res.status(500).send({ message: "Internal server error" });
+        throw new AppError("Internal server error", 500);
     }
 }

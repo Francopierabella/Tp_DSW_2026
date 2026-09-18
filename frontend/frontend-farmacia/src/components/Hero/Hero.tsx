@@ -5,7 +5,7 @@ import { getProductCategories } from "../../services/productCategory.service.ts"
 import type { ProductCategory } from "../../types/productCategory.ts";
 
 export default function Hero() {
-    const navigate = useNavigate();
+    const navigate = useNavigate(); //useNavigate(hook) permite navegar mediante código JavaScript/TypeScript.
     const [search, setSearch] = useState("");
     const [showCategories, setShowCategories] = useState(false);
     const [categories, setCategories] = useState<ProductCategory[]>([])
@@ -69,7 +69,7 @@ export default function Hero() {
                                         <button
                                             key={category.id}
                                             onClick={() => {
-                                                navigate(`/productos?categoria=${category.id}`);
+                                                navigate(`/productos?categoria=${category.id}`); // navega a esa url /productos?categoria=1, etc.
                                                 setShowCategories(!showCategories);
                                             }}
                                         >

@@ -6,7 +6,7 @@ import type { ProductCategory } from "../types/productCategory";
 const API_URL = "http://localhost:3000/api/productCategories";
 
 export async function getProductCategories(): Promise<ProductCategory[]> {
-  const response = await fetch(API_URL); 
+  const response = await fetch(API_URL);
   // basicamente Fetch es un metodo de JS que
   //  hace una peticion HTTP a la URL que le pasamos
   //  y devuelve una promesa con la respuesta.
@@ -26,17 +26,17 @@ export async function getProductCategories(): Promise<ProductCategory[]> {
   */
 }
 
-export async function createProductCategory(name:string) : Promise<ProductCategory>{
-  const response = await fetch(API_URL,{
-    method:'POST', // quiero hacer una peticion POST
-    headers:{
-      'Content-Type':'application/json'
-       // le avisa a Express que los datos estan en formato JSON
+export async function createProductCategory(name: string): Promise<ProductCategory> {
+  const response = await fetch(API_URL, {
+    method: 'POST', // quiero hacer una peticion POST
+    headers: {
+      'Content-Type': 'application/json'
+      // le avisa a Express que los datos estan en formato JSON
     },
-    body: JSON.stringify({name:name}), 
+    body: JSON.stringify({ name: name }),
     //convierto el objeto {name:name} a JSON = {"name":name}
   });
-  if(!response.ok){
+  if (!response.ok) {
     const error = await response.json();
     throw new Error(error.message);
   }
@@ -60,7 +60,7 @@ Luego lo que nos interesa a nosotors es "data", no message. por eso el .data
   */
 }
 
-export async function updateProductCategory( id: number, name: string): Promise<ProductCategory> {
+export async function updateProductCategory(id: number, name: string): Promise<ProductCategory> {
   const response = await fetch(`${API_URL}/${id}`, {
     method: "PUT",
     headers: {
@@ -78,7 +78,7 @@ export async function updateProductCategory( id: number, name: string): Promise<
   return result.data;
 }
 
-export async function deleteProductCategory(id:number) : Promise<void> {
+export async function deleteProductCategory(id: number): Promise<void> {
   const response = await fetch(`${API_URL}/${id}`, {
     method: "DELETE",
   });
