@@ -10,7 +10,7 @@ export const sanitizedCustomerInput = (req: Request, res: Response, next: NextFu
         address,
         e_mail,
         password,
-        healthInsuranceId
+        healthInsurance
     } = req.body;
 
     if (!firstName || firstName.trim() === "") {
@@ -65,11 +65,11 @@ export const sanitizedCustomerInput = (req: Request, res: Response, next: NextFu
     }
 
     if (
-        healthInsuranceId !== undefined &&
-        (typeof healthInsuranceId !== "number" || healthInsuranceId <= 0)
+        healthInsurance !== undefined &&
+        (typeof healthInsurance !== "number" || healthInsurance <= 0)
     ) {
         return res.status(400).send({
-            message: "Health insurance ID is not valid"
+            message: "Health insurance is not valid"
         });
     }
 
@@ -80,7 +80,7 @@ export const sanitizedCustomerInput = (req: Request, res: Response, next: NextFu
         address: address.trim(),
         e_mail: e_mail.trim(),
         password: password.trim(),
-        healthInsuranceId
+        healthInsurance
     };
 
     next();

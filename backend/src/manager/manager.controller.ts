@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { ManagerService } from "./manager.service.js";
 import { ManagerRepository } from "./manager.repository.js";
+import { AppError } from "../shared/appError.js";
 
 const service = new ManagerService(new ManagerRepository);
 
@@ -11,7 +12,7 @@ export async function findOne(req: Request, res: Response) {
     const id = Number(req.params.id);
     const found = await service.findOne(id);
     if (!found) {
-        return res.status(404).send({ message: "Manager not found" });
+        throw new AppError(`Manager with id ${id} not found`, 404);
     }
     return res.json(found);
 }
@@ -21,7 +22,10 @@ export async function create(req: Request, res: Response) {
         const newManager = await service.create(managerData);
         return res.status(201).json({ message: "Manager Created", data: newManager });
     } catch (error: any) {
-        return res.status(500).json({ message: "Error creating Manager", error: error.message });
+        if (error.code === "ER_DUP_ENTRY") {
+            throw new AppError(error.message, 409);
+        }
+        throw new AppError("Internal server error", 500);
     }
 }
 export async function update(req: Request, res: Response) {
@@ -32,9 +36,9 @@ export async function update(req: Request, res: Response) {
         return res.json({ message: "Manager updated successgully", updatedManager });
     } catch (error: any) {
         if (error.code === "ER_DUP_ENTRY") {
-            return res.status(409).send({ message: error.message });
+            throw new AppError(error.message, 409);
         }
-        return res.status(500).send({ message: "Internal server error" });
+        throw new AppError("Internal server error", 500);
     }
 }
 export async function remove(req: Request, res: Response) {
@@ -44,8 +48,8 @@ export async function remove(req: Request, res: Response) {
         return res.json({ message: "Manager deleted successfully", managerRemoved });
     } catch (error: any) {
         if (error.message === "Manager not found") {
-            return res.status(404).send({ message: error.message });
+            throw new AppError(error.message, 404);
         }
-        return res.status(500).send({ message: "Internal server error" });
+        throw new AppError("Internal server error", 500);
     }
 }

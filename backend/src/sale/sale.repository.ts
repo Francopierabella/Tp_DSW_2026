@@ -16,9 +16,6 @@ export class SaleRepository implements IRepository<Sale> {
             await orm.em.persistAndFlush(created);
             return created;
         } catch (error: any) {
-            if (error.code === "ER_DUP_ENTRY") {
-                throw new Error("A sale with that name already exists.");
-            }
             if (error.code === "ER_NO_REFERENCED_ROW_2") {
                 throw new Error("The customer or manager ID entered is invalid");
             }
@@ -47,6 +44,9 @@ export class SaleRepository implements IRepository<Sale> {
         }
         if (input.totalAmount !== undefined) {
             found.totalAmount = input.totalAmount;
+        }
+        if (input.deliveryMethod !== undefined) {
+            found.deliveryMethod = input.deliveryMethod;
         }
         if (input.paidDate !== undefined) {
             found.paidDate = input.paidDate;

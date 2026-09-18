@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { typesPayment, typesStatus } from "./sale.entity.js";
+import { typesPayment, typesDelivery } from "./sale.entity.js";
 
 export const sanitizedSaleInput = (
     req: Request,
@@ -7,7 +7,7 @@ export const sanitizedSaleInput = (
     next: NextFunction
 ) => {
 
-    const { date, paymentMethod, status, customer, manager } = req.body;
+    const { date, paymentMethod, status, deliveryMethod, customer, manager } = req.body;
 
     if (!date) {
         return res.status(400).send({
@@ -26,6 +26,12 @@ export const sanitizedSaleInput = (
     if (!Object.values(typesPayment).includes(paymentMethod)) {
         return res.status(400).send({
             message: "The payment method entered is invalid"
+        });
+    }
+
+    if (!Object.values(typesDelivery).includes(deliveryMethod)) {
+        return res.status(400).send({
+            message: "The delivery method entered is invalid"
         });
     }
 

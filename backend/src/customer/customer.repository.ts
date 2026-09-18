@@ -11,6 +11,10 @@ export class CustomerRepository implements IRepository<Customer> {
         const found = await orm.em.findOne(Customer, { id: item.id });
         return found ?? undefined;
     }
+    public async findByEmail(email: string): Promise<Customer | undefined> {
+        const found = await orm.em.findOne(Customer, { e_mail: email });
+        return found ?? undefined;
+    }
     public async add(item: Customer): Promise<Customer | undefined> {
         try {
             const newCustomer = orm.em.create(Customer, item);

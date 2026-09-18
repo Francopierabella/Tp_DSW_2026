@@ -1,10 +1,13 @@
 import 'reflect-metadata';
+// reflect-metadata permite que TypeScript/MikroORM pueda
+// trabajar correctamente.
+
 import express from "express";
 import cors from "cors";
 import dotenv from 'dotenv';
 import { orm, syncSchema } from './shared/db/orm.js';
 import { RequestContext } from '@mikro-orm/core';
-
+import { ErrorHandler } from './shared/errorHandler.js'
 // ===============================
 
 // ROUTES IMPORTS
@@ -19,6 +22,7 @@ import { saleItemRouter } from './saleItem/saleItem.routes.js';
 import { purchaseOrderRouter } from './purchaseOrder/purchaseOrder.routes.js';
 import { purchaseOrderItemRouter } from './purchaseOrderItem/purchaseOrderItem.routes.js';
 import { supplierRouter } from './supplier/supplier.routes.js';
+import { authRouter } from './auth/auth.routes.js';
 
 // ===============================
 
@@ -54,10 +58,13 @@ app.use("/api/purchaseOrders", purchaseOrderRouter);
 app.use("/api/purchaseOrderItems", purchaseOrderItemRouter);
 app.use("/api/saleItems", saleItemRouter);
 app.use("/api/suppliers", supplierRouter);
+app.use("/api/auth", authRouter);
 
 app.use((_, res) => {
     return res.status(404).send({ message: "Resource not Found" })
 })
+
+app.use(ErrorHandler)
 
 await syncSchema();
 

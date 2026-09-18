@@ -1,6 +1,7 @@
 
 import { IRepository } from "../shared/base.repository.js";
 import { Customer } from "./customer.entity.js";
+import bcrypt from "bcrypt";
 
 export class CustomerService {
     constructor(private repo: IRepository<Customer>) { } // Esto es lo de inyeccion de dependencias.
@@ -11,13 +12,18 @@ export class CustomerService {
         return await this.repo.findOne({ id });
     }
     async create(input: Omit<Customer, "id">): Promise<Customer | undefined> {
+
+        const hashedPassword = await bcrypt.hash(input.password, 10);
+        // El hash de contraseñas implica convertir las contraseñas en una cadena alfanumérica usando algoritmos especializados.
+        // Hacemos que la contraseña sea ilegible basicamente.
+
         const customer = new Customer(
             input.firstName,
             input.lastName,
             input.phoneNumber,
             input.address,
             input.e_mail,
-            input.password,
+            hashedPassword,
             input.healthInsurance
         );
         return await this.repo.add(customer);
