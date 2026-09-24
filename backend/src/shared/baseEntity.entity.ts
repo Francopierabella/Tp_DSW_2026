@@ -7,16 +7,5 @@ export abstract class BaseEntity {
   constructor(id?:number){
     this.id = id;
   }
-  /*
 
-  @Property({ type: DateTimeType })
-  createdAt? = new Date()
-
-  @Property({
-    type: DateTimeType,
-    onUpdate: () => new Date(),
-  })
-  updatedAt? = new Date()
-
-  */
 }

@@ -54,10 +54,7 @@ export class SaleItemService {
             }
             return created;
         } catch (error: any) {
-            if (error.code === "ER_DUP_ENTRY") {
-                throw new Error("A sale item with that name already exists.");
-            }
-            throw error;
+                throw error;
         }
     }
 

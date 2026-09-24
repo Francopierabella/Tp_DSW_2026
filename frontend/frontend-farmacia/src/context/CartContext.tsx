@@ -13,6 +13,7 @@ interface CartContextType {
     increaseQuantity: (productId: number) => void;
     decreaseQuantity: (productId: number) => void;
     removeFromCart: (productId: number) => void;
+    clearCart: () => void;
     total: number
 }
 
@@ -85,6 +86,10 @@ export function CartProvider({ children }: CartProviderProps) {
         );
     };
 
+    const clearCart = () => {
+        setCartItems([]);
+    }
+
 
     const total = cartItems.reduce(
         (accumulator, item) => {
@@ -97,7 +102,15 @@ export function CartProvider({ children }: CartProviderProps) {
     console.log(cartItems);
 
     return (
-        <CartContext.Provider value={{ cartItems, addToCart, increaseQuantity, decreaseQuantity, removeFromCart, total }}>
+        <CartContext.Provider value={{
+            cartItems,
+            addToCart,
+            increaseQuantity,
+            decreaseQuantity,
+            removeFromCart,
+            clearCart,
+            total
+        }}>
             {children}
         </CartContext.Provider>
     );
