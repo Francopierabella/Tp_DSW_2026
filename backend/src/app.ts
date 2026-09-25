@@ -6,6 +6,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from 'dotenv';
 import { orm, syncSchema } from './shared/db/orm.js';
+import { seedDatabase } from './shared/db/seed.js';
 import { RequestContext } from '@mikro-orm/core';
 import { ErrorHandler } from './shared/errorHandler.js'
 // ===============================
@@ -67,6 +68,7 @@ app.use((_, res) => {
 app.use(ErrorHandler)
 
 await syncSchema();
+await seedDatabase();
 
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`)
