@@ -1,21 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import { typesPayment, typesDelivery } from "./sale.entity.js";
 
-export const sanitizedSaleInput = (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const sanitizedSaleInput = (req: Request, res: Response, next: NextFunction) => {
 
-    const { date, paymentMethod, status, deliveryMethod, customer, manager } = req.body;
+    const { date, paymentMethod, deliveryMethod, customer, manager } = req.body;
 
-    if (!date) {
-        return res.status(400).send({
-            message: "The sale date is required"
-        });
-    }
-
-    const saleDate = new Date(date);
+    const saleDate = date ? new Date(date) : new Date();
 
     if (isNaN(saleDate.getTime())) {
         return res.status(400).send({
@@ -49,10 +39,38 @@ export const sanitizedSaleInput = (
     req.body.sanitizedSaleInput = {
         date: saleDate,
         paymentMethod,
-        status,
+        deliveryMethod,
         customer,
         manager
     };
 
     next();
 };
+
+export const sanitizedSaleUpdateInput = (req: Request, res: Response, next: NextFunction) => {
+    const { paymentMethod, deliveryMethod } = req.body;
+
+    if (paymentMethod && !Object.values(typesPayment).includes(paymentMethod)) {
+        return res.status(400).send({
+            message: "The payment method entered is invalid"
+        });
+    }
+
+    if (deliveryMethod && !Object.values(typesDelivery).includes(deliveryMethod)) {
+        return res.status(400).send({
+            message: "The delivery method entered is invalid"
+        });
+    }
+
+    req.body.sanitizedSaleUpdateInput = {};
+
+    if (paymentMethod) {
+        req.body.sanitizedSaleUpdateInput.paymentMethod = paymentMethod;
+    }
+
+    if (deliveryMethod) {
+        req.body.sanitizedSaleUpdateInput.deliveryMethod = deliveryMethod;
+    }
+
+    next();
+}

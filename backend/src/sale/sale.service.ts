@@ -39,10 +39,7 @@ export class SaleService {
         if (sale.status !== typesStatus.PENDING) {
             throw new Error("Only pending sales can be modified");
         } else {
-            sale.date = input.date;
             sale.paymentMethod = input.paymentMethod;
-            sale.customer = input.customer;
-            sale.manager = input.manager;
             sale.deliveryMethod = input.deliveryMethod;
         }
         return await this.repo.update(id, sale);

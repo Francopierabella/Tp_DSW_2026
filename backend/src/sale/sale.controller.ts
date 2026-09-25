@@ -21,7 +21,7 @@ export async function create(req: Request, res: Response) {
     try {
         const data = req.body.sanitizedSaleInput;
         const saleCreated = await service.create(data);
-        return res.status(201).json(saleCreated);
+        return res.status(201).send({ message: "Sale created successfully", data: saleCreated });
     }
     catch (error: any) {
         if (error.message === "A customer or manager id is invalid") {
@@ -33,12 +33,12 @@ export async function create(req: Request, res: Response) {
 export async function update(req: Request, res: Response) {
     try {
         const id = Number(req.params.id);
-        const data = req.body.sanitizedSaleInput
+        const data = req.body.sanitizedSaleUpdateInput
         const saleToUpdate = await service.update(id, data);
         if (!saleToUpdate) {
             throw new AppError(`Sale with id ${id} not found`, 404);
         }
-        return res.status(200).json(saleToUpdate);
+        return res.status(200).send({ message: "Sale updated successfully", data: saleToUpdate });
     }
     catch (error: any) {
         if (error.message === "The customer or manager ID entered is invalid") {
@@ -84,7 +84,7 @@ export async function remove(req: Request, res: Response) {
         if (!saleRemoved) {
             throw new AppError(`Sale with id ${id} not found`, 404);
         }
-        return res.status(200).json(saleRemoved);
+        return res.status(200).send({ message: "Sale removed successfully", data: saleRemoved });
     } catch (error: any) {
         if (error.message === "Confirmed sales cannot be deleted") {
             throw new AppError(error.message, 409);

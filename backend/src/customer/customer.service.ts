@@ -1,15 +1,21 @@
 
-import { IRepository } from "../shared/base.repository.js";
 import { Customer } from "./customer.entity.js";
 import bcrypt from "bcrypt";
+import { ICustomerRepository } from "./customer.interface.js";
 
 export class CustomerService {
-    constructor(private repo: IRepository<Customer>) { } // Esto es lo de inyeccion de dependencias.
+    constructor(private repo: ICustomerRepository) { } // Esto es lo de inyeccion de dependencias.
     async findAll(): Promise<Customer[] | undefined> {
         return await this.repo.findAll();
     }
     async findOne(id: number): Promise<Customer | undefined> {
         return await this.repo.findOne({ id });
+    }
+    async findByDni(dni: string): Promise<Customer | undefined> {
+        return await this.repo.findByDni(dni);
+    }
+    async findByEmail(email: string): Promise<Customer | undefined> {
+        return await this.repo.findByEmail(email);
     }
     async create(input: Omit<Customer, "id">): Promise<Customer | undefined> {
 
@@ -20,6 +26,7 @@ export class CustomerService {
         const customer = new Customer(
             input.firstName,
             input.lastName,
+            input.dni,
             input.phoneNumber,
             input.address,
             input.e_mail,

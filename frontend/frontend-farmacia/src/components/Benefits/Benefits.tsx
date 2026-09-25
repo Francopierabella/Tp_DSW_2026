@@ -26,40 +26,21 @@ export default function Benefits() {
             <div className="benefits-container">
 
                 <div className="benefits-header">
-
-                    <h2>
-                        ¿Por qué elegir Farmacia Pierabella?
-                    </h2>
-
+                    <h2>¿Por qué elegir Farmacia Pierabella?</h2>
                 </div>
-
 
                 <div className="benefits-grid">
 
                     {benefits.map(benefit => (
 
-                        <div
-                            key={benefit.id}
-                            className="benefit"
-                        >
+                        <div key={benefit.id} className="benefit">
                             <div className="benefit-content">
-
-                                <h3>
-                                    {benefit.title}
-                                </h3>
-
-                                <p>
-                                    {benefit.description}
-                                </p>
-
+                                <h3>{benefit.title}</h3>
+                                <p>{benefit.description}</p>
                             </div>
-
                         </div>
-
                     ))}
-
                 </div>
-
             </div>
 
         </section>

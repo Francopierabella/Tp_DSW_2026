@@ -45,7 +45,7 @@ export async function createProduct(product: ProductInput): Promise<Product> {
 
 export async function updateProduct(
     id: number,
-    product: ProductInput //el input es la estructura que usamos para crear/actualizar un producto, por eso se llama input.
+    product: ProductInput //el input es la estructura que usamos para crear/actualizar un producto.
 ): Promise<Product> {
     const response = await fetch(`${API_URL}/${id}`, {
         method: "PUT",
@@ -65,13 +65,18 @@ export async function updateProduct(
     return result.data;
 }
 
-export async function deleteProduct(id: number): Promise<void> {
+export async function deleteProduct(id: number): Promise<Product> {
     const response = await fetch(`${API_URL}/${id}`, {
         method: "DELETE",
     });
 
     if (!response.ok) {
-        throw new Error("Error al eliminar el producto");
+        const error = await response.json();
+        throw new Error(error.message);
     }
+
+    const result = await response.json();
+
+    return result.data;
 }
 

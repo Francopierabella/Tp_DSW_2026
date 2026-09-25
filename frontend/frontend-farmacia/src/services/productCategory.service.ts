@@ -12,7 +12,8 @@ export async function getProductCategories(): Promise<ProductCategory[]> {
   //  y devuelve una promesa con la respuesta.
 
   if (!response.ok) {
-    throw new Error("Error al obtener las categorías");
+    const error = await response.json();
+    throw new Error(error.message);
   }
 
   return await response.json();
