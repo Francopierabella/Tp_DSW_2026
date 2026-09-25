@@ -8,8 +8,6 @@ import { Customer } from "../../customer/customer.entity.js";
 //DATOS DE PRUEBA PARA ARRANCAR LA BD
 
 export async function seedDatabase(): Promise<void> {
-
-    console.log(" Starting database seed...");
     const em = orm.em.fork();
 
     // =========================================================
@@ -52,7 +50,7 @@ export async function seedDatabase(): Promise<void> {
 
             await em.persistAndFlush(healthInsurance);
 
-            console.log(`✅ Health insurance created: ${data.name}`);
+            console.log(`Health insurance created: ${data.name}`);
         }
 
         healthInsurances[data.name] = healthInsurance;
@@ -137,7 +135,7 @@ export async function seedDatabase(): Promise<void> {
 
             await em.persistAndFlush(customer);
 
-            console.log(`✅ Customer created: ${data.firstName} ${data.lastName}`);
+            console.log(`Customer created: ${data.firstName} ${data.lastName}`);
         }
     }
 
@@ -169,7 +167,7 @@ export async function seedDatabase(): Promise<void> {
 
             await em.persistAndFlush(category);
 
-            console.log(`✅ Category created: ${name}`);
+            console.log(`Category created: ${name}`);
         }
 
         categories[name] = category;
@@ -182,7 +180,7 @@ export async function seedDatabase(): Promise<void> {
 
     const productData = [
         {
-            name: "Paracetamol 500 mg",
+            name: "Paracetamol 500",
             description: "Analgésico y antifebril de uso habitual.",
             brand: "Genfar",
             gender: "unisex",
@@ -192,7 +190,7 @@ export async function seedDatabase(): Promise<void> {
             isFeatured: true
         },
         {
-            name: "Ibuprofeno 400 mg",
+            name: "Ibuprofeno 400",
             description: "Analgésico y antiinflamatorio.",
             brand: "Ibupirac",
             gender: "unisex",
@@ -202,7 +200,7 @@ export async function seedDatabase(): Promise<void> {
             isFeatured: true
         },
         {
-            name: "Aspirina 500 mg",
+            name: "Aspirina 500",
             description: "Analgésico para dolores leves y moderados.",
             brand: "Bayer",
             gender: "unisex",
@@ -307,14 +305,7 @@ export async function seedDatabase(): Promise<void> {
 
             await em.persistAndFlush(product);
 
-            console.log(`✅ Product created: ${data.name}`);
+            console.log(`Product created: ${data.name}`);
         }
     }
-
-
-    // =========================================================
-    // FIN
-    // =========================================================
-
-    console.log("🌱 Database seed completed successfully!");
 }
