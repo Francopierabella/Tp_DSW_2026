@@ -17,6 +17,24 @@ export async function findOne(req: Request, res: Response) {
     return res.json(customerFound);
 }
 
+export async function findByDni(req: Request, res: Response) {
+    const dni = req.params.dni as string;
+    const found = await service.findByDni(dni);
+    if (!found) {
+        throw new AppError(`Customer with dni ${dni} not found`, 404);
+    }
+    return res.json(found);
+}
+
+export async function findByEmail(req: Request, res: Response) {
+    const email = req.params.email as string;
+    const found = await service.findByEmail(email);
+    if (!found) {
+        throw new AppError(`Customer with email ${email} not found`, 404);
+    }
+    return res.json(found);
+}
+
 export async function create(req: Request, res: Response) {
     try {
 
@@ -25,7 +43,7 @@ export async function create(req: Request, res: Response) {
         return res.status(201).json(customerToCreate);
     } catch (error: any) {
         console.error("Error al crear el cliente:", error);
-        if (error.message === "A Customer with that e-mail or phone number already exists.") {
+        if (error.message.includes("already exists")) {
             throw new AppError(error.message, 409);
         }
         throw new AppError("Internal server error", 500);

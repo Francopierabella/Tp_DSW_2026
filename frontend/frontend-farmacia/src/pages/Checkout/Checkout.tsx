@@ -13,7 +13,7 @@ export default function Checkout() {
     const [paymentMethod, setPaymentMethod] = useState<'CASH' | 'CREDIT_CARD' | 'DEBIT_CARD' | 'TRANSFER'>('CASH');
     const [deliveryMethod, setDeliveryMethod] = useState<'PICKUP' | 'DELIVERY'>('PICKUP');
     const [customerName, setCustomerName] = useState("");
-    const [customerId, setCustomerId] = useState(1);
+    const [customerDni, setCustomerDni] = useState("");
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [createdSaleId, setCreatedSaleId] = useState<number | null>(null);
@@ -31,15 +31,29 @@ export default function Checkout() {
         setErrorMessage(null);
 
         try {
-            // 1. Crear la venta en estado PENDING
+            // 1. Buscar al cliente por DNI en el backend
+            const customerResponse = await fetch(`http://localhost:3000/api/customers/dni/${customerDni}`);
+
+            if (!customerResponse.ok) {
+                if (customerResponse.status === 404) {
+                    throw new Error("No se encontró ningún cliente con ese DNI. Por favor, registrate primero.");
+                }
+                throw new Error("Error al verificar el cliente.");
+            }
+
+            // Extraer el ID del cliente que nos devolvió el backend
+            const customer = await customerResponse.json();
+            const realCustomerId = customer.id;
+
+            // 2. Crear la venta usando el ID real del cliente
             const newSale = await createSale({
                 paymentMethod,
                 deliveryMethod,
-                customer: customerId,
+                customer: realCustomerId, // 👈 ¡Ahora usamos el ID real!
                 manager: 1 // Manager temporal hasta tener autenticación
             });
 
-            // 2. Crear los ítems de la venta (el backend recalcula el total automáticamente)
+            // 3. Crear los ítems de la venta
             for (const item of cartItems) {
                 await createSaleItem({
                     sale: newSale.id,
@@ -48,7 +62,7 @@ export default function Checkout() {
                 });
             }
 
-            // 3. Limpiar carrito y mostrar éxito
+            // 4. Limpiar carrito y mostrar éxito
             clearCart();
             setCreatedSaleId(newSale.id);
             setShowToast(true);
@@ -107,7 +121,7 @@ export default function Checkout() {
                                 <form onSubmit={handleSubmit}>
                                     <div className="checkout-form-group">
                                         <label className="checkout-label" htmlFor="customerName">
-                                            Nombre del cliente
+                                            Tu nombre y apellido
                                         </label>
                                         <input
                                             id="customerName"
@@ -121,21 +135,17 @@ export default function Checkout() {
                                     </div>
 
                                     <div className="checkout-form-group">
-                                        <label className="checkout-label" htmlFor="customerId">
-                                            ID de Cliente
+                                        <label className="checkout-label" htmlFor="customerDni">
+                                            Tu dni
                                         </label>
                                         <input
-                                            id="customerId"
-                                            type="number"
-                                            min={1}
+                                            id="customerDni"
+                                            type="text"
                                             className="checkout-input"
-                                            value={customerId}
-                                            onChange={(e) => setCustomerId(Number(e.target.value))}
+                                            value={customerDni}
+                                            onChange={(e) => setCustomerDni(e.target.value)}
                                             required
                                         />
-                                        <span className="checkout-help-text">
-                                            Identificador del cliente en la base de datos (por defecto: 1).
-                                        </span>
                                     </div>
 
                                     <div className="checkout-form-group">

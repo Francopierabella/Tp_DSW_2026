@@ -10,6 +10,8 @@ export class Customer extends User {
     @Property({ nullable: false })
     lastName!: string
     @Property({ nullable: false, unique: true })
+    dni!: string;
+    @Property({ nullable: false, unique: true })
     phoneNumber!: string;
     @Property({ nullable: false })
     address!: string;
@@ -19,6 +21,7 @@ export class Customer extends User {
     constructor(
         firstName: string,
         lastName: string,
+        dni: string,
         phoneNumber: string,
         address: string,
         e_mail: string,
@@ -28,6 +31,7 @@ export class Customer extends User {
         super(e_mail, password);
         this.firstName = firstName;
         this.lastName = lastName;
+        this.dni = dni;
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.healthInsurance = healthInsurance;
