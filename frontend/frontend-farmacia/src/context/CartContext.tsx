@@ -37,6 +37,10 @@ export function CartProvider({ children }: CartProviderProps) {
                 item => item.product.id === product.id
             );
             if (existingItem) {
+                if (existingItem.quantity >= product.stock) {
+                    console.log("Error: No se puede agregar más productos, no hay suficiente stock");
+                    return currentItems;
+                }
                 return currentItems.map(item =>
                     item.product.id === product.id
                         ? { ...item, quantity: item.quantity + 1 }
@@ -98,8 +102,6 @@ export function CartProvider({ children }: CartProviderProps) {
         0 // el 0 es el valor inicial del accumulator.
     );
     // reduce va recorriendo todos los productos y acumulando un resultado.
-
-    console.log(cartItems);
 
     return (
         <CartContext.Provider value={{
