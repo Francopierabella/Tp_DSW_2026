@@ -26,7 +26,7 @@ export class ProductRepository implements IRepository<Product> {
         return productToUpdate;
     }
     public async delete(item: { id: number }): Promise<Product | undefined> {
-        const productToDelete = this.findOne({ id: item.id });
+        const productToDelete = await this.findOne({ id: item.id });
         if (!productToDelete) {
             return undefined;
         }

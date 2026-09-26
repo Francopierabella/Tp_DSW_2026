@@ -33,12 +33,9 @@ export class SaleService {
 
     async update(id: number, input: Sale): Promise<Sale | undefined> {
         const sale = await this.repo.findOne({ id });
-        if (!sale) {
-            return undefined;
-        }
-        if (sale.status !== typesStatus.PENDING) {
-            throw new Error("Only pending sales can be modified");
-        } else {
+        if (!sale) return undefined;
+        if (sale.status !== typesStatus.PENDING) throw new Error("Only pending sales can be modified");
+        else {
             sale.paymentMethod = input.paymentMethod;
             sale.deliveryMethod = input.deliveryMethod;
         }
@@ -46,51 +43,31 @@ export class SaleService {
     }
 
     async confirm(id: number): Promise<Sale | undefined> {
-
         const sale = await this.repo.findOne({ id });
-
-        if (!sale) {
-            return undefined;
-        }
-        if (sale.status !== typesStatus.PENDING) {
-            throw new Error("Only pending sales can be confirmed");
-        }
-
-        if (sale.totalAmount === 0) {
-            throw new Error("Cannot confirm a sale with no items");
-        }
-
+        if (!sale) return undefined;
+        if (sale.status !== typesStatus.PENDING) throw new Error("Only pending sales can be confirmed");
+        if (sale.totalAmount === 0) throw new Error("Cannot confirm a sale with no items");
         sale.status = typesStatus.CONFIRMED;
         sale.paidDate = new Date();
-
         return await this.repo.update(id, sale);
     }
 
     async cancel(id: number): Promise<Sale | undefined> {
         const sale = await this.repo.findOne({ id });
-        if (!sale) {
-            return undefined;
-        }
-        if (sale.status !== typesStatus.PENDING) {
-            throw new Error("Only pending sales can be cancelled");
-        }
+        if (!sale) return undefined;
+        if (sale.status !== typesStatus.PENDING) throw new Error("Only pending sales can be cancelled");
         sale.status = typesStatus.CANCELLED;
         return await this.repo.update(id, sale);
     }
 
     async remove(id: number): Promise<Sale | undefined> {
         const sale = await this.repo.findOne({ id });
-        if (!sale) {
-            return undefined;
-        }
-        if (sale.status === typesStatus.CONFIRMED) {
-            throw new Error("Confirmed sales cannot be deleted");
-        }
+        if (!sale) return undefined;
+        if (sale.status === typesStatus.CONFIRMED) throw new Error("Confirmed sales cannot be deleted");
         const saleItems = await this.saleItemRepo.findBySale(id);
         for (const item of saleItems) {
             await this.saleItemRepo.delete({ id: item.id! });
         }
         return await this.repo.delete({ id });
     }
-
 }
