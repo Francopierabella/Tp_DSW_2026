@@ -62,15 +62,10 @@ export const sanitizedSaleUpdateInput = (req: Request, res: Response, next: Next
         });
     }
 
-    req.body.sanitizedSaleUpdateInput = {};
-
-    if (paymentMethod) {
-        req.body.sanitizedSaleUpdateInput.paymentMethod = paymentMethod;
-    }
-
-    if (deliveryMethod) {
-        req.body.sanitizedSaleUpdateInput.deliveryMethod = deliveryMethod;
-    }
+    req.body.sanitizedSaleUpdateInput = {
+        ...(paymentMethod && { paymentMethod }),
+        ...(deliveryMethod && { deliveryMethod })
+    };
 
     next();
 }

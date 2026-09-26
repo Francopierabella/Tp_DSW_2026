@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-export const SanitizedHealthInsuranceInput = (req: Request, res: Response, next: NextFunction) => {
+export const sanitizedHealthInsuranceInput = (req: Request, res: Response, next: NextFunction) => {
     let { name, coveragePercentage } = req.body;
     if (!name || name.trim() === "") {
         return res.status(400).send({ message: "Name is required" });

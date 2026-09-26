@@ -12,3 +12,5 @@ export function ErrorHandler(err: any, req: Request, res: Response, next: NextFu
     console.error(err);
     return res.status(500).json({ message: "Internal Server Error" });
 }
+
+// me ahorro un par de lineas de codigo 

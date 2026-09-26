@@ -12,7 +12,7 @@ export class SaleRepository implements IRepository<Sale> {
     }
     public async add(item: Sale): Promise<Sale | undefined> {
         try {
-            const created = orm.em.create(Sale, item);
+            const created = await orm.em.create(Sale, item);
             await orm.em.persistAndFlush(created);
             return created;
         } catch (error: any) {
