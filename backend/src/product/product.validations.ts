@@ -119,6 +119,8 @@ export const sanitizedUpdateProductInput = (
         });
     }
 
+    //Evita que se agreguen propiedades con valor undefined o false al objeto sanitizado.
+    // Solo se incluirán aquellas claves cuyos datos hayan sido proporcionados.
     req.body.sanitizedProductInput = {
         ...(name && { name: name.trim() }),
         ...(description && { description: description.trim() }),

@@ -67,7 +67,7 @@ export async function seedDatabase(): Promise<void> {
         {
             firstName: "Franco",
             lastName: "Pierabella",
-            dni: "40111222",
+            dni: "45504061",
             phoneNumber: "3415551001",
             address: "San Martín 123",
             e_mail: "franco@example.com",
@@ -146,10 +146,10 @@ export async function seedDatabase(): Promise<void> {
 
     const categoryData = [
         "Medicamentos",
-        "Higiene y cuidado personal",
+        "Higiene",
         "Perfumería",
         "Bebés",
-        "Vitaminas y suplementos"
+        "Vitaminas"
     ];
 
     const categories: Record<string, ProductCategory> = {};
