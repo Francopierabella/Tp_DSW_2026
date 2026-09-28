@@ -1,174 +1,598 @@
-# TP DSW
-tags: #dsw #tp
+# Farmacia Pierabella — TP DSW 2026
 
-Status: draft
+Aplicación web para la gestión de una farmacia, desarrollada como Trabajo Práctico para la materia Desarrollo de Software.
 
-## 1. Objetivo
+El proyecto está compuesto por:
 
-Desarrollar en grupo una aplicación web full stack en base a un alcance propuesto por los integrantes.
+* **Frontend:** React + TypeScript + Vite
+* **Backend:** Node.js + Express + TypeScript
+* **Persistencia:** MySQL
+* **ORM:** MikroORM
+* **Arquitectura:** API REST
 
-Durante dicho desarrollo se deberá aplicar todo lo aprendido en la materia Desarrollo de Software.
+---
 
-## 2. Tema y Alcance
-El grupo debe deberá proponer a los docentes un tema para el trabajo práctico de su preferencia utilizando la [plantilla de propuesta](proposal.md)
+# 1. Requisitos previos
 
-## 3. Requisitos
-El desarrollo de la aplicación debe:
-1. Desarrollarse en 2 partes: Frontend y Backend; agnósticas entre si, comunicadas mediante una API.
-2. Cumplir con los requisitos:  [técnicos](#3.1%20Requisitos%20técnicos) y [funcionales](#3.2%20Requisitos%20funcionales).
-3. Desarrollarse en grupo utilizando metodologías de gestión de proyecto y llevar evidencia de ello.
-4. Cumplir con las [entregas](#3.3%20Entregas) estipuladas.
-5. Utilizar github o gitlab para gestión del código fuente.
-6. Realizar una defensa oral del trabajo práctico para regularidad.
-7. Realizar otra defensa oral del trabajo práctico para la aprobación.
-8. Enviar la 
-9. Presentar la [documentación](#3.4%20Documentación) durante la defensa.
+Antes de ejecutar el proyecto es necesario tener instaladas las siguientes herramientas.
 
-### 3.1 Requisitos técnicos
-La app cuenta con 2 partes: Backend y Frontend agnósticas entre si que se comunican mediante una API.
+## 1.1. Git
 
-#### 3.1.1 Backend
-El backend debe cumplir con las siguientes condiciones para regularidad y aprobación.
+Git permite descargar el proyecto desde GitHub.
 
-##### Regularidad
-* Desarrollarse en JavaScript.
-* Utilizar un framework web que permita integrarse a las demás.
-* herramientas a través de middlewares, pluggins o modulos.
-* Exponer una API web (rest, tRPC o gRPC) para interactuar con el frontend.
-* Utilizar una base de datos persistente que acceda a través de un servicio externo (es decir que no sea una base de datos embebida).
-* La persistencia a la base de datos debe realizarse mediante un mapper (ORM/ODM/OXM). En caso que la base de datos utilizada no tenga un mapper disponible para JavaScript se deberá implementar la persistencai utilizando un patron Repository.
-* Realizarse mediante capas.
-* Validar entrada de datos, manejar e informar apropiadamente los errores a través de la API.
-* Las dependencias para ejecución, desarrollo y test deben estar correctamente registradas para ser instaladas automáticamente (e.j. package.json).
+Se puede descargar desde:
 
-##### Aprobación Directa o en Examen
-* Cumplir con todas las condiciones de regularidad.
-* Implementar 1 test automatizado por integrante.
-* Implementar 1 test de integración.
-* Implementar un login con autenticación propia o de third-party y al menos 2 niveles de acceso diferentes.
-* Proteger las diferentes rutas en base al nivel de acceso requerido.
-* Definir ambientes, ya sea mediante environment del framework o .env
+https://git-scm.com/downloads
 
-#### 3.1.2 Frontend
-El frontend debe cumplir con las siguientes condiciones para regularidad y aprobación.
+Para comprobar que está instalado, abrir una terminal y ejecutar:
 
-##### Regularidad
-* Desarrollarse utilizando un framework de Frontend.
-* Utilizar HTML5
-* Utilizar CSS según las directrices de alguna biblioteca de componentes, guía de estilo o framework de CSS y la metodología propuesta por el framework de frontend elegido. Se sugiere el uso de biblioteca de componentes;  preprocesadores: sass, scss, less, stylus, etc o frameworks de css: Pico.css, Bulma, Material, Tailwind, Bootstrap, etc.
-* Guía de estilos sugerida Airbnb Javascript https://github.com/airbnb/javascript
-* Aplicar la estrategia mobile-first para la escritura del código css de la aplicación
-* La app debe visualizarse correctamente en al menos 3 diferentes breakpoints: SM, MD, LG
-* Seguir buenas prácticas de UX/UI (Que no requiera manual de usuario o explicaciones específicas para utilizar la interfaz)
-* Las app debe mostrar las siguientes características entre sus componentes:
-	* Manejo de eventos del usuario: click, input, etc
-	* Ante una posibilidad de fallo, manejar el/los errores adecuadamente y de manera amigable al usuario
-	* Reactividad ante un estado
-	* Input property
-	* Output property
-* Implementar al menos un servicio.
-* Para el manejo de la información, por ej una respuesta de un endpoint o los datos a enviar en una request, representar en el código los modelos de objetos con clases, interfaces y tipos de datos custom.
-* De ser posible, implementar algún patrón de diseño orientado a objetos.
-* Las dependencias para ejecución, desarrollo y test deben estar correctamente registradas para ser instaladas automáticamente (e.j. package.json).
+```bash
+git --version
+```
 
-##### Aprobación Directa o en Examen
-* Cumplir con las condiciones de regularidad.
-* Realizar al menos 1 test unitario de un componente.
-* Realizar al menos 1 test de end-to-end.
-* Implementar el login y proteger el acceso a las distintas partes del frontend en base a los niveles de usuarios del backend.
-* Definir ambientes, ya sea mediante environment del framework o .env
+Debería aparecer una versión de Git.
 
-### 3.2 Requisitos funcionales
-La app debe cumplir con los siguientes requisitos.
+---
 
-#### Regularidad
-* 1 CRUD Simple por integrante
-* 1 CRUD Dependiente cada 2 integrantes o fracción.
-* 1 Listado con filtro (al menos un atributo) cada 2 integrantes o fracción.
-* Para cada listado, al seleccionar un elemento, se debe mostrar un detalle.
-* Debe implementar un caso de uso de usuario o epic, con valor para el negocio, cada 2 integrantes o fracción.
+## 1.2. Node.js
 
-#### Aprobación Directa o en Examen
-* CRUDs de todas las clases de negocio necesarias para el funcionamiento de la app.
-* Implementar 1 caso de uso usuario o epic, con valor para el negocio, por cada integrante.
-  Se deben implementar un mínimo de 2 relacionados entre si. Es decir que la data registrada por uno CU o epic sirva de input para otro.
+El backend y el frontend utilizan Node.js.
 
-#### Alcance Adicional Voluntario
-De forma **opcional** y **voluntaria** los grupos podrán realizar CUU o epics, listados más complejos de los solicitados u otros requisitos como notificaciones, logs, etc; adicionales para completar la funcionalidad del sistema propuesto.
+Se recomienda instalar una versión LTS reciente de Node.js.
 
-Esto será considerado en la nota final en función de la complejidad y esfuerzo relativos a lo ya realizado.
+Descarga:
+
+https://nodejs.org/
+
+Una vez instalado, comprobar:
+
+```bash
+node --version
+```
+
+y:
+
+```bash
+npm --version
+```
+
+Ambos comandos deben mostrar una versión instalada.
+
+---
+
+## 1.3. MySQL
+
+El proyecto utiliza MySQL como sistema gestor de base de datos.
+
+Se puede instalar mediante:
+
+https://dev.mysql.com/downloads/
+
+También se puede utilizar MySQL Workbench para administrar la base de datos gráficamente.
+
+Después de instalar MySQL, verificar que el servidor MySQL esté iniciado.
+
+El proyecto utiliza por defecto el puerto:
+
+```text
+3306
+```
+
+---
+
+# 2. Descargar el proyecto
+
+Abrir una terminal y dirigirse a la carpeta donde se desea guardar el proyecto.
+
+Por ejemplo:
+
+```bash
+cd Desktop
+```
+
+Luego clonar el repositorio:
+
+```bash
+git clone https://github.com/Francopierabella/Tp_DSW_2026.git
+```
+
+Ingresar a la carpeta:
+
+```bash
+cd Tp_DSW_2026
+```
+
+---
+
+# 3. Estructura general del proyecto
+
+El proyecto está dividido principalmente en dos partes:
+
+```text
+Tp_DSW_2026/
+│
+├── backend/
+│   ├── src/
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── .env
+│
+└── frontend/
+    └── frontend-farmacia/
+        ├── src/
+        ├── package.json
+        └── ...
+```
+
+El **backend** se encarga de:
+
+* La API REST.
+* La lógica de negocio.
+* La comunicación con MySQL.
+* La persistencia mediante MikroORM.
+* Las entidades y operaciones CRUD.
+
+El **frontend** se encarga de:
+
+* La interfaz gráfica.
+* La navegación.
+* La búsqueda y filtrado de productos.
+* El carrito.
+* El proceso de checkout.
+
+---
+
+# 4. Configurar la base de datos
+
+## 4.1. Crear la base de datos
+
+Abrir MySQL Workbench o una terminal de MySQL.
+
+Crear la base de datos:
+
+```sql
+CREATE DATABASE farmacia;
+```
+
+También se puede verificar que exista mediante:
+
+```sql
+SHOW DATABASES;
+```
+
+Debería aparecer:
+
+```text
+farmacia
+```
+
+> No es necesario crear manualmente las tablas. El backend se encarga de sincronizar el esquema de la base de datos mediante MikroORM.
+
+---
+
+# 5. Configurar las variables de entorno
+
+El backend utiliza un archivo `.env` para almacenar los datos necesarios para conectarse a MySQL.
+
+Dentro de:
+
+```text
+backend/
+```
+
+crear un archivo llamado:
+
+```text
+.env
+```
+
+El contenido debe ser:
+
+```env
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=TU_CONTRASEÑA
+DB_NAME=farmacia
+```
+
+### ¿Qué significa cada variable?
+
+| Variable      | Descripción                            |
+| ------------- | -------------------------------------- |
+| `DB_HOST`     | Dirección donde está funcionando MySQL |
+| `DB_PORT`     | Puerto utilizado por MySQL             |
+| `DB_USER`     | Usuario de MySQL                       |
+| `DB_PASSWORD` | Contraseña del usuario de MySQL        |
+| `DB_NAME`     | Nombre de la base de datos             |
+
+Por ejemplo, si el usuario de MySQL es `root` y su contraseña es `123456`:
+
+```env
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=123456
+DB_NAME=farmacia
+```
+
+### Importante
+
+**No subir el archivo `.env` a GitHub**, ya que contiene credenciales privadas.
+
+El repositorio debe incluir un archivo:
+
+```text
+.env.example
+```
+
+con:
+
+```env
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=YOUR_PASSWORD
+DB_NAME=farmacia
+```
+
+Cada persona que ejecute el proyecto debe crear su propio `.env` a partir de este archivo.
+
+---
+
+# 6. Instalar las dependencias del backend
+
+Abrir una terminal dentro de la carpeta:
+
+```text
+backend/
+```
+
+Por ejemplo:
+
+```bash
+cd backend
+```
+
+Ejecutar:
+
+```bash
+npm install
+```
+
+Este comando descarga automáticamente todas las dependencias especificadas en `package.json`.
+
+Entre ellas se encuentran:
+
+* Express
+* MikroORM
+* MySQL
+* TypeScript
+* bcrypt
+* CORS
+* dotenv
+* tsc-watch
+
+---
+
+# 7. Ejecutar el backend
+
+Una vez instaladas las dependencias, ejecutar:
+
+```bash
+npm run start:dev
+```
+
+Este comando compila el código TypeScript y ejecuta el backend.
+
+Internamente se utiliza:
+
+```text
+tsc-watch → TypeScript → Node.js
+```
+
+Al iniciarse, el backend realiza la sincronización del esquema de la base de datos.
+
+Por lo tanto, las tablas necesarias se crean o actualizan automáticamente.
+
+---
+
+# 8. Cargar los datos iniciales
+
+El proyecto dispone de un archivo:
+
+```text
+backend/src/shared/db/seed.ts
+```
+
+El seed permite cargar automáticamente datos de prueba en la base de datos.
+
+Entre los datos iniciales se encuentran:
+
+* Categorías de productos.
+* Productos.
+* Clientes.
+* Obras sociales.
+
+El seed se ejecuta automáticamente al iniciar el backend.
+
+Por lo tanto, después de ejecutar:
+
+```bash
+npm run start:dev
+```
+
+la base de datos queda preparada con información inicial para poder probar la aplicación.
+
+El seed está diseñado para evitar duplicar los datos si ya fueron cargados anteriormente.
+
+---
+
+# 9. Verificar el backend
+
+Una vez iniciado el backend, se puede comprobar que está funcionando realizando una petición a la API.
+
+Por ejemplo:
+
+```text
+GET /api/products
+```
+
+También se puede utilizar Postman para realizar pruebas sobre los distintos endpoints de la API.
+
+Entre los recursos disponibles se encuentran:
+
+```text
+/api/products
+/api/productCategories
+/api/customers
+/api/healthInsurances
+/api/sales
+/api/saleItems
+```
+
+> Los endpoints pueden ampliarse a medida que se incorporen nuevas funcionalidades al sistema.
+
+---
+
+# 10. Instalar las dependencias del frontend
+
+El backend debe permanecer ejecutándose.
+
+Abrir **otra terminal**.
+
+Ingresar a:
+
+```text
+frontend/frontend-farmacia/
+```
+
+Por ejemplo, desde la raíz del proyecto:
+
+```bash
+cd frontend/frontend-farmacia
+```
+
+Instalar las dependencias:
+
+```bash
+npm install
+```
+
+---
+
+# 11. Ejecutar el frontend
+
+Una vez instaladas las dependencias, ejecutar:
+
+```bash
+npm run dev
+```
+
+Vite mostrará en la terminal una dirección similar a:
+
+```text
+Local: http://localhost:5173/
+```
+
+Abrir esa dirección en un navegador.
+
+---
+
+# 12. Ejecutar el proyecto completo
+
+Para utilizar la aplicación correctamente deben estar funcionando simultáneamente:
+
+### Terminal 1 — Backend
+
+```bash
+cd backend
+npm run start:dev
+```
+
+### Terminal 2 — Frontend
+
+```bash
+cd frontend/frontend-farmacia
+npm run dev
+```
+
+Luego acceder desde el navegador a la dirección indicada por Vite, normalmente:
+
+```text
+http://localhost:5173/
+```
+
+---
+
+# 13. Funcionalidades principales
+
+Una vez iniciada la aplicación, se pueden probar las siguientes funcionalidades.
+
+## Productos
+
+La aplicación permite:
+
+* Consultar productos.
+* Buscar productos por nombre.
+* Filtrar productos por categoría.
+* Visualizar productos destacados.
+* Consultar el detalle de un producto.
+
+---
+
+## Categorías
+
+Las categorías mostradas en el frontend son obtenidas desde el backend y almacenadas en la base de datos.
+
+---
+
+## Carrito
+
+El usuario puede:
+
+* Agregar productos al carrito.
+* Aumentar o disminuir cantidades.
+* Eliminar productos.
+* Consultar el total de la compra.
+
+El carrito respeta la disponibilidad de stock.
+
+No permite agregar una cantidad superior al stock disponible del producto.
+
+---
+
+## Checkout
+
+Desde el carrito se puede acceder al checkout.
+
+El usuario puede ingresar:
+
+* Nombre.
+* DNI.
+* Método de pago.
+* Método de entrega.
+
+El DNI posee validación.
+
+El checkout muestra un resumen de la venta antes de finalizar el proceso.
+
+---
+
+# 14. Base de datos y persistencia
+
+La aplicación utiliza **MikroORM** para realizar la comunicación entre el backend y MySQL.
+
+La configuración se encuentra en: `backend/src/shared/db/orm.ts`
+
+Las entidades del sistema se encuentran organizadas dentro de sus respectivos módulos.
+
+Por ejemplo:
+
+product/
+├── product.entity.ts
+├── product.repository.ts
+├── product.service.ts
+├── product.controller.ts
+├── product.routes.ts
+└── product.validations.ts
+
+El proyecto utiliza una arquitectura basada en:
+
+Controller
+    ↓
+Service
+    ↓
+Repository
+    ↓
+MikroORM
+    ↓
+MySQL
+
+# 16. Detener el proyecto
+
+Para detener el backend o frontend, utilizar:
+
+```text
+Ctrl + C
+```
+
+en la terminal correspondiente.
+
+---
+
+# 17. Reiniciar el proyecto
+
+Para volver a ejecutar el proyecto:
+
+### Backend
+
+```bash
+cd backend
+npm run start:dev
+```
+
+### Frontend
+
+En otra terminal:
+
+```bash
+cd frontend/frontend-farmacia
+npm run dev
+```
+
+No es necesario volver a instalar las dependencias cada vez.
+
+`npm install` solamente es necesario cuando se descarga el proyecto por primera vez o cuando cambian las dependencias.
+
+---
+
+# 18. Resumen rápido
+
+Para una instalación desde cero:
+
+```bash
+# 1. Clonar
+git clone https://github.com/Francopierabella/Tp_DSW_2026.git
+
+# 2. Entrar al proyecto
+cd Tp_DSW_2026
+
+# 3. Crear la base de datos en MySQL
+CREATE DATABASE farmacia;
+
+# 4. Crear backend/.env
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=TU_CONTRASEÑA
+DB_NAME=farmacia
+
+# 5. Instalar backend
+cd backend
+npm install
+
+# 6. Ejecutar backend
+npm run start:dev
+
+# 7. En otra terminal, instalar frontend
+cd frontend/frontend-farmacia
+npm install
+
+# 8. Ejecutar frontend
+npm run dev
+```
+
+Finalmente, abrir en el navegador la dirección proporcionada por Vite, normalmente:
+
+http://localhost:5173/
 
 
-### 3.3 Entregas
-#### Propuesta del enunciado
-En la entrega se debe entregar a los profesores la [plantilla de propuesta](./proposal.md) actualizada con las condiciones de Regularidad y de Aprobación. Los profesores analizarán la propuesta y de ser necesario sugerirán ajustes hasta que esté correcta y sea aceptada.
-
-#### Regularidad
-En la entrega se debe entregar:
-* El README.md (o con un link) las instrucciones para instalar y ejecutar el proyecto sin conocimientos de cómo está desarrollado. El proyecto debe poder ejecutarse con scripts y las herramientas según las convenciones del lenguaje y/o framework utilizado (scripts en package.json, o tools específicas del framework).
-* Entregar la [proposal](./proposal.md) actualizada con links al pull request de back y/o front mediante el form publicado para cada año.
-
-Coordinar una defensa grupal con los profesores.
-
-#### Aprobación Directa o en Examen
-En la entrega se debe enviar:
-* Video explicando el funcionamiento del sistema
-* Documentación de la API de backend (según la tecnología y standard utilizados).
-* Evidencia del resultado de la ejecución de los tests automáticos.
-* Entregar la [proposal](./proposal.md) actualizada con links al pull request de back y/o front.
-* Incluir en el README.md (o con un link) las instrucciones para instalar y ejecutar el proyecto sin conocimientos de cómo está desarrollado. El proyecto debe poder ejecutarse con scripts y las herramientas según las convenciones del lenguaje y/o framework utilizado (scripts en package.json, o tools específicas del framework).
-* Links de Deploy
-* Credenciales para utilizar la aplicación deployada
-* Contacto para coordinar la defensa
-
-El envío se debe realizar por el form https://kutt.to/DSWEntregaSistemaFinal o https://bit.ly/DSWEntregaSistemaFinal y coordinar con el docente una defensa grupal con los profesores.
-
-Para la Aprobación Directa la defensa debe pactarse con los docentes dentro de los plazos indicados a continuación.
-Para la Aprobación en Examen la defensa debe pactarse con los docentes y realizarse antes de la fecha de la mesa de examen.
-
-#### Fechas de entrega
-**Propuesta**: Durante Abril
-
-**Muestra de avance**: Inicio del segundo cuatrimestre
-
-**Primer Entrega de Regularidad/AD**: 12/10 al 16/10
-
-**Primer Recuperatorio/Globalizador de Regularidad/AD**: 26/10 al 30/10
-
-**Ultima instancia Recuperatorio/Globalizador de Regularidad/AD**: 9/11 al 13/11
-
-### 3.4 Documentación
-La documentación debe presentarse para la instancia de defensa.
-
-Para conocer el detalle de la documentación referirse a [docs](docs.md).
-
-## 4. Gestión del proyecto
-**TODO: En revisión**
-
-El desarrollo de la app debe realizarse utilizando metodologías ágiles para la gestión del proyecto (Scrum, XP, etc).
-
-El grupo deberá llevar un registro de lo realizado, el mismo debe incluir como mínimo:
-* Tipo de metodología a utilizar para el seguimiento. ( Scrum, XP, etc.)
-* Minutas de avances o reuniones de coordinación del equipo.
-* Documentación de trackeo como desarrollo de features y bugfix, asignación de tareas, etc.
-
-Es de libre elección del alumno la herramienta a utilizar para el trackeo. Se recomienda el uso de github/gitlab proyects para integrar con el desarrollo de la misma pero en caso de utilizar otra en la documentación deberán incluirse los links a la tool para ello.
+---
 
 
-## 5. Evaluación
+## Repositorio
 
-Durante la evaluación de cada entrega se considerarán:
-* Requisitos técnicos y funcionales de la etapa.
-* Adhesión a las directrices de UX/UI y buenas prácticas de programación.
-* Uso apropiado de la tecnología: librerías, frameworks, patrones, etc.
-* Documentación requerida.
-* Participación de los miembros del grupo.
-* Uso de git para el desarrollo.
-* Defensa oral del trabajo práctico.
-* Gestión y seguimiento del desarrollo de la app.
-* Innovación, investigación y desafíos asumidos.
-* Documentación solicitada.
+Repositorio oficial del proyecto:
 
-## 6. FAQ
-
-En la sección de [FAQ](FAQ.md) podrán encontrar respuestas a las consultas más frecuentes que se van realizando.
+https://github.com/Francopierabella/Tp_DSW_2026
