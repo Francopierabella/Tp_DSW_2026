@@ -93,7 +93,7 @@ export default function Checkout() {
                         <div className="checkout-success-card">
                             <h2>¡Gracias por tu compra! 🎉</h2>
                             <p>
-                                Tu pedido <strong>#{createdSaleId}</strong> fue registrado con estado <strong>PENDIENTE</strong>.
+                                Tu pedido <strong>#{createdSaleId}</strong> fue registrado correctamente.
                             </p>
                             <Link to="/productos" className="checkout-btn-secondary">
                                 Seguir comprando

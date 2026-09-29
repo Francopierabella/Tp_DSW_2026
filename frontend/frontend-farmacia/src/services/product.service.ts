@@ -48,7 +48,7 @@ export async function updateProduct(
     product: ProductInput //el input es la estructura que usamos para crear/actualizar un producto.
 ): Promise<Product> {
     const response = await fetch(`${API_URL}/${id}`, {
-        method: "PUT",
+        method: "PATCH",
         headers: {
             "Content-Type": "application/json",
         },
