@@ -1,0 +1,182 @@
+.manager-categories-page {
+    padding: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.manager-categories-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.manager-categories-header h1 {
+    margin: 0 0 8px;
+    color: #155568;
+    font-size: 32px;
+}
+
+.manager-categories-header p {
+    margin: 0;
+    color: #666;
+}
+
+/* FORMULARIO */
+
+.manager-category-form {
+    background: white;
+    padding: 25px;
+    margin-bottom: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(21, 85, 104, 0.08);
+}
+
+.manager-category-form h2 {
+    margin: 0 0 20px;
+    color: #155568;
+    font-size: 22px;
+}
+
+.manager-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 500px;
+}
+
+.manager-form-field label {
+    color: #155568;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.manager-form-field input {
+    padding: 12px 14px;
+    border: 1px solid #d9e3e5;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+}
+
+.manager-form-field input:focus {
+    border-color: #16aaa5;
+    box-shadow: 0 0 0 3px rgba(22, 170, 165, 0.1);
+}
+
+.manager-form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* BOTONES */
+
+.manager-primary-button {
+    border: none;
+    background: #16aaa5;
+    color: white;
+    padding: 11px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.manager-primary-button:hover {
+    background: #12918d;
+}
+
+.manager-secondary-button {
+    border: 1px solid #d9e3e5;
+    background: white;
+    color: #155568;
+    padding: 11px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.manager-secondary-button:hover {
+    background: #f5fafa;
+}
+
+/* TABLA */
+
+.manager-categories-table-container {
+    background: white;
+    border-radius: 12px;
+    overflow-x: auto;
+    box-shadow: 0 5px 20px rgba(21, 85, 104, 0.08);
+}
+
+.manager-categories-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.manager-categories-table th,
+.manager-categories-table td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid #edf1f2;
+}
+
+.manager-categories-table th {
+    background: #f5fafa;
+    color: #155568;
+    font-size: 14px;
+}
+
+.manager-categories-table td {
+    color: #444;
+    font-size: 14px;
+}
+
+.manager-category-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* ACCIONES */
+
+.manager-edit-button {
+    border: none;
+    background: #e8f5f5;
+    color: #155568;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.manager-edit-button:hover {
+    background: #d5eeee;
+}
+
+.manager-delete-button {
+    border: none;
+    background: #fdecec;
+    color: #c62828;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.manager-delete-button:hover {
+    background: #f9dada;
+}
+
+/* ERRORES */
+
+.manager-categories-error {
+    color: #c62828;
+    font-size: 14px;
+    margin: 10px 0 0;
+}

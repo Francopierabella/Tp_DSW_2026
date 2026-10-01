@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import type { Product } from "../../types/product";
 import type { ProductCategory } from "../../types/productCategory";
+import ConfirmModal from "../../components/ConfirmModal/ConfirmModal";
 import "./ManagerProducts.css";
 
 
@@ -25,6 +26,7 @@ export default function ManagerProducts() {
     const [category, setCategory] = useState("");
     const [isFeatured, setIsFeatured] = useState(false);
     const [formError, setFormError] = useState("");
+    const [productToDelete, setProductToDelete] = useState<Product | null>(null);
 
     useEffect(() => {
 
@@ -257,15 +259,6 @@ export default function ManagerProducts() {
     }
 
     async function handleDeleteProduct(id: number) {
-        const confirmed = window.confirm(
-            "¿Estás seguro de que querés eliminar este producto?"
-        );
-
-        if (!confirmed) {
-            return;
-        }
-
-
         try {
             const response = await fetch(
                 `http://localhost:3000/api/products/${id}`,
@@ -285,6 +278,7 @@ export default function ManagerProducts() {
             setProducts((currentProducts) =>
                 currentProducts.filter((p) => p.id !== id)
             );
+            setProductToDelete(null);
             setFormError("");
         } catch (error) {
             console.error(error);
@@ -294,6 +288,21 @@ export default function ManagerProducts() {
 
     return (
         <div className="manager-products-page">
+
+            {
+                productToDelete && (
+                    <ConfirmModal
+                        title="Eliminar producto"
+                        message={`¿Estás seguro de que querés eliminar el producto "${productToDelete.name}"?`}
+                        onConfirm={() =>
+                            handleDeleteProduct(productToDelete.id)
+                        }
+                        onCancel={() =>
+                            setProductToDelete(null)
+                        }
+                    />
+                )
+            }
 
             <div className="manager-products-header">
 
@@ -527,7 +536,7 @@ export default function ManagerProducts() {
 
                                         <button
                                             className="manager-delete-button"
-                                            onClick={() => handleDeleteProduct(product.id)}
+                                            onClick={() => setProductToDelete(product)}
                                         >
                                             Eliminar
                                         </button>

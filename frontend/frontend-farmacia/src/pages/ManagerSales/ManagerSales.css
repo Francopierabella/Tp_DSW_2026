@@ -1,0 +1,473 @@
+.manager-sales-page {
+    padding: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.manager-sales-header {
+    margin-bottom: 30px;
+}
+
+.manager-sales-header h1 {
+    margin: 0 0 8px;
+    color: #155568;
+    font-size: 32px;
+}
+
+.manager-sales-header p {
+    margin: 0;
+    color: #666;
+}
+
+.manager-sales-table-container {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(21, 85, 104, 0.08);
+}
+
+.manager-sales-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.manager-sales-table th,
+.manager-sales-table td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid #edf1f2;
+}
+
+.manager-sales-table th {
+    background: #f5fafa;
+    color: #155568;
+    font-size: 14px;
+}
+
+.manager-sales-table td {
+    color: #444;
+    font-size: 14px;
+}
+
+.manager-sales-error {
+    color: #c62828;
+}
+
+/* =========================
+   FILTROS
+   ========================= */
+
+.manager-sales-filters {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 25px;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(21, 85, 104, 0.08);
+}
+
+.manager-sales-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.manager-sales-filter label {
+    color: #155568;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.manager-sales-filter select,
+.manager-sales-filter input {
+    min-width: 150px;
+    padding: 10px 12px;
+    border: 1px solid #d9e3e5;
+    border-radius: 8px;
+    background: white;
+    color: #444;
+    font-size: 14px;
+    outline: none;
+}
+
+.manager-sales-filter select:focus,
+.manager-sales-filter input:focus {
+    border-color: #16aaa5;
+    box-shadow: 0 0 0 3px rgba(22, 170, 165, 0.1);
+}
+
+.manager-sales-clear-button {
+    border: 1px solid #d9e3e5;
+    background: white;
+    color: #155568;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.manager-sales-clear-button:hover {
+    background: #f5fafa;
+}
+
+/* =========================
+   ACCIONES
+   ========================= */
+
+.manager-sales-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.manager-sales-confirm-button,
+.manager-sales-cancel-button {
+    border: none;
+    padding: 7px 12px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.manager-sales-confirm-button {
+    background: #16aaa5;
+    color: white;
+}
+
+.manager-sales-confirm-button:hover {
+    background: #128f8b;
+}
+
+.manager-sales-cancel-button {
+    background: #c62828;
+    color: white;
+}
+
+.manager-sales-cancel-button:hover {
+    background: #a91f1f;
+}
+
+.manager-sales-view-button {
+    border: 1px solid #16aaa5;
+    background: white;
+    color: #16aaa5;
+    padding: 7px 14px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.manager-sales-view-button:hover {
+    background: #16aaa5;
+    color: white;
+}
+
+/* =========================
+   MODAL DETALLE DE VENTA
+   ========================= */
+
+.sale-detail-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.sale-detail-modal {
+    width: 100%;
+    max-width: 500px;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.sale-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 25px;
+    border-bottom: 1px solid #e5eeee;
+}
+
+.sale-detail-header h2 {
+    margin: 0;
+    color: #155568;
+    font-size: 20px;
+}
+
+.sale-detail-close {
+    border: none;
+    background: transparent;
+    color: #777;
+    font-size: 28px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.sale-detail-close:hover {
+    color: #155568;
+}
+
+.sale-detail-content {
+    padding: 20px 25px;
+}
+
+.sale-detail-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 12px 0;
+    border-bottom: 1px solid #edf2f2;
+}
+
+.sale-detail-row span {
+    color: #777;
+}
+
+.sale-detail-row strong {
+    color: #155568;
+    text-align: right;
+}
+
+.sale-detail-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 2px solid #16aaa5;
+}
+
+.sale-detail-total span {
+    color: #155568;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.sale-detail-total strong {
+    color: #16aaa5;
+    font-size: 22px;
+}
+
+.sale-detail-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 18px 25px;
+    background: #f8fbfb;
+}
+
+.sale-detail-close-button {
+    border: none;
+    background: #16aaa5;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.sale-detail-close-button:hover {
+    background: #128f8b;
+}
+
+/* =========================
+   TABLET
+   ========================= */
+
+@media (max-width: 900px) {
+
+    .manager-sales-page {
+        padding: 30px 20px;
+    }
+
+    .manager-sales-filters {
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .manager-sales-filter {
+        flex: 1;
+        min-width: 160px;
+    }
+
+    .manager-sales-filter select,
+    .manager-sales-filter input {
+        min-width: 0;
+    }
+
+    .manager-sales-clear-button {
+        flex: 1;
+        min-width: 160px;
+    }
+
+    .manager-sales-table th,
+    .manager-sales-table td {
+        padding: 11px 10px;
+    }
+}
+
+/* =========================
+   CELULAR
+   ========================= */
+
+@media (max-width: 600px) {
+
+    .manager-sales-page {
+        padding: 20px 12px;
+    }
+
+    .manager-sales-header {
+        margin-bottom: 20px;
+    }
+
+    .manager-sales-header h1 {
+        font-size: 25px;
+    }
+
+    .manager-sales-header p {
+        font-size: 13px;
+    }
+
+    /* Filtros */
+
+    .manager-sales-filters {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        padding: 12px;
+        margin-bottom: 18px;
+    }
+
+    .manager-sales-filter {
+        min-width: 0;
+        gap: 5px;
+    }
+
+    .manager-sales-filter label {
+        font-size: 11px;
+    }
+
+    .manager-sales-filter select,
+    .manager-sales-filter input {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        padding: 8px 7px;
+        font-size: 12px;
+        border-radius: 7px;
+    }
+
+    .manager-sales-clear-button {
+        grid-column: 1 / -1;
+        width: 100%;
+        min-width: 0;
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+
+    /* Tabla */
+
+    .manager-sales-table-container {
+        overflow: hidden;
+    }
+
+    .manager-sales-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .manager-sales-table th,
+    .manager-sales-table td {
+        padding: 9px 5px;
+        font-size: 11px;
+    }
+
+    .manager-sales-table th {
+        font-size: 10px;
+    }
+
+    /* Ocultamos columnas secundarias */
+
+    .manager-sales-table th:nth-child(4),
+    .manager-sales-table td:nth-child(4),
+    .manager-sales-table th:nth-child(6),
+    .manager-sales-table td:nth-child(6),
+    .manager-sales-table th:nth-child(7),
+    .manager-sales-table td:nth-child(7) {
+        display: none;
+    }
+
+    /* Acciones */
+
+    .manager-sales-actions {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .manager-sales-confirm-button,
+    .manager-sales-cancel-button,
+    .manager-sales-view-button {
+        width: 100%;
+        padding: 5px 6px;
+        font-size: 10px;
+        border-radius: 5px;
+        white-space: nowrap;
+    }
+
+    /* Modal */
+
+    .sale-detail-modal {
+        width: calc(100% - 24px);
+        max-width: none;
+    }
+
+    .sale-detail-header {
+        padding: 16px;
+    }
+
+    .sale-detail-header h2 {
+        font-size: 17px;
+    }
+
+    .sale-detail-content {
+        padding: 14px 16px;
+    }
+
+    .sale-detail-row {
+        gap: 10px;
+        padding: 10px 0;
+        font-size: 13px;
+    }
+
+    .sale-detail-total {
+        margin-top: 12px;
+        padding-top: 14px;
+    }
+
+    .sale-detail-total span {
+        font-size: 15px;
+    }
+
+    .sale-detail-total strong {
+        font-size: 19px;
+    }
+
+    .sale-detail-footer {
+        padding: 14px 16px;
+    }
+
+    .sale-detail-close-button {
+        width: 100%;
+        padding: 9px;
+        font-size: 13px;
+    }
+}
