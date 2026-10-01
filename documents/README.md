@@ -26,9 +26,7 @@ https://git-scm.com/downloads
 
 Para comprobar que está instalado, abrir una terminal y ejecutar:
 
-```bash
 git --version
-```
 
 Debería aparecer una versión de Git.
 
@@ -40,21 +38,9 @@ El backend y el frontend utilizan Node.js.
 
 Se recomienda instalar una versión LTS reciente de Node.js.
 
-Descarga:
+Descarga: https://nodejs.org/
 
-https://nodejs.org/
-
-Una vez instalado, comprobar:
-
-```bash
-node --version
-```
-
-y:
-
-```bash
-npm --version
-```
+Una vez instalado, comprobar: node --version y npm --version
 
 Ambos comandos deben mostrar una versión instalada.
 
@@ -64,19 +50,13 @@ Ambos comandos deben mostrar una versión instalada.
 
 El proyecto utiliza MySQL como sistema gestor de base de datos.
 
-Se puede instalar mediante:
-
-https://dev.mysql.com/downloads/
+Se puede instalar mediante: https://dev.mysql.com/downloads/
 
 También se puede utilizar MySQL Workbench para administrar la base de datos gráficamente.
 
 Después de instalar MySQL, verificar que el servidor MySQL esté iniciado.
 
-El proyecto utiliza por defecto el puerto:
-
-```text
-3306
-```
+El proyecto utiliza por defecto el puerto: 3306
 
 ---
 
@@ -84,23 +64,11 @@ El proyecto utiliza por defecto el puerto:
 
 Abrir una terminal y dirigirse a la carpeta donde se desea guardar el proyecto.
 
-Por ejemplo:
+Por ejemplo: cd Desktop
 
-```bash
-cd Desktop
-```
+Luego clonar el repositorio: git clone https://github.com/Francopierabella/Tp_DSW_2026.git
 
-Luego clonar el repositorio:
-
-```bash
-git clone https://github.com/Francopierabella/Tp_DSW_2026.git
-```
-
-Ingresar a la carpeta:
-
-```bash
-cd Tp_DSW_2026
-```
+Ingresar a la carpeta: cd Tp_DSW_2026
 
 ---
 
@@ -108,7 +76,6 @@ cd Tp_DSW_2026
 
 El proyecto está dividido principalmente en dos partes:
 
-```text
 Tp_DSW_2026/
 │
 ├── backend/
@@ -122,7 +89,6 @@ Tp_DSW_2026/
         ├── src/
         ├── package.json
         └── ...
-```
 
 El **backend** se encarga de:
 
@@ -148,23 +114,11 @@ El **frontend** se encarga de:
 
 Abrir MySQL Workbench o una terminal de MySQL.
 
-Crear la base de datos:
+Crear la base de datos: CREATE DATABASE farmacia;
 
-```sql
-CREATE DATABASE farmacia;
-```
+También se puede verificar que exista mediante: SHOW DATABASES;
 
-También se puede verificar que exista mediante:
-
-```sql
-SHOW DATABASES;
-```
-
-Debería aparecer:
-
-```text
-farmacia
-```
+Debería aparecer: farmacia
 
 > No es necesario crear manualmente las tablas. El backend se encarga de sincronizar el esquema de la base de datos mediante MikroORM.
 
@@ -174,27 +128,15 @@ farmacia
 
 El backend utiliza un archivo `.env` para almacenar los datos necesarios para conectarse a MySQL.
 
-Dentro de:
-
-```text
-backend/
-```
-
-crear un archivo llamado:
-
-```text
-.env
-```
+Dentro de: backend/ crear un archivo llamado: .env
 
 El contenido debe ser:
 
-```env
 DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=TU_CONTRASEÑA
 DB_NAME=farmacia
-```
 
 ### ¿Qué significa cada variable?
 
@@ -208,33 +150,23 @@ DB_NAME=farmacia
 
 Por ejemplo, si el usuario de MySQL es `root` y su contraseña es `123456`:
 
-```env
 DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=123456
 DB_NAME=farmacia
-```
 
 ### Importante
 
 **No subir el archivo `.env` a GitHub**, ya que contiene credenciales privadas.
 
-El repositorio debe incluir un archivo:
+El repositorio debe incluir un archivo: .env.example con:
 
-```text
-.env.example
-```
-
-con:
-
-```env
 DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=YOUR_PASSWORD
 DB_NAME=farmacia
-```
 
 Cada persona que ejecute el proyecto debe crear su propio `.env` a partir de este archivo.
 
@@ -242,23 +174,11 @@ Cada persona que ejecute el proyecto debe crear su propio `.env` a partir de est
 
 # 6. Instalar las dependencias del backend
 
-Abrir una terminal dentro de la carpeta:
+Abrir una terminal dentro de la carpeta: backend/
 
-```text
-backend/
-```
+Por ejemplo: cd backend
 
-Por ejemplo:
-
-```bash
-cd backend
-```
-
-Ejecutar:
-
-```bash
-npm install
-```
+Ejecutar: npm install
 
 Este comando descarga automáticamente todas las dependencias especificadas en `package.json`.
 
@@ -277,33 +197,21 @@ Entre ellas se encuentran:
 
 # 7. Ejecutar el backend
 
-Una vez instaladas las dependencias, ejecutar:
-
-```bash
-npm run start:dev
-```
+Una vez instaladas las dependencias, ejecutar: npm run start:dev
 
 Este comando compila el código TypeScript y ejecuta el backend.
 
-Internamente se utiliza:
-
-```text
-tsc-watch → TypeScript → Node.js
-```
+Internamente se utiliza: tsc-watch → TypeScript → Node.js
 
 Al iniciarse, el backend realiza la sincronización del esquema de la base de datos.
 
 Por lo tanto, las tablas necesarias se crean o actualizan automáticamente.
 
----
+--- 
 
 # 8. Cargar los datos iniciales
 
-El proyecto dispone de un archivo:
-
-```text
-backend/src/shared/db/seed.ts
-```
+El proyecto dispone de un archivo: backend/src/shared/db/seed.ts
 
 El seed permite cargar automáticamente datos de prueba en la base de datos.
 
@@ -316,13 +224,7 @@ Entre los datos iniciales se encuentran:
 
 El seed se ejecuta automáticamente al iniciar el backend.
 
-Por lo tanto, después de ejecutar:
-
-```bash
-npm run start:dev
-```
-
-la base de datos queda preparada con información inicial para poder probar la aplicación.
+Por lo tanto, después de ejecutar: npm run start:dev, la base de datos queda preparada con información inicial para poder probar la aplicación.
 
 El seed está diseñado para evitar duplicar los datos si ya fueron cargados anteriormente.
 
@@ -332,24 +234,11 @@ El seed está diseñado para evitar duplicar los datos si ya fueron cargados ant
 
 Una vez iniciado el backend, se puede comprobar que está funcionando realizando una petición a la API.
 
-Por ejemplo:
-
-```text
-GET /api/products
-```
+Por ejemplo: GET /api/products
 
 También se puede utilizar Postman para realizar pruebas sobre los distintos endpoints de la API.
 
-Entre los recursos disponibles se encuentran:
-
-```text
-/api/products
-/api/productCategories
-/api/customers
-/api/healthInsurances
-/api/sales
-/api/saleItems
-```
+Entre los recursos disponibles se encuentran: /api/products, /api/productCategories, /api/customers, /api/healthInsurances, /api/sales, /api/saleItems
 
 > Los endpoints pueden ampliarse a medida que se incorporen nuevas funcionalidades al sistema.
 
@@ -361,39 +250,19 @@ El backend debe permanecer ejecutándose.
 
 Abrir **otra terminal**.
 
-Ingresar a:
+Ingresar a: frontend/frontend-farmacia/
 
-```text
-frontend/frontend-farmacia/
-```
+Por ejemplo, desde la raíz del proyecto: cd frontend/frontend-farmacia
 
-Por ejemplo, desde la raíz del proyecto:
-
-```bash
-cd frontend/frontend-farmacia
-```
-
-Instalar las dependencias:
-
-```bash
-npm install
-```
+Instalar las dependencias: npm install
 
 ---
 
 # 11. Ejecutar el frontend
 
-Una vez instaladas las dependencias, ejecutar:
+Una vez instaladas las dependencias, ejecutar: npm run dev
 
-```bash
-npm run dev
-```
-
-Vite mostrará en la terminal una dirección similar a:
-
-```text
-Local: http://localhost:5173/
-```
+Vite mostrará en la terminal una dirección similar a: Local: http://localhost:5173/
 
 Abrir esa dirección en un navegador.
 
@@ -405,23 +274,15 @@ Para utilizar la aplicación correctamente deben estar funcionando simultáneame
 
 ### Terminal 1 — Backend
 
-```bash
-cd backend
+cd backend 
 npm run start:dev
-```
 
 ### Terminal 2 — Frontend
 
-```bash
 cd frontend/frontend-farmacia
 npm run dev
-```
 
-Luego acceder desde el navegador a la dirección indicada por Vite, normalmente:
-
-```text
-http://localhost:5173/
-```
+Luego acceder desde el navegador a la dirección indicada por Vite, normalmente: http://localhost:5173/
 
 ---
 
@@ -467,7 +328,6 @@ No permite agregar una cantidad superior al stock disponible del producto.
 Desde el carrito se puede acceder al checkout.
 
 El usuario puede ingresar:
-
 * Nombre.
 * DNI.
 * Método de pago.
@@ -511,13 +371,7 @@ MySQL
 
 # 16. Detener el proyecto
 
-Para detener el backend o frontend, utilizar:
-
-```text
-Ctrl + C
-```
-
-en la terminal correspondiente.
+Para detener el backend o frontend, utilizar: Ctrl + C en la terminal correspondiente.
 
 ---
 
@@ -527,19 +381,15 @@ Para volver a ejecutar el proyecto:
 
 ### Backend
 
-```bash
 cd backend
 npm run start:dev
-```
 
 ### Frontend
 
 En otra terminal:
 
-```bash
 cd frontend/frontend-farmacia
 npm run dev
-```
 
 No es necesario volver a instalar las dependencias cada vez.
 
@@ -551,7 +401,7 @@ No es necesario volver a instalar las dependencias cada vez.
 
 Para una instalación desde cero:
 
-```bash
+
 # 1. Clonar
 git clone https://github.com/Francopierabella/Tp_DSW_2026.git
 
@@ -581,15 +431,10 @@ npm install
 
 # 8. Ejecutar frontend
 npm run dev
-```
 
-Finalmente, abrir en el navegador la dirección proporcionada por Vite, normalmente:
-
-http://localhost:5173/
-
+Finalmente, abrir en el navegador la dirección proporcionada por Vite, normalmente: http://localhost:5173/
 
 ---
-
 
 ## Repositorio
 

@@ -131,20 +131,25 @@ export default function Checkout() {
                                             value={customerName}
                                             onChange={(e) => setCustomerName(e.target.value)}
                                             required
+                                            onInvalid={(e) => e.currentTarget.setCustomValidity("Debes ingresar tu nombre y apellido.")}
+                                            onInput={(e) => e.currentTarget.setCustomValidity("")}
                                         />
                                     </div>
 
                                     <div className="checkout-form-group">
                                         <label className="checkout-label" htmlFor="customerDni">
-                                            Tu dni
+                                            Tu DNI
                                         </label>
                                         <input
                                             id="customerDni"
                                             type="text"
                                             className="checkout-input"
+                                            placeholder="Ingresá tu DNI"
                                             value={customerDni}
                                             onChange={(e) => setCustomerDni(e.target.value)}
                                             required
+                                            onInvalid={(e) => e.currentTarget.setCustomValidity("Debes ingresar un DNI.")}
+                                            onInput={(e) => e.currentTarget.setCustomValidity("")}
                                         />
                                     </div>
 
@@ -157,7 +162,11 @@ export default function Checkout() {
                                             className="checkout-select"
                                             value={paymentMethod}
                                             onChange={(e) => setPaymentMethod(e.target.value as any)}
+                                            required
+                                            onInvalid={(e) => e.currentTarget.setCustomValidity("Debes seleccionar un método de pago.")}
+                                            onInput={(e) => e.currentTarget.setCustomValidity("")}
                                         >
+                                            <option value="" disabled selected>Seleccionar</option>
                                             <option value="CASH">Efectivo</option>
                                             <option value="CREDIT_CARD">Tarjeta de Crédito</option>
                                             <option value="DEBIT_CARD">Tarjeta de Débito</option>
@@ -174,7 +183,11 @@ export default function Checkout() {
                                             className="checkout-select"
                                             value={deliveryMethod}
                                             onChange={(e) => setDeliveryMethod(e.target.value as any)}
+                                            required
+                                            onInvalid={(e) => e.currentTarget.setCustomValidity("Debes seleccionar un método de entrega.")}
+                                            onInput={(e) => e.currentTarget.setCustomValidity("")}
                                         >
+                                            <option value="" disabled selected>Seleccionar</option>
                                             <option value="PICKUP">Retiro en sucursal</option>
                                             <option value="DELIVERY">Envío a domicilio</option>
                                         </select>

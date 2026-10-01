@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import type { Product } from "../types/product.ts";
 
@@ -29,7 +29,18 @@ export const CartContext = createContext<CartContextType | undefined>(undefined)
 //Context: distintos componentes pueden modificar el mismo estado compartido sin pasarse props entre ellos.
 //Es una manera de evitar el "prop drilling", que es cuando tenes que pasar props a través de muchos niveles de componentes.
 export function CartProvider({ children }: CartProviderProps) {
-    const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+        const savedCart = localStorage.getItem("cart");
+
+        if (savedCart) {
+            return JSON.parse(savedCart);
+        }
+
+        return [];
+    });
+    useEffect(() => {
+        localStorage.setItem("cart", JSON.stringify(cartItems));
+    }, [cartItems]);
 
     const addToCart = (product: Product) => {
         setCartItems(currentItems => {
