@@ -173,3 +173,10 @@
     font-weight: 600;
     cursor: pointer;
 }
+
+.manager-form-error {
+    margin-bottom: 20px;
+    color: #c62828;
+    font-size: 14px;
+    font-weight: 600;
+}
