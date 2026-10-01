@@ -1,5 +1,6 @@
 import { Manager } from "./manager.entity.js";
 import { IRepository } from "../shared/base.repository.js";
+import bcrypt from "bcrypt";
 
 export class ManagerService {
     constructor(private readonly repo: IRepository<Manager>) { };
@@ -11,11 +12,13 @@ export class ManagerService {
         return await this.repo.findOne({ id });
     }
     async create(input: Omit<Manager, "id">): Promise<Manager | undefined> {
+        const hashedPassword = await bcrypt.hash(input.password, 10);
+
         const manager = new Manager(
             input.firstName,
             input.lastName,
             input.e_mail,
-            input.password
+            hashedPassword
         );
         return await this.repo.add(manager);
     }

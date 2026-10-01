@@ -4,6 +4,7 @@ import { ProductCategory } from "../../productCategory/productCategory.entity.js
 import { Product } from "../../product/product.entity.js";
 import { HealthInsurance } from "../../healthInsurance/healthInsurance.entity.js";
 import { Customer } from "../../customer/customer.entity.js";
+import { Manager } from "../../manager/manager.entity.js";
 
 //DATOS DE PRUEBA PARA ARRANCAR LA BD
 
@@ -55,7 +56,31 @@ export async function seedDatabase(): Promise<void> {
 
         healthInsurances[data.name] = healthInsurance;
     }
+    // =========================================================
+    // Manager
+    // =========================================================
 
+    const managerEmail = "admin@farmacia.com";
+
+    const existingManager = await em.findOne(Manager, {
+        e_mail: managerEmail
+    });
+
+    if (!existingManager) {
+
+        const hashedPassword = await bcrypt.hash("123456", 10);
+
+        const manager = new Manager(
+            "Administrador",
+            "Farmacia",
+            managerEmail,
+            hashedPassword
+        );
+
+        await em.persistAndFlush(manager);
+
+        console.log("Manager created");
+    }
 
     // =========================================================
     // 2. CUSTOMERS
@@ -276,7 +301,7 @@ export async function seedDatabase(): Promise<void> {
             gender: "unisex",
             price: 6500,
             stock: 25,
-            category: "Vitaminas y suplementos",
+            category: "Vitaminas",
             isFeatured: true
         }
     ];

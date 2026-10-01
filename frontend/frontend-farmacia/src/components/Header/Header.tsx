@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import { useCart } from "../../context/CartContext";
 import Cart from "../Cart/Cart";
 import "./Header.css";
@@ -10,6 +11,7 @@ export default function Header() {
     const [cartOpen, setCartOpen] = useState(false);
 
     const { cartItems } = useCart();
+    const { user, role, logout } = useAuth();
 
     const cartItemCount = cartItems.reduce(
         (total, item) => total + item.quantity,
@@ -48,21 +50,39 @@ export default function Header() {
 
                 <div className="header-actions">
 
-                    <button
-                        className="icon-button"
-                        aria-label="Mi cuenta"
-                    >
-                        <svg
-                            viewBox="0 0 24 24"
-                            className="header-icon"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.8"
+                    {user ? (
+                        <div className="user-menu">
+
+                            <span className="user-name">
+                                Hola, {user.firstName}
+                            </span>
+
+                            <button
+                                className="logout-button"
+                                onClick={logout}
+                            >
+                                Cerrar sesión
+                            </button>
+
+                        </div>
+                    ) : (
+                        <Link
+                            to="/login"
+                            className="icon-button"
+                            aria-label="Iniciar sesión"
                         >
-                            <circle cx="12" cy="8" r="4" />
-                            <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" />
-                        </svg>
-                    </button>
+                            <svg
+                                viewBox="0 0 24 24"
+                                className="header-icon"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.8"
+                            >
+                                <circle cx="12" cy="8" r="4" />
+                                <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" />
+                            </svg>
+                        </Link>
+                    )}
 
                     <button
                         className="cart-button"

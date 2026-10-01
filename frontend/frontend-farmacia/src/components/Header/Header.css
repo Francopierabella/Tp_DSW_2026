@@ -260,3 +260,29 @@
         border-bottom: none;
     }
 }
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-name {
+    color: #155568;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.logout-button {
+    border: none;
+    background: transparent;
+    color: red;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 6px 0;
+}
+
+.logout-button:hover {
+    color: rgb(151, 2, 2);
+}

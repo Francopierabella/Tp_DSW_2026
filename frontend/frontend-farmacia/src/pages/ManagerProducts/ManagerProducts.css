@@ -1,0 +1,175 @@
+.manager-products-page {
+    padding: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.manager-products-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.manager-products-header h1 {
+    margin: 0 0 8px;
+    color: #155568;
+    font-size: 32px;
+}
+
+.manager-products-header p {
+    margin: 0;
+    color: #666;
+}
+
+.manager-primary-button {
+    border: none;
+    border-radius: 8px;
+    padding: 12px 18px;
+    background: #16aaa5;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.manager-primary-button:hover {
+    background: #138f8b;
+}
+
+.manager-products-table-container {
+    background: white;
+    border-radius: 12px;
+    overflow-x: auto;
+    box-shadow: 0 5px 20px rgba(21, 85, 104, 0.08);
+}
+
+.manager-products-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.manager-products-table th,
+.manager-products-table td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid #edf1f2;
+}
+
+.manager-products-table th {
+    background: #f5fafa;
+    color: #155568;
+    font-size: 14px;
+}
+
+.manager-products-table td {
+    color: #444;
+    font-size: 14px;
+}
+
+.manager-product-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.manager-edit-button,
+.manager-delete-button {
+    border: none;
+    border-radius: 6px;
+    padding: 7px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.manager-edit-button {
+    background: #e8f7f6;
+    color: #155568;
+}
+
+.manager-delete-button {
+    background: #fff1f1;
+    color: #c62828;
+}
+
+.manager-products-error {
+    color: #c62828;
+}
+
+.manager-product-form {
+    background: white;
+    padding: 30px;
+    margin-bottom: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(21, 85, 104, 0.08);
+}
+
+.manager-product-form h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: #155568;
+}
+
+.manager-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.manager-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 20px;
+}
+
+.manager-form-field label {
+    color: #155568;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.manager-form-field input,
+.manager-form-field select,
+.manager-form-field textarea {
+    padding: 11px 13px;
+    border: 1px solid #d5e3e5;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+}
+
+.manager-form-field input:focus,
+.manager-form-field select:focus,
+.manager-form-field textarea:focus {
+    border-color: #16aaa5;
+    box-shadow: 0 0 0 3px rgba(22, 170, 165, 0.12);
+}
+
+.manager-featured-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 25px;
+    color: #155568;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.manager-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.manager-cancel-button {
+    border: 1px solid #d5e3e5;
+    border-radius: 8px;
+    padding: 12px 18px;
+    background: white;
+    color: #155568;
+    font-weight: 600;
+    cursor: pointer;
+}
