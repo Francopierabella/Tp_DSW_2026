@@ -39,4 +39,8 @@ export class ManagerRepository implements IRepository<Manager> {
         await orm.em.removeAndFlush(found);
         return found;
     }
+    public async findByEmail(email: string): Promise<Manager | undefined> {
+        const found = await orm.em.findOne(Manager, { e_mail: email });
+        return found ?? undefined;
+    }
 }
