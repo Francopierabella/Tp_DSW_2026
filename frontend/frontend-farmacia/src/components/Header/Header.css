@@ -286,3 +286,23 @@
 .logout-button:hover {
     color: rgb(151, 2, 2);
 }
+
+/* Botón de cerrar sesión dentro del menú mobile */
+.mobile-logout-button {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #e53e3e;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 17px 6%;
+    border-bottom: 1px solid #eef3f3;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.mobile-logout-button:hover {
+    background-color: #fff5f5;
+    color: #c53030;
+}

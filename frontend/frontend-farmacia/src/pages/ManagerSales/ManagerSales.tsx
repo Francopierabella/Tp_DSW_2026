@@ -21,6 +21,15 @@ interface Sale {
         firstName: string;
         lastName: string;
     };
+    saleItems: {
+        id: number;
+        quantity: number;
+        unitPrice: number;
+        product: {
+            id: number;
+            name: string;
+        };
+    }[];
 }
 
 export default function ManagerSales() {
@@ -37,70 +46,33 @@ export default function ManagerSales() {
     const [saleToView, setSaleToView] = useState<Sale | null>(null);
 
     useEffect(() => {
-
         async function loadSales() {
-
             try {
-
-                const response = await fetch(
-                    "http://localhost:3000/api/sales"
-                );
-
+                const response = await fetch("http://localhost:3000/api/sales");
                 const data = await response.json();
-
                 if (!response.ok) {
-                    throw new Error(
-                        data.message || "No se pudieron cargar las ventas"
-                    );
+                    throw new Error(data.message || "No se pudieron cargar las ventas");
                 }
-
                 setSales(data);
-
             } catch (error) {
-
                 console.error(error);
-
-                setError(
-                    "No se pudieron cargar las ventas"
-                );
-
+                setError("No se pudieron cargar las ventas");
             } finally {
-
                 setLoading(false);
-
             }
         }
-
         loadSales();
-
     }, []);
 
     const filteredSales = sales.filter((sale) => {
-
-        const matchesManager =
-            managerFilter === "ALL" ||
-            sale.manager.id.toString() === managerFilter;
-
-        const matchesStatus =
-            statusFilter === "ALL" ||
-            sale.status === statusFilter;
-
+        const matchesManager = managerFilter === "ALL" || sale.manager.id.toString() === managerFilter;
+        const matchesStatus = statusFilter === "ALL" || sale.status === statusFilter;
         const saleDate = sale.date.substring(0, 10);
+        const matchesDateFrom = !dateFrom || saleDate >= dateFrom;
+        const matchesDateTo = !dateTo || saleDate <= dateTo;
 
-        const matchesDateFrom =
-            !dateFrom || saleDate >= dateFrom;
-
-        const matchesDateTo =
-            !dateTo || saleDate <= dateTo;
-
-        return (
-            matchesManager &&
-            matchesStatus &&
-            matchesDateFrom &&
-            matchesDateTo
-        );
+        return (matchesManager && matchesStatus && matchesDateFrom && matchesDateTo);
     });
-
 
     if (loading) {
         return (
@@ -109,84 +81,38 @@ export default function ManagerSales() {
             </div>
         );
     }
-
     if (error) {
         return (
             <div className="manager-sales-page">
-                <p className="manager-sales-error">
-                    {error}
-                </p>
+                <p className="manager-sales-error">{error}</p>
             </div>
         );
     }
 
     const managers = Array.from(
-        new Map(
-            sales.map((sale) => [
-                sale.manager.id,
-                sale.manager
-            ])
-        ).values()
+        new Map(sales.map((sale) => [sale.manager.id, sale.manager])).values()
     );
 
     const handleConfirmSale = async () => {
         if (!saleToConfirm) return;
-
         try {
-            const response = await fetch(
-                `http://localhost:3000/api/sales/${saleToConfirm.id}/confirm`,
-                {
-                    method: "PATCH"
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error("No se pudo confirmar la venta");
-            }
-
+            const response = await fetch(`http://localhost:3000/api/sales/${saleToConfirm.id}/confirm`, { method: "PATCH" });
+            if (!response.ok) { throw new Error("No se pudo confirmar la venta"); }
             const updatedSale = await response.json();
-
-            setSales((prevSales) =>
-                prevSales.map((sale) =>
-                    sale.id === updatedSale.id
-                        ? updatedSale
-                        : sale
-                )
-            );
-
+            setSales((prevSales) => prevSales.map((sale) => sale.id === updatedSale.id ? updatedSale : sale));
             setSaleToConfirm(null);
-
         } catch (error) {
             console.error(error);
         }
     };
     const handleCancelSale = async () => {
         if (!saleToCancel) return;
-
         try {
-            const response = await fetch(
-                `http://localhost:3000/api/sales/${saleToCancel.id}/cancel`,
-                {
-                    method: "PATCH"
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error("No se pudo cancelar la venta");
-            }
-
+            const response = await fetch(`http://localhost:3000/api/sales/${saleToCancel.id}/cancel`, { method: "PATCH" });
+            if (!response.ok) { throw new Error("No se pudo cancelar la venta"); }
             const updatedSale = await response.json();
-
-            setSales((prevSales) =>
-                prevSales.map((sale) =>
-                    sale.id === updatedSale.id
-                        ? updatedSale
-                        : sale
-                )
-            );
-
+            setSales((prevSales) => prevSales.map((sale) => sale.id === updatedSale.id ? updatedSale : sale));
             setSaleToCancel(null);
-
         } catch (error) {
             console.error(error);
         }
@@ -194,121 +120,41 @@ export default function ManagerSales() {
 
     return (
         <div className="manager-sales-page">
-
             <div className="manager-sales-header">
-
                 <div>
                     <h1>Ventas</h1>
-
-                    <p>
-                        Gestioná las ventas de Farmacia Pierabella.
-                    </p>
+                    <p>Gestioná las ventas de Farmacia Pierabella.</p>
                 </div>
-
             </div>
-
             <div className="manager-sales-filters">
-
                 <div className="manager-sales-filter">
-
-                    <label htmlFor="manager-filter">
-                        Manager
-                    </label>
-
-                    <select
-                        id="manager-filter"
-                        value={managerFilter}
-                        onChange={(event) =>
-                            setManagerFilter(event.target.value)
-                        }
-                    >
-                        <option value="ALL">
-                            Todos
-                        </option>
-
+                    <label htmlFor="manager-filter">Manager</label>
+                    <select id="manager-filter" value={managerFilter} onChange={(event) => setManagerFilter(event.target.value)}>
+                        <option value="ALL">Todos</option>
                         {managers.map((manager) => (
-                            <option
-                                key={manager.id}
-                                value={manager.id}
-                            >
+                            <option key={manager.id} value={manager.id}>
                                 {manager.firstName} {manager.lastName}
                             </option>
                         ))}
                     </select>
-
                 </div>
-
-
                 <div className="manager-sales-filter">
-
-                    <label htmlFor="status-filter">
-                        Estado
-                    </label>
-
-                    <select
-                        id="status-filter"
-                        value={statusFilter}
-                        onChange={(event) =>
-                            setStatusFilter(event.target.value)
-                        }
-                    >
-                        <option value="ALL">
-                            Todos
-                        </option>
-
-                        <option value="PENDING">
-                            Pendiente
-                        </option>
-
-                        <option value="CONFIRMED">
-                            Confirmada
-                        </option>
-
-                        <option value="CANCELLED">
-                            Cancelada
-                        </option>
-
+                    <label htmlFor="status-filter">Estado</label>
+                    <select id="status-filter" value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)}>
+                        <option value="ALL">Todos</option>
+                        <option value="PENDING">Pendiente</option>
+                        <option value="CONFIRMED">Confirmada</option>
+                        <option value="CANCELLED">Cancelada</option>
                     </select>
-
                 </div>
-
-
                 <div className="manager-sales-filter">
-
-                    <label htmlFor="date-from">
-                        Desde
-                    </label>
-
-                    <input
-                        id="date-from"
-                        type="date"
-                        value={dateFrom}
-                        onChange={(event) =>
-                            setDateFrom(event.target.value)
-                        }
-                    />
-
+                    <label htmlFor="date-from">Desde</label>
+                    <input id="date-from" type="date" value={dateFrom} onChange={(event) => setDateFrom(event.target.value)} />
                 </div>
-
-
                 <div className="manager-sales-filter">
-
-                    <label htmlFor="date-to">
-                        Hasta
-                    </label>
-
-                    <input
-                        id="date-to"
-                        type="date"
-                        value={dateTo}
-                        onChange={(event) =>
-                            setDateTo(event.target.value)
-                        }
-                    />
-
+                    <label htmlFor="date-to">Hasta</label>
+                    <input id="date-to" type="date" value={dateTo} onChange={(event) => setDateTo(event.target.value)} />
                 </div>
-
-
                 <button
                     className="manager-sales-clear-button"
                     onClick={() => {
@@ -320,15 +166,10 @@ export default function ManagerSales() {
                 >
                     Limpiar filtros
                 </button>
-
             </div>
-
             <div className="manager-sales-table-container">
-
                 <table className="manager-sales-table">
-
                     <thead>
-
                         <tr>
                             <th>ID</th>
                             <th>Fecha</th>
@@ -340,51 +181,18 @@ export default function ManagerSales() {
                             <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
-
                     </thead>
-
                     <tbody>
-
                         {filteredSales.map((sale) => (
-
                             <tr key={sale.id}>
-
-                                <td>
-                                    {sale.id}
-                                </td>
-
-                                <td>
-                                    {new Date(
-                                        sale.date
-                                    ).toLocaleDateString("es-AR")}
-                                </td>
-
-                                <td>
-                                    {sale.customer.firstName}{" "}
-                                    {sale.customer.lastName}
-                                </td>
-
-                                <td>
-                                    {sale.manager.firstName}{" "}
-                                    {sale.manager.lastName}
-                                </td>
-
-                                <td>
-                                    ${sale.totalAmount.toLocaleString("es-AR")}
-                                </td>
-
-                                <td>
-                                    {sale.paymentMethod}
-                                </td>
-
-                                <td>
-                                    {sale.deliveryMethod}
-                                </td>
-
-                                <td>
-                                    {sale.status}
-                                </td>
-
+                                <td>{sale.id}</td>
+                                <td>{new Date(sale.date).toLocaleDateString("es-AR")}</td>
+                                <td>{sale.customer.firstName}{" "}{sale.customer.lastName}</td>
+                                <td>{sale.manager.firstName}{" "}{sale.manager.lastName}</td>
+                                <td>${sale.totalAmount.toLocaleString("es-AR")}</td>
+                                <td>{sale.paymentMethod}</td>
+                                <td>{sale.deliveryMethod}</td>
+                                <td>{sale.status}</td>
                                 <td>
                                     {sale.status === "PENDING" ? (
                                         <div className="manager-sales-actions">
@@ -411,15 +219,10 @@ export default function ManagerSales() {
                                         </button>
                                     )}
                                 </td>
-
                             </tr>
-
                         ))}
-
                     </tbody>
-
                 </table>
-
                 {saleToConfirm && (
                     <ConfirmModal
                         title="Confirmar venta"
@@ -430,7 +233,6 @@ export default function ManagerSales() {
                         onCancel={() => setSaleToConfirm(null)}
                     />
                 )}
-
                 {saleToCancel && (
                     <ConfirmModal
                         title="Cancelar venta"
@@ -444,27 +246,17 @@ export default function ManagerSales() {
                 {saleToView && (
                     <div className="sale-detail-overlay">
                         <div className="sale-detail-modal">
-
                             <div className="sale-detail-header">
                                 <h2>Detalle de venta #{saleToView.id}</h2>
-
-                                <button
-                                    className="sale-detail-close"
-                                    onClick={() => setSaleToView(null)}
-                                >
-                                    ×
-                                </button>
+                                <button className="sale-detail-close" onClick={() => setSaleToView(null)}>×</button>
                             </div>
-
                             <div className="sale-detail-content">
-
                                 <div className="sale-detail-row">
                                     <span>Fecha</span>
                                     <strong>
                                         {new Date(saleToView.date).toLocaleDateString("es-AR")}
                                     </strong>
                                 </div>
-
                                 <div className="sale-detail-row">
                                     <span>Cliente</span>
                                     <strong>
@@ -472,7 +264,6 @@ export default function ManagerSales() {
                                         {saleToView.customer.lastName}
                                     </strong>
                                 </div>
-
                                 <div className="sale-detail-row">
                                     <span>Manager</span>
                                     <strong>
@@ -480,46 +271,43 @@ export default function ManagerSales() {
                                         {saleToView.manager.lastName}
                                     </strong>
                                 </div>
-
                                 <div className="sale-detail-row">
                                     <span>Método de pago</span>
                                     <strong>{saleToView.paymentMethod}</strong>
                                 </div>
-
                                 <div className="sale-detail-row">
                                     <span>Entrega</span>
                                     <strong>{saleToView.deliveryMethod}</strong>
                                 </div>
-
                                 <div className="sale-detail-row">
                                     <span>Estado</span>
                                     <strong>{saleToView.status}</strong>
                                 </div>
-
+                                <div className="sale-detail-items" style={{ marginTop: '20px', borderTop: '1px solid #eee', paddingTop: '15px' }}>
+                                    <h4 style={{ marginBottom: '10px' }}>Productos:</h4>
+                                    <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                                        {saleToView.saleItems?.map(item => (
+                                            <li key={item.id} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '0.9rem' }}>
+                                                <span>{item.quantity}x {item.product.name}</span>
+                                                <span>${(item.quantity * item.unitPrice).toLocaleString("es-AR")}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
                                 <div className="sale-detail-total">
                                     <span>Total</span>
                                     <strong>
                                         ${saleToView.totalAmount.toLocaleString("es-AR")}
                                     </strong>
                                 </div>
-
+                                <div className="sale-detail-footer">
+                                    <button className="sale-detail-close-button" onClick={() => setSaleToView(null)}>Cerrar</button>
+                                </div>
                             </div>
-
-                            <div className="sale-detail-footer">
-                                <button
-                                    className="sale-detail-close-button"
-                                    onClick={() => setSaleToView(null)}
-                                >
-                                    Cerrar
-                                </button>
-                            </div>
-
                         </div>
                     </div>
                 )}
-
             </div>
-
         </div>
     );
 }

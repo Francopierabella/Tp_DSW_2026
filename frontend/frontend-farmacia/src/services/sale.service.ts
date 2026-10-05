@@ -19,10 +19,14 @@ export async function getSaleById(id: number): Promise<Sale | undefined> {
 }
 
 export async function createSale(sale: SaleCreateInput): Promise<Sale> {
+    const savedAuth = localStorage.getItem("auth");
+    const session = savedAuth ? JSON.parse(savedAuth) : null;
+    const token = session?.token;
     const response = await fetch(API_URL, {
         method: 'POST',
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(sale),
     });
@@ -35,10 +39,15 @@ export async function createSale(sale: SaleCreateInput): Promise<Sale> {
 }
 
 export async function updateSale(id: number, sale: SaleUpdateInput): Promise<Sale> {
+    const savedAuth = localStorage.getItem("auth");
+    const session = savedAuth ? JSON.parse(savedAuth) : null;
+    const token = session?.token;
+
     const response = await fetch(`${API_URL}/${id}`, {
         method: 'PATCH',
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(sale),
     });
@@ -54,8 +63,15 @@ export async function updateSale(id: number, sale: SaleUpdateInput): Promise<Sal
 }
 
 export async function remove(id: number): Promise<Sale> {
+    const savedAuth = localStorage.getItem("auth");
+    const session = savedAuth ? JSON.parse(savedAuth) : null;
+    const token = session?.token;
+
     const response = await fetch(`${API_URL}/${id}`, {
         method: 'DELETE',
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
     });
     if (!response.ok) {
         const error = await response.json();
@@ -66,10 +82,15 @@ export async function remove(id: number): Promise<Sale> {
 }
 
 export async function createSaleItem(item: { quantity: number; sale: number; product: number }) {
+    const savedAuth = localStorage.getItem("auth");
+    const session = savedAuth ? JSON.parse(savedAuth) : null;
+    const token = session?.token;
+
     const response = await fetch("http://localhost:3000/api/saleItems", {
         method: 'POST',
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(item),
     });

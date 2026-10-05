@@ -10,13 +10,18 @@ export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
 
-    const { cartItems } = useCart();
-    const { user, role, logout } = useAuth();
+    const { cartItems, clearCart } = useCart();
+    const { user, logout } = useAuth();
 
     const cartItemCount = cartItems.reduce(
         (total, item) => total + item.quantity,
         0
     );
+
+    const handleLogout = () => {
+        logout();
+        clearCart();
+    };
 
     return (
         <header className="header">
@@ -50,38 +55,34 @@ export default function Header() {
 
                 <div className="header-actions">
 
-                    {user ? (
-                        <div className="user-menu">
-
-                            <span className="user-name">
-                                Hola, {user.firstName}
-                            </span>
-
-                            <button
-                                className="logout-button"
-                                onClick={logout}
-                            >
-                                Cerrar sesión
-                            </button>
-
-                        </div>
-                    ) : (
-                        <Link
-                            to="/login"
-                            className="icon-button"
-                            aria-label="Iniciar sesión"
+                    {/* Icono de usuario: siempre el mismo SVG.
+                        Si está logueado → va a /perfil (ícono en color activo)
+                        Si no está logueado → va a /login */}
+                    <Link
+                        to={user ? "/perfil" : "/login"}
+                        className="icon-button"
+                        aria-label={user ? "Ver perfil" : "Iniciar sesión"}
+                    >
+                        <svg
+                            viewBox="0 0 24 24"
+                            className="header-icon"
+                            fill="none"
+                            stroke={user ? "#16aaa5" : "currentColor"}
+                            strokeWidth="1.8"
                         >
-                            <svg
-                                viewBox="0 0 24 24"
-                                className="header-icon"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.8"
-                            >
-                                <circle cx="12" cy="8" r="4" />
-                                <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" />
-                            </svg>
-                        </Link>
+                            <circle cx="12" cy="8" r="4" />
+                            <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" />
+                        </svg>
+                    </Link>
+
+                    {/* Botón de cerrar sesión: solo aparece si hay usuario logueado */}
+                    {user && (
+                        <button
+                            className="logout-button"
+                            onClick={handleLogout}
+                        >
+                            Cerrar sesión
+                        </button>
                     )}
 
                     <button
@@ -147,6 +148,19 @@ export default function Header() {
                     Categorías
                 </NavLink>
 
+                {/* En mobile también mostramos el cerrar sesión dentro del menú */}
+                {user && (
+                    <button
+                        className="mobile-nav-link mobile-logout-button"
+                        onClick={() => {
+                            handleLogout();
+                            setMenuOpen(false);
+                        }}
+                    >
+                        Cerrar sesión
+                    </button>
+                )}
+
             </nav>
 
             {cartOpen && (
@@ -158,4 +172,3 @@ export default function Header() {
         </header>
     );
 }
-

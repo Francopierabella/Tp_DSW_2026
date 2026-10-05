@@ -6,12 +6,8 @@ import { authenticateToken, authorizeRole } from "../middleware/auth.middleware.
 
 export const productRouter = Router();
 
-// Rutas públicas
 productRouter.get("/", findAll);
 productRouter.get("/:id", findOne);
-
-// Rutas exclusivas del administrador
 productRouter.post("/", authenticateToken, authorizeRole("MANAGER"), sanitizedProductInput, create);
 productRouter.patch("/:id", authenticateToken, authorizeRole("MANAGER"), sanitizedUpdateProductInput, update);
 productRouter.delete("/:id", authenticateToken, authorizeRole("MANAGER"), remove);
-

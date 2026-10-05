@@ -7,10 +7,7 @@ import "./ManagerProducts.css";
 
 
 export default function ManagerProducts() {
-
-    const { user } = useAuth();
     const { token } = useAuth();
-
     const [showForm, setShowForm] = useState(false);
     const [products, setProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<ProductCategory[]>([]);

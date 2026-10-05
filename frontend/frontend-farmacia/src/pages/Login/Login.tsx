@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import "./Login.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
 
     const { login } = useAuth();
+    const navigate = useNavigate();
 
     const [e_mail, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -56,6 +58,7 @@ export default function Login() {
             );
 
             console.log("Login exitoso:", data);
+            navigate("/");
 
         } catch (error) {
 

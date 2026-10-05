@@ -5,17 +5,13 @@ import { Sale } from "./sale.entity.js";
 export class SaleRepository implements IRepository<Sale> {
     public async findAll(): Promise<Sale[] | undefined> {
         return await orm.em.find(Sale, {}, {
-            populate: ["customer", "manager"]
+            populate: ["customer", "manager", "saleItems", "saleItems.product"]
         });
     }
     public async findOne(item: { id: number }): Promise<Sale | undefined> {
-        const found = await orm.em.findOne(
-            Sale,
-            { id: item.id },
-            {
-                populate: ["customer", "manager"]
-            }
-        );
+        const found = await orm.em.findOne(Sale, { id: item.id }, {
+            populate: ["customer", "manager", "saleItems", "saleItems.product"]
+        });
 
         return found ?? undefined;
     }
