@@ -28,14 +28,14 @@ export class PurchaseOrderService {
             throw error;
         }
     }
-    async update(id: number, input: PurchaseOrder): Promise<PurchaseOrder | undefined> {
+    async update(id: number, input: Partial<PurchaseOrder>): Promise<PurchaseOrder | undefined> {
         const order = await this.repo.findOne({ id });
         if (!order) {
             return undefined;
         }
-        order.date = input.date;
-        order.status = input.status;
-        order.supplier = input.supplier;
+        order.date = input.date ?? order.date;
+        order.status = input.status ?? order.status;
+        order.supplier = input.supplier ?? order.supplier;
         return await this.repo.update(id, order);
     }
     async remove(id: number): Promise<PurchaseOrder | undefined> {

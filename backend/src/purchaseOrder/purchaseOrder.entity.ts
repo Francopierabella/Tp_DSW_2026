@@ -5,7 +5,7 @@ import { PurchaseOrderItem } from "../purchaseOrderItem/purchaseOrderItem.entity
 
 export enum PurchaseOrderStatus {
   Pending = 'pending',
-  Delivered = 'delivered',
+  Cancelled = 'cancelled',
   Received = 'received'
 }
 
