@@ -11,6 +11,7 @@ import ManagerProducts from "./pages/ManagerProducts/ManagerProducts";
 import Manager from "./pages/Manager/Manager";
 import ManagerCategories from "./pages/ManagerCategories/ManagerCategories";
 import ManagerSales from "./pages/ManagerSales/ManagerSales";
+import ManagerSuppliers from "./pages/ManagerSuppliers/ManagerSupplier";
 
 //React Router se encarga de relacionar una URL con un componente de React.
 function App() {
@@ -53,13 +54,16 @@ function App() {
             <ManagerCategories />
           </ProtectedRoute>
         } />
-        <Route
-          path="/manager/sales"
-          element={
-            <ProtectedRoute allowedRole="MANAGER">
-              <ManagerSales />
-            </ProtectedRoute>
-          }
+        <Route path="/manager/sales" element={
+          <ProtectedRoute allowedRole="MANAGER">
+            <ManagerSales />
+          </ProtectedRoute>
+        } />
+        <Route path="/manager/suppliers" element={
+          <ProtectedRoute allowedRole="MANAGER">
+            <ManagerSuppliers />
+          </ProtectedRoute>
+        }
         />
 
       </Routes>

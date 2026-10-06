@@ -2,7 +2,15 @@
 import type { Product } from "../types/product.ts";
 import type { ProductInput } from "../types/product.ts";
 
+
 const API_URL = "http://localhost:3000/api/products";
+
+function getToken() {
+    const savedAuth = localStorage.getItem("auth");
+    const session = savedAuth ? JSON.parse(savedAuth) : null;
+
+    return session?.token;
+}
 
 export async function getProducts(): Promise<Product[]> {
     const response = await fetch(API_URL);
@@ -25,10 +33,17 @@ export async function getProductById(id: number): Promise<Product> {
 }
 
 export async function createProduct(product: ProductInput): Promise<Product> {
+    const token = getToken();
+
+    if (!token) {
+        throw new Error("No hay sesión activa");
+    }
+
     const response = await fetch(API_URL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(product),
     });
@@ -47,10 +62,17 @@ export async function updateProduct(
     id: number,
     product: ProductInput //el input es la estructura que usamos para crear/actualizar un producto.
 ): Promise<Product> {
+    const token = getToken();
+
+    if (!token) {
+        throw new Error("No hay sesión activa");
+    }
+
     const response = await fetch(`${API_URL}/${id}`, {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(product),
     });
@@ -66,8 +88,17 @@ export async function updateProduct(
 }
 
 export async function deleteProduct(id: number): Promise<Product> {
+    const token = getToken();
+
+    if (!token) {
+        throw new Error("No hay sesión activa");
+    }
+
     const response = await fetch(`${API_URL}/${id}`, {
         method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
     });
 
     if (!response.ok) {

@@ -41,15 +41,3 @@ export interface SaleUpdateInput {
     paymentMethod?: 'CASH' | 'CREDIT_CARD' | 'DEBIT_CARD' | 'TRANSFER';
     deliveryMethod?: 'PICKUP' | 'DELIVERY';
 }
-
-export interface SaleItemInput {
-    product: number;
-    quantity: number;
-}
-
-
-export interface SaleItem {
-    id: number;
-    product: number;
-    quantity: number;
-}
