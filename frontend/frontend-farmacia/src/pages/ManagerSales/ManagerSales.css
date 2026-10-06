@@ -1,20 +1,10 @@
-/* =========================
-   PAGINA PRINCIPAL
-   ========================= */
-
 .manager-sales-page {
-    width: 100%;
+    padding: 40px;
     max-width: 1400px;
     margin: 0 auto;
-    padding: 40px;
-    box-sizing: border-box;
-    min-width: 0;
 }
 
 .manager-sales-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 30px;
 }
 
@@ -22,13 +12,41 @@
     margin: 0 0 8px;
     color: #155568;
     font-size: 32px;
-    line-height: 1.2;
 }
 
 .manager-sales-header p {
     margin: 0;
     color: #666;
-    font-size: 15px;
+}
+
+.manager-sales-table-container {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(21, 85, 104, 0.08);
+}
+
+.manager-sales-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.manager-sales-table th,
+.manager-sales-table td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid #edf1f2;
+}
+
+.manager-sales-table th {
+    background: #f5fafa;
+    color: #155568;
+    font-size: 14px;
+}
+
+.manager-sales-table td {
+    color: #444;
+    font-size: 14px;
 }
 
 .manager-sales-error {
@@ -40,23 +58,20 @@
    ========================= */
 
 .manager-sales-filters {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
-    align-items: end;
+    display: flex;
+    align-items: flex-end;
     gap: 16px;
     margin-bottom: 25px;
     padding: 20px;
     background: white;
     border-radius: 12px;
     box-shadow: 0 5px 20px rgba(21, 85, 104, 0.08);
-    box-sizing: border-box;
 }
 
 .manager-sales-filter {
     display: flex;
     flex-direction: column;
     gap: 7px;
-    min-width: 0;
 }
 
 .manager-sales-filter label {
@@ -67,10 +82,7 @@
 
 .manager-sales-filter select,
 .manager-sales-filter input {
-    display: block;
-    width: 100%;
-    min-width: 0;
-    height: 42px;
+    min-width: 150px;
     padding: 10px 12px;
     border: 1px solid #d9e3e5;
     border-radius: 8px;
@@ -78,7 +90,6 @@
     color: #444;
     font-size: 14px;
     outline: none;
-    box-sizing: border-box;
 }
 
 .manager-sales-filter select:focus,
@@ -88,112 +99,42 @@
 }
 
 .manager-sales-clear-button {
-    height: 42px;
-    padding: 10px 16px;
     border: 1px solid #d9e3e5;
-    border-radius: 8px;
     background: white;
     color: #155568;
+    padding: 10px 16px;
+    border-radius: 8px;
     font-size: 14px;
     font-weight: 600;
-    white-space: nowrap;
     cursor: pointer;
-    transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .manager-sales-clear-button:hover {
     background: #f5fafa;
-    border-color: #16aaa5;
 }
 
 /* =========================
-   TABLA
-   ========================= */
-
-.manager-sales-table-container {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 5px 20px rgba(21, 85, 104, 0.08);
-
-    /* El scroll queda limitado a la tabla */
-    overflow-x: auto;
-    overflow-y: visible;
-    -webkit-overflow-scrolling: touch;
-}
-
-.manager-sales-table {
-    width: 100%;
-    min-width: 1050px;
-    border-collapse: collapse;
-    table-layout: auto;
-}
-
-.manager-sales-table th,
-.manager-sales-table td {
-    padding: 15px 14px;
-    text-align: left;
-    vertical-align: middle;
-    border-bottom: 1px solid #edf1f2;
-}
-
-.manager-sales-table th {
-    background: #f5fafa;
-    color: #155568;
-    font-size: 13px;
-    font-weight: 700;
-    white-space: nowrap;
-}
-
-.manager-sales-table td {
-    color: #444;
-    font-size: 14px;
-}
-
-.manager-sales-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.manager-sales-table tbody tr:hover {
-    background: #fbfefe;
-}
-
-/* =========================
-   BOTONES DE ACCIONES
+   ACCIONES
    ========================= */
 
 .manager-sales-actions {
     display: flex;
-    align-items: center;
     gap: 8px;
-}
-
-.manager-sales-confirm-button,
-.manager-sales-cancel-button,
-.manager-sales-view-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 34px;
-    padding: 7px 12px;
-    border-radius: 7px;
-    font-size: 12px;
-    font-weight: 600;
-    white-space: nowrap;
-    cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease;
 }
 
 .manager-sales-confirm-button,
 .manager-sales-cancel-button {
     border: none;
-    color: white;
+    padding: 7px 12px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
 }
 
 .manager-sales-confirm-button {
     background: #16aaa5;
+    color: white;
 }
 
 .manager-sales-confirm-button:hover {
@@ -202,6 +143,7 @@
 
 .manager-sales-cancel-button {
     background: #c62828;
+    color: white;
 }
 
 .manager-sales-cancel-button:hover {
@@ -212,6 +154,11 @@
     border: 1px solid #16aaa5;
     background: white;
     color: #16aaa5;
+    padding: 7px 14px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
 }
 
 .manager-sales-view-button:hover {
@@ -226,32 +173,29 @@
 .sale-detail-overlay {
     position: fixed;
     inset: 0;
-    z-index: 1000;
+    background: rgba(0, 0, 0, 0.45);
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    box-sizing: border-box;
-    background: rgba(0, 0, 0, 0.45);
-    overflow-y: auto;
+    z-index: 1000;
 }
 
 .sale-detail-modal {
     width: 100%;
     max-width: 500px;
-    max-height: calc(100vh - 40px);
     background: white;
     border-radius: 14px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    overflow-y: auto;
-    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    max-height: 90vh;
 }
 
 .sale-detail-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 15px;
     padding: 22px 25px;
     border-bottom: 1px solid #e5eeee;
 }
@@ -260,11 +204,9 @@
     margin: 0;
     color: #155568;
     font-size: 20px;
-    overflow-wrap: anywhere;
 }
 
 .sale-detail-close {
-    flex-shrink: 0;
     border: none;
     background: transparent;
     color: #777;
@@ -278,13 +220,14 @@
 }
 
 .sale-detail-content {
-    padding: 20px 25px;
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
 }
 
 .sale-detail-row {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
     gap: 20px;
     padding: 12px 0;
     border-bottom: 1px solid #edf2f2;
@@ -292,20 +235,92 @@
 
 .sale-detail-row span {
     color: #777;
-    flex-shrink: 0;
 }
 
 .sale-detail-row strong {
     color: #155568;
     text-align: right;
-    overflow-wrap: anywhere;
+}
+
+
+.sale-detail-products {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.sale-detail-products h3 {
+    margin: 0 0 14px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.sale-detail-product {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    padding: 14px 16px;
+    margin-bottom: 10px;
+
+    background-color: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.sale-detail-product>div:first-child {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sale-detail-product>div:first-child strong {
+    font-size: 14px;
+    color: #155568;
+}
+
+.sale-detail-product>div:first-child span {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.sale-detail-product>div:last-child {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.sale-detail-product>div:last-child span {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.sale-detail-product>div:last-child strong {
+    font-size: 14px;
+    color: #111827;
+    white-space: nowrap;
+}
+
+.sale-detail-products>p {
+    margin: 0;
+    padding: 14px;
+
+    text-align: center;
+
+    font-size: 13px;
+    color: #6b7280;
+
+    background-color: #f8fafc;
+    border: 1px dashed #d1d5db;
+    border-radius: 10px;
 }
 
 .sale-detail-total {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 15px;
     margin-top: 18px;
     padding-top: 18px;
     border-top: 2px solid #16aaa5;
@@ -320,7 +335,6 @@
 .sale-detail-total strong {
     color: #16aaa5;
     font-size: 22px;
-    overflow-wrap: anywhere;
 }
 
 .sale-detail-footer {
@@ -328,6 +342,7 @@
     justify-content: flex-end;
     padding: 18px 25px;
     background: #f8fbfb;
+    flex-shrink: 0;
 }
 
 .sale-detail-close-button {
@@ -344,168 +359,192 @@
     background: #128f8b;
 }
 
-/* =========================
-   TABLETS Y PANTALLAS MEDIANAS
-   ========================= */
+.sale-detail-content::-webkit-scrollbar {
+    width: 6px;
+}
 
-@media (max-width: 1100px) {
-    .manager-sales-page {
-        padding: 30px 22px;
-    }
+.sale-detail-content::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 10px;
+}
 
-    .manager-sales-filters {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 14px;
-        padding: 18px;
-    }
-
-    .manager-sales-clear-button {
-        width: 100%;
-        grid-column: 1 / -1;
-    }
+.sale-detail-content::-webkit-scrollbar-track {
+    background-color: transparent;
 }
 
 /* =========================
-   CELULARES
+   TABLET
    ========================= */
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
+
     .manager-sales-page {
-        padding: 22px 12px;
+        padding: 30px 20px;
     }
-
-    .manager-sales-header {
-        margin-bottom: 22px;
-    }
-
-    .manager-sales-header h1 {
-        font-size: 26px;
-    }
-
-    .manager-sales-header p {
-        font-size: 13px;
-        line-height: 1.5;
-    }
-
-    /* Filtros en una sola columna */
 
     .manager-sales-filters {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 13px;
-        margin-bottom: 20px;
-        padding: 15px;
-        border-radius: 10px;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 16px;
     }
 
     .manager-sales-filter {
-        width: 100%;
-    }
-
-    .manager-sales-filter label {
-        font-size: 12px;
+        flex: 1;
+        min-width: 160px;
     }
 
     .manager-sales-filter select,
     .manager-sales-filter input {
-        height: 42px;
-        padding: 9px 10px;
-        font-size: 14px;
+        min-width: 0;
     }
 
     .manager-sales-clear-button {
-        grid-column: auto;
-        width: 100%;
-        height: 42px;
-        font-size: 13px;
-    }
-
-    /* Tabla desplazable horizontalmente */
-
-    .manager-sales-table-container {
-        border-radius: 9px;
-    }
-
-    .manager-sales-table {
-        width: 100%;
-        min-width: 950px;
-        table-layout: auto;
+        flex: 1;
+        min-width: 160px;
     }
 
     .manager-sales-table th,
     .manager-sales-table td {
         padding: 11px 10px;
-        font-size: 12px;
+    }
+}
+
+/* =========================
+   CELULAR
+   ========================= */
+
+@media (max-width: 600px) {
+
+    .manager-sales-page {
+        padding: 20px 12px;
     }
 
-    .manager-sales-table th {
+    .manager-sales-header {
+        margin-bottom: 20px;
+    }
+
+    .manager-sales-header h1 {
+        font-size: 25px;
+    }
+
+    .manager-sales-header p {
+        font-size: 13px;
+    }
+
+    /* Filtros */
+
+    .manager-sales-filters {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        padding: 12px;
+        margin-bottom: 18px;
+    }
+
+    .manager-sales-filter {
+        min-width: 0;
+        gap: 5px;
+    }
+
+    .manager-sales-filter label {
         font-size: 11px;
     }
 
-    /* Acciones apiladas para facilitar el toque */
+    .manager-sales-filter select,
+    .manager-sales-filter input {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        padding: 8px 7px;
+        font-size: 12px;
+        border-radius: 7px;
+    }
+
+    .manager-sales-clear-button {
+        grid-column: 1 / -1;
+        width: 100%;
+        min-width: 0;
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+
+    /* Tabla */
+
+    .manager-sales-table-container {
+        overflow: hidden;
+    }
+
+    .manager-sales-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .manager-sales-table th,
+    .manager-sales-table td {
+        padding: 9px 5px;
+        font-size: 11px;
+    }
+
+    .manager-sales-table th {
+        font-size: 10px;
+    }
+
+    /* Ocultamos columnas secundarias */
+
+    .manager-sales-table th:nth-child(4),
+    .manager-sales-table td:nth-child(4),
+    .manager-sales-table th:nth-child(6),
+    .manager-sales-table td:nth-child(6),
+    .manager-sales-table th:nth-child(7),
+    .manager-sales-table td:nth-child(7) {
+        display: none;
+    }
+
+    /* Acciones */
 
     .manager-sales-actions {
         flex-direction: column;
-        align-items: stretch;
-        gap: 6px;
+        gap: 4px;
     }
 
     .manager-sales-confirm-button,
     .manager-sales-cancel-button,
     .manager-sales-view-button {
         width: 100%;
-        min-height: 36px;
-        padding: 8px 10px;
-        font-size: 12px;
+        padding: 5px 6px;
+        font-size: 10px;
+        border-radius: 5px;
+        white-space: nowrap;
     }
 
-    /* Modal adaptado al ancho del celular */
-
-    .sale-detail-overlay {
-        align-items: center;
-        padding: 12px;
-    }
+    /* Modal */
 
     .sale-detail-modal {
-        width: 100%;
-        max-width: 440px;
-        max-height: calc(100vh - 24px);
-        border-radius: 12px;
+        width: calc(100% - 24px);
+        max-width: none;
     }
 
     .sale-detail-header {
-        padding: 17px;
-        gap: 10px;
+        padding: 16px;
     }
 
     .sale-detail-header h2 {
         font-size: 17px;
     }
 
-    .sale-detail-close {
-        font-size: 26px;
-    }
-
     .sale-detail-content {
-        padding: 12px 17px;
+        padding: 14px 16px;
     }
 
     .sale-detail-row {
-        gap: 12px;
-        padding: 11px 0;
+        gap: 10px;
+        padding: 10px 0;
         font-size: 13px;
     }
 
-    .sale-detail-row span {
-        max-width: 45%;
-    }
-
-    .sale-detail-row strong {
-        max-width: 55%;
-    }
-
     .sale-detail-total {
-        margin-top: 14px;
-        padding-top: 15px;
+        margin-top: 12px;
+        padding-top: 14px;
     }
 
     .sale-detail-total span {
@@ -513,55 +552,16 @@
     }
 
     .sale-detail-total strong {
-        font-size: 20px;
+        font-size: 19px;
     }
 
     .sale-detail-footer {
-        padding: 14px 17px;
+        padding: 14px 16px;
     }
 
     .sale-detail-close-button {
         width: 100%;
-        min-height: 42px;
-        padding: 10px;
-        font-size: 14px;
-    }
-}
-
-/* =========================
-   CELULARES MUY ANGOSTOS
-   ========================= */
-
-@media (max-width: 360px) {
-    .manager-sales-page {
-        padding: 18px 8px;
-    }
-
-    .manager-sales-filters {
-        padding: 12px;
-    }
-
-    .manager-sales-header h1 {
-        font-size: 23px;
-    }
-
-    .sale-detail-overlay {
-        padding: 8px;
-    }
-
-    .sale-detail-modal {
-        max-height: calc(100vh - 16px);
-    }
-
-    .sale-detail-header {
-        padding: 14px;
-    }
-
-    .sale-detail-content {
-        padding: 10px 14px;
-    }
-
-    .sale-detail-footer {
-        padding: 12px 14px;
+        padding: 9px;
+        font-size: 13px;
     }
 }

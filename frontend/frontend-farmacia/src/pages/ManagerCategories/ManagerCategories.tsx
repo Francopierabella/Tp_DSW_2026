@@ -3,6 +3,7 @@ import type { ProductCategory } from "../../types/productCategory";
 import "./ManagerCategories.css";
 import { useAuth } from "../../context/AuthContext";
 import ConfirmModal from "../../components/ConfirmModal/ConfirmModal";
+import Header from "../../components/Header/Header";
 
 export default function ManagerCategories() {
     const [categories, setCategories] = useState<ProductCategory[]>([]);
@@ -206,147 +207,150 @@ export default function ManagerCategories() {
     }
 
     return (
-        <div className="manager-categories-page">
-            {
-                categoryToDelete && (
-                    <ConfirmModal
-                        title="Eliminar categoría"
-                        message={`¿Estás seguro de que querés eliminar la categoría "${categoryToDelete.name}"?`}
-                        onConfirm={() =>
-                            handleDeleteCategory(categoryToDelete.id)
-                        }
-                        onCancel={() =>
-                            setCategoryToDelete(null)
-                        }
-                    />
-                )
-            }
-
-            <div className="manager-categories-header">
-                <div>
-                    <h1>Categorías</h1>
-                    <p>
-                        Gestioná las categorías de Farmacia Pierabella.
-                    </p>
-                </div>
-
-                <button
-                    className="manager-primary-button"
-                    onClick={() => {
-                        setEditingCategoryId(null);
-                        setName("");
-                        setError("");
-                        setShowForm(true);
-                    }}
-                >
-                    + Nueva categoría
-                </button>
-            </div>
-
-            {showForm && (
-                <div className="manager-category-form">
-
-                    <h2>
-                        {editingCategoryId !== null
-                            ? "Editar categoría"
-                            : "Nueva categoría"}
-                    </h2>
-
-                    <div className="manager-form-field">
-                        <label htmlFor="category-name">
-                            Nombre
-                        </label>
-
-                        <input
-                            id="category-name"
-                            type="text"
-                            value={name}
-                            onChange={(event) =>
-                                setName(event.target.value)
+        <>
+            <Header />
+            <div className="manager-categories-page">
+                {
+                    categoryToDelete && (
+                        <ConfirmModal
+                            title="Eliminar categoría"
+                            message={`¿Estás seguro de que querés eliminar la categoría "${categoryToDelete.name}"?`}
+                            onConfirm={() =>
+                                handleDeleteCategory(categoryToDelete.id)
                             }
-                            placeholder="Ingresá el nombre de la categoría"
+                            onCancel={() =>
+                                setCategoryToDelete(null)
+                            }
                         />
-                    </div>
+                    )
+                }
 
-                    {error && (
-                        <p className="manager-categories-error">
-                            {error}
+                <div className="manager-categories-header">
+                    <div>
+                        <h1>Categorías</h1>
+                        <p>
+                            Gestioná las categorías de Farmacia Pierabella.
                         </p>
-                    )}
-
-                    <div className="manager-form-actions">
-
-                        <button
-                            type="button"
-                            className="manager-primary-button"
-                            onClick={
-                                editingCategoryId !== null
-                                    ? handleSaveCategory
-                                    : handleCreateCategory
-                            }
-                        >
-                            {editingCategoryId !== null
-                                ? "Guardar cambios"
-                                : "Crear categoría"}
-                        </button>
-
-                        <button
-                            type="button"
-                            className="manager-secondary-button"
-                            onClick={() => {
-                                setShowForm(false);
-                                setName("");
-                                setError("");
-                                setEditingCategoryId(null);
-                            }}
-                        >
-                            Cancelar
-                        </button>
-
                     </div>
 
+                    <button
+                        className="manager-primary-button"
+                        onClick={() => {
+                            setEditingCategoryId(null);
+                            setName("");
+                            setError("");
+                            setShowForm(true);
+                        }}
+                    >
+                        + Nueva categoría
+                    </button>
                 </div>
-            )}
 
-            <div className="manager-categories-table-container">
-                <table className="manager-categories-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
+                {showForm && (
+                    <div className="manager-category-form">
 
-                    <tbody>
-                        {categories.map((category) => (
-                            <tr key={category.id}>
-                                <td>{category.id}</td>
-                                <td>{category.name}</td>
+                        <h2>
+                            {editingCategoryId !== null
+                                ? "Editar categoría"
+                                : "Nueva categoría"}
+                        </h2>
 
-                                <td>
-                                    <div className="manager-category-actions">
-                                        <button
-                                            className="manager-edit-button"
-                                            onClick={() => handleUpdateCategory(category.id)}
-                                        >
-                                            Editar
-                                        </button>
+                        <div className="manager-form-field">
+                            <label htmlFor="category-name">
+                                Nombre
+                            </label>
 
-                                        <button
-                                            className="manager-delete-button"
-                                            onClick={() => setCategoryToDelete(category)}
-                                        >
-                                            Eliminar
-                                        </button>
-                                    </div>
-                                </td>
+                            <input
+                                id="category-name"
+                                type="text"
+                                value={name}
+                                onChange={(event) =>
+                                    setName(event.target.value)
+                                }
+                                placeholder="Ingresá el nombre de la categoría"
+                            />
+                        </div>
+
+                        {error && (
+                            <p className="manager-categories-error">
+                                {error}
+                            </p>
+                        )}
+
+                        <div className="manager-form-actions">
+
+                            <button
+                                type="button"
+                                className="manager-primary-button"
+                                onClick={
+                                    editingCategoryId !== null
+                                        ? handleSaveCategory
+                                        : handleCreateCategory
+                                }
+                            >
+                                {editingCategoryId !== null
+                                    ? "Guardar cambios"
+                                    : "Crear categoría"}
+                            </button>
+
+                            <button
+                                type="button"
+                                className="manager-secondary-button"
+                                onClick={() => {
+                                    setShowForm(false);
+                                    setName("");
+                                    setError("");
+                                    setEditingCategoryId(null);
+                                }}
+                            >
+                                Cancelar
+                            </button>
+
+                        </div>
+
+                    </div>
+                )}
+
+                <div className="manager-categories-table-container">
+                    <table className="manager-categories-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Acciones</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
 
-        </div>
+                        <tbody>
+                            {categories.map((category) => (
+                                <tr key={category.id}>
+                                    <td>{category.id}</td>
+                                    <td>{category.name}</td>
+
+                                    <td>
+                                        <div className="manager-category-actions">
+                                            <button
+                                                className="manager-edit-button"
+                                                onClick={() => handleUpdateCategory(category.id)}
+                                            >
+                                                Editar
+                                            </button>
+
+                                            <button
+                                                className="manager-delete-button"
+                                                onClick={() => setCategoryToDelete(category)}
+                                            >
+                                                Eliminar
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </>
     );
 }

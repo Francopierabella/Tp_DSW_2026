@@ -45,6 +45,19 @@ export async function update(req: Request, res: Response) {
         throw new AppError("Internal server error", 500);
     }
 }
+
+export async function findBySale(req: Request, res: Response) {
+    const saleId = Number(req.params.saleId);
+
+    if (Number.isNaN(saleId)) {
+        throw new AppError("Invalid sale ID", 400);
+    }
+
+    const saleItems = await service.findBySale(saleId);
+
+    return res.json(saleItems);
+}
+
 export async function remove(req: Request, res: Response) {
     try {
         const id = Number(req.params.id);

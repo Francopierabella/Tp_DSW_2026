@@ -199,21 +199,33 @@
     }
 
     .search-container {
-        flex-direction: column;
+        flex-wrap: wrap;
+        /* Las piezas se reorganizan en filas */
     }
 
     .search-input-wrapper {
+        flex: 1;
+        /* El input ocupa todo el espacio disponible */
         min-height: 52px;
     }
 
+    /* El botón de buscar se mantiene compacto, al lado del input */
+    .search-button {
+        width: 60px;
+        min-height: 52px;
+    }
+
+    /* El selector de categorías cae en una segunda fila, ancho completo */
+    .category-select-container {
+        width: 100%;
+        order: 3;
+        /* Va después del input y del botón */
+    }
+
     .category-select {
+        width: 100%;
         min-height: 48px;
         border-left: none;
         border-top: 1px solid #e1eaeb;
-    }
-
-    .search-button {
-        width: 100%;
-        min-height: 48px;
     }
 }

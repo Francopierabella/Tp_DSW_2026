@@ -28,7 +28,11 @@ function App() {
 
         <Route path="/productos/:id" element={<ProductDetail />} />
 
-        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/checkout" element={
+          <ProtectedRoute allowedRole="CUSTOMER">
+            <Checkout />
+          </ProtectedRoute>
+        } />
 
         <Route path="/login" element={<Login />} />
 
@@ -44,14 +48,11 @@ function App() {
             <ManagerProducts />
           </ProtectedRoute>
         } />
-        <Route
-          path="/manager/categories"
-          element={
-            <ProtectedRoute allowedRole="MANAGER">
-              <ManagerCategories />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/manager/categories" element={
+          <ProtectedRoute allowedRole="MANAGER">
+            <ManagerCategories />
+          </ProtectedRoute>
+        } />
         <Route
           path="/manager/sales"
           element={

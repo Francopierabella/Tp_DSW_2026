@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import { getProductById } from "../../services/product.service";
@@ -7,10 +7,13 @@ import { useCart } from "../../context/CartContext";
 import type { Product } from "../../types/product";
 import "./ProductDetail.css";
 import Toast from "../../components/Toast/Toast";
+import { useAuth } from "../../context/AuthContext";
 
 export default function ProductDetail() {
 
     const { id } = useParams();
+    const { user } = useAuth();
+    const navigate = useNavigate();
     const [product, setProduct] = useState<Product | null>(null);
     const [toastMessage, setToastMessage] = useState<string | null>(null);
     const { addToCart } = useCart();
@@ -79,10 +82,14 @@ export default function ProductDetail() {
                         <button
                             className="product-detail-button"
                             onClick={(e) => {
-                                e.preventDefault(); // evita que el enlace se ejecute
-                                e.stopPropagation(); // evita que el clic se propague al enlace del card
-                                addToCart(product);
-                                setToastMessage(`${product.name} agregado al carrito!`);
+                                e.preventDefault();
+                                e.stopPropagation();
+                                if (!user) {
+                                    navigate("/login");
+                                } else {
+                                    addToCart(product);
+                                    setToastMessage(`${product.name} agregado al carrito!`);
+                                }
                             }}
                         >
                             Agregar al carrito

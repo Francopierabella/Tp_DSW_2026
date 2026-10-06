@@ -1,10 +1,66 @@
+import { useNavigate } from "react-router-dom";
+import "./Manager.css"
+import Header from "../../components/Header/Header";
 export default function Manager() {
+    const navigate = useNavigate();
+
     return (
-        <div style={{ padding: "40px" }}>
-            <h1>Panel de administración</h1>
-            <p>
-                Bienvenido al panel de administración de Farmacia Pierabella.
-            </p>
-        </div>
+        <>
+            <Header />
+            <main className="manager-page">
+                <section className="manager-header">
+                    <h1>Panel de Administración</h1>
+                    <p>
+                        Gestioná los productos, categorías y ventas de la farmacia.
+                    </p>
+                </section>
+
+                <section className="manager-options">
+
+                    <article className="manager-card">
+                        <div className="manager-card-icon">🛒</div>
+
+                        <h2>Productos</h2>
+
+                        <p>
+                            Agregá, modificá o eliminá productos de la farmacia.
+                        </p>
+
+                        <button onClick={() => navigate("/manager/products")}>
+                            Gestionar productos
+                        </button>
+                    </article>
+
+                    <article className="manager-card">
+                        <div className="manager-card-icon">📂</div>
+
+                        <h2>Categorías</h2>
+
+                        <p>
+                            Administrá las categorías disponibles para los productos.
+                        </p>
+
+                        <button onClick={() => navigate("/manager/categories")}>
+                            Gestionar categorías
+                        </button>
+                    </article>
+
+                    <article className="manager-card">
+                        <div className="manager-card-icon">💰</div>
+
+                        <h2>Ventas</h2>
+
+                        <p>
+                            Consultá y gestioná las ventas realizadas en la farmacia.
+                        </p>
+
+                        <button onClick={() => navigate("/manager/sales")}>
+                            Gestionar ventas
+                        </button>
+                    </article>
+
+                </section>
+            </main>
+        </>
     );
 }

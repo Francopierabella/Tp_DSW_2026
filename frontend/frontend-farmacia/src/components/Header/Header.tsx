@@ -11,7 +11,7 @@ export default function Header() {
     const [cartOpen, setCartOpen] = useState(false);
 
     const { cartItems, clearCart } = useCart();
-    const { user, logout } = useAuth();
+    const { user, role, logout } = useAuth();
 
     const cartItemCount = cartItems.reduce(
         (total, item) => total + item.quantity,
@@ -59,7 +59,7 @@ export default function Header() {
                         Si está logueado → va a /perfil (ícono en color activo)
                         Si no está logueado → va a /login */}
                     <Link
-                        to={user ? "/perfil" : "/login"}
+                        to={user && role === "MANAGER" ? "/manager" : user ? "/customer" : "/login"}
                         className="icon-button"
                         aria-label={user ? "Ver perfil" : "Iniciar sesión"}
                     >
