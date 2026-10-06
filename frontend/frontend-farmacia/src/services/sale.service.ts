@@ -1,44 +1,86 @@
-import type { Sale, SaleCreateInput, SaleUpdateInput } from "../types/sale";
+import type {
+    Sale,
+    SaleResponse,
+    SaleCreateInput,
+    SaleUpdateInput
+} from "../types/sale";
 
 const API_URL = "http://localhost:3000/api/sales";
 
-export async function getSales(): Promise<Sale[]> {
-    const response = await fetch(API_URL);
+export async function getSales(): Promise<SaleResponse[]> {
+    const savedAuth = localStorage.getItem("auth");
+    const session = savedAuth ? JSON.parse(savedAuth) : null;
+    const token = session?.token;
+
+    const response = await fetch(API_URL, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+
     if (!response.ok) {
         throw new Error("Error al obtener las ventas");
     }
+
     return await response.json();
 }
 
 export async function getSaleById(id: number): Promise<Sale | undefined> {
-    const response = await fetch(`${API_URL}/${id}`);
+    const savedAuth = localStorage.getItem("auth");
+    const session = savedAuth ? JSON.parse(savedAuth) : null;
+    const token = session?.token;
+
+    const response = await fetch(`${API_URL}/${id}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+
     if (!response.ok) {
         throw new Error("Error al obtener la venta");
     }
+
     return await response.json();
 }
 
 export async function createSale(sale: SaleCreateInput): Promise<Sale> {
+    const savedAuth = localStorage.getItem("auth");
+    const session = savedAuth ? JSON.parse(savedAuth) : null;
+    const token = session?.token;
+
     const response = await fetch(API_URL, {
-        method: 'POST',
+        method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(sale),
     });
+
     if (!response.ok) {
         const error = await response.json();
         throw new Error(error.message);
     }
+
     const result = await response.json();
+
     return result.data;
 }
 
-export async function updateSale(id: number, sale: SaleUpdateInput): Promise<Sale> {
+export async function updateSale(
+    id: number,
+    sale: SaleUpdateInput
+): Promise<Sale> {
+
+    const savedAuth = localStorage.getItem("auth");
+    const session = savedAuth ? JSON.parse(savedAuth) : null;
+    const token = session?.token;
+
     const response = await fetch(`${API_URL}/${id}`, {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(sale),
     });
@@ -54,17 +96,69 @@ export async function updateSale(id: number, sale: SaleUpdateInput): Promise<Sal
 }
 
 export async function remove(id: number): Promise<Sale> {
+
+    const savedAuth = localStorage.getItem("auth");
+    const session = savedAuth ? JSON.parse(savedAuth) : null;
+    const token = session?.token;
+
     const response = await fetch(`${API_URL}/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
     });
+
     if (!response.ok) {
         const error = await response.json();
         throw new Error(error.message);
     }
+
     const result = await response.json();
+
     return result.data;
 }
 
+export async function confirmSale(id: number): Promise<SaleResponse> {
+
+    const savedAuth = localStorage.getItem("auth");
+    const session = savedAuth ? JSON.parse(savedAuth) : null;
+    const token = session?.token;
+
+    const response = await fetch(`${API_URL}/${id}/confirm`, {
+        method: "PATCH",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message);
+    }
+
+    return await response.json();
+}
+
+export async function cancelSale(id: number): Promise<SaleResponse> {
+
+    const savedAuth = localStorage.getItem("auth");
+    const session = savedAuth ? JSON.parse(savedAuth) : null;
+    const token = session?.token;
+
+    const response = await fetch(`${API_URL}/${id}/cancel`, {
+        method: "PATCH",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message);
+    }
+
+    return await response.json();
+}
 export async function createSaleItem(item: { quantity: number; sale: number; product: number }) {
     const response = await fetch("http://localhost:3000/api/saleItems", {
         method: 'POST',

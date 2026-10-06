@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./ProductCard.css";
 import type { Product } from "../../types/product";
 import { useCart } from "../../context/CartContext";
 import Toast from "../Toast/Toast";
 import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 interface ProductCardProps {
     product: Product;
@@ -18,6 +19,8 @@ export default function ProductCard({
 }: ProductCardProps) {
 
     const { addToCart } = useCart();
+    const { user } = useAuth();
+    const navigate = useNavigate();
     const [toastMessage, setToastMessage] = useState<string | null>(null);
     return (
         <Link
@@ -51,8 +54,12 @@ export default function ProductCard({
                             onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                addToCart(product);
-                                setToastMessage(`${product.name} agregado al carrito!`)
+                                if (!user) {
+                                    navigate("/login");
+                                } else {
+                                    addToCart(product);
+                                    setToastMessage(`${product.name} agregado al carrito!`)
+                                }
                             }}
                         >
                             Agregar

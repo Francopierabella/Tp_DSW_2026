@@ -3,12 +3,14 @@ import { PurchaseOrderItemService } from "./purchaseOrderItem.service.js";
 import { PurchaseOrderItemRepository } from "./purchaseOrderItem.repository.js";
 import { PurchaseOrderRepository } from "../purchaseOrder/purchaseOrder.repository.js";
 import { ProductRepository } from "../product/product.repository.js";
+import { SupplierProductRepository } from "../supplierProduct/supplierProduct.repository.js";
 import { AppError } from "../shared/appError.js";
 
 const service = new PurchaseOrderItemService
     (new PurchaseOrderItemRepository(),
         new PurchaseOrderRepository(),
-        new ProductRepository());
+        new ProductRepository(),
+        new SupplierProductRepository());
 
 export async function findAll(req: Request, res: Response) {
     return res.json(await service.findAll());
@@ -31,6 +33,7 @@ export async function create(req: Request, res: Response) {
         if (error.message === "A purchase order with that id does not exist" || error.message === "A product with that id does not exist") {
             throw new AppError(error.message, 400);
         }
+        console.error(error);
         throw new AppError("Internal server error", 500);
     }
 }

@@ -23,6 +23,7 @@ import { saleItemRouter } from './saleItem/saleItem.routes.js';
 import { purchaseOrderRouter } from './purchaseOrder/purchaseOrder.routes.js';
 import { purchaseOrderItemRouter } from './purchaseOrderItem/purchaseOrderItem.routes.js';
 import { supplierRouter } from './supplier/supplier.routes.js';
+import { supplierProductRouter } from './supplierProduct/supplierProduct.routes.js';
 import { authRouter } from './auth/auth.routes.js';
 
 // ===============================
@@ -59,6 +60,7 @@ app.use("/api/purchaseOrders", purchaseOrderRouter);
 app.use("/api/purchaseOrderItems", purchaseOrderItemRouter);
 app.use("/api/saleItems", saleItemRouter);
 app.use("/api/suppliers", supplierRouter);
+app.use("/api/supplierProducts", supplierProductRouter);
 app.use("/api/auth", authRouter);
 
 app.use((_, res) => {

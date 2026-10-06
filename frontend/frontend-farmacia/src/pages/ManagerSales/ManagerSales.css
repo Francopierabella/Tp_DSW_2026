@@ -186,7 +186,10 @@
     background: white;
     border-radius: 14px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
+    max-height: 90vh;
 }
 
 .sale-detail-header {
@@ -217,7 +220,9 @@
 }
 
 .sale-detail-content {
-    padding: 20px 25px;
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
 }
 
 .sale-detail-row {
@@ -235,6 +240,81 @@
 .sale-detail-row strong {
     color: #155568;
     text-align: right;
+}
+
+
+.sale-detail-products {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.sale-detail-products h3 {
+    margin: 0 0 14px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.sale-detail-product {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    padding: 14px 16px;
+    margin-bottom: 10px;
+
+    background-color: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.sale-detail-product>div:first-child {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sale-detail-product>div:first-child strong {
+    font-size: 14px;
+    color: #155568;
+}
+
+.sale-detail-product>div:first-child span {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.sale-detail-product>div:last-child {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.sale-detail-product>div:last-child span {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.sale-detail-product>div:last-child strong {
+    font-size: 14px;
+    color: #111827;
+    white-space: nowrap;
+}
+
+.sale-detail-products>p {
+    margin: 0;
+    padding: 14px;
+
+    text-align: center;
+
+    font-size: 13px;
+    color: #6b7280;
+
+    background-color: #f8fafc;
+    border: 1px dashed #d1d5db;
+    border-radius: 10px;
 }
 
 .sale-detail-total {
@@ -262,6 +342,7 @@
     justify-content: flex-end;
     padding: 18px 25px;
     background: #f8fbfb;
+    flex-shrink: 0;
 }
 
 .sale-detail-close-button {
@@ -276,6 +357,19 @@
 
 .sale-detail-close-button:hover {
     background: #128f8b;
+}
+
+.sale-detail-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sale-detail-content::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 10px;
+}
+
+.sale-detail-content::-webkit-scrollbar-track {
+    background-color: transparent;
 }
 
 /* =========================

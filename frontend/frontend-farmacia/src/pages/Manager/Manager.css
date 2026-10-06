@@ -1,0 +1,183 @@
+.manager-page {
+    min-height: calc(100vh - 80px);
+    padding: 50px 6%;
+    background: #f8fafc;
+}
+
+.manager-header {
+    max-width: 1100px;
+    margin: 0 auto 45px;
+    text-align: center;
+}
+
+.manager-header h1 {
+    margin: 0 0 12px;
+    font-size: 36px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.manager-header p {
+    margin: 0;
+    font-size: 16px;
+    color: #6b7280;
+}
+
+.manager-options {
+    max-width: 1100px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+}
+
+.manager-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    min-height: 330px;
+    padding: 32px 28px;
+
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+
+    text-align: center;
+
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.manager-card:hover {
+    transform: translateY(-6px);
+
+    border-color: #d1d5db;
+
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.10);
+}
+
+.manager-card-icon {
+    width: 72px;
+    height: 72px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 22px;
+
+    border-radius: 18px;
+
+    background: #f1f5f9;
+
+    font-size: 34px;
+
+    transition:
+        transform 0.25s ease,
+        background-color 0.25s ease;
+}
+
+.manager-card:hover .manager-card-icon {
+    transform: scale(1.08);
+    background: #e2e8f0;
+}
+
+.manager-card h2 {
+    margin: 0 0 12px;
+
+    font-size: 22px;
+    font-weight: 700;
+
+    color: #1f2937;
+}
+
+.manager-card p {
+    margin: 0;
+
+    max-width: 280px;
+
+    font-size: 14px;
+    line-height: 1.6;
+
+    color: #6b7280;
+}
+
+.manager-card button {
+    margin-top: auto;
+
+    width: 100%;
+    max-width: 220px;
+
+    padding: 12px 18px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #1f2937;
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.manager-card button:hover {
+    background: #111827;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 5px 12px rgba(15, 23, 42, 0.18);
+}
+
+.manager-card button:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 900px) {
+    .manager-options {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+    }
+
+    .manager-header h1 {
+        font-size: 30px;
+    }
+
+    .manager-card {
+        min-height: 300px;
+    }
+}
+
+@media (max-width: 500px) {
+    .manager-page {
+        padding: 35px 20px;
+    }
+
+    .manager-header {
+        margin-bottom: 30px;
+    }
+
+    .manager-header h1 {
+        font-size: 26px;
+    }
+
+    .manager-header p {
+        font-size: 14px;
+    }
+
+    .manager-card {
+        padding: 28px 22px;
+    }
+}

@@ -5,6 +5,8 @@ import { Product } from "../../product/product.entity.js";
 import { HealthInsurance } from "../../healthInsurance/healthInsurance.entity.js";
 import { Customer } from "../../customer/customer.entity.js";
 import { Manager } from "../../manager/manager.entity.js";
+import { SupplierProduct } from "../../supplierProduct/supplierProduct.entity.js";
+import { Supplier } from "../../supplier/supplier.entity.js";
 
 //DATOS DE PRUEBA PARA ARRANCAR LA BD
 
@@ -333,4 +335,163 @@ export async function seedDatabase(): Promise<void> {
             console.log(`Product created: ${data.name}`);
         }
     }
+    // =========================================================
+    // 6. Suppliers 
+    //
+
+    const suppliers = [
+        {
+            name: "Bayer",
+            email: "bayer@gmail.com",
+            phoneNumber: "1132334455"
+        },
+        {
+            name: "Genfar",
+            email: "genfar@gmail.com",
+            phoneNumber: "1122334466"
+        },
+        {
+            name: "Andrómaco",
+            email: "andromaco@gmail.com",
+            phoneNumber: "1122334477"
+        },
+        {
+            name: "Pfizer",
+            email: "pfizer@gmail.com",
+            phoneNumber: "1122334488"
+        },
+        {
+            name: "Roemmers",
+            email: "roemmers@gmail.com",
+            phoneNumber: "1122334499"
+        },
+        {
+            name: "Sanofi",
+            email: "sanofi@gmail.com",
+            phoneNumber: "1122334400"
+        },
+        {
+            name: "Merck",
+            email: "merck@gmail.com",
+            phoneNumber: "1122334435"
+        },
+        {
+            name: "Novartis",
+            email: "novartis@gmail.com",
+            phoneNumber: "1122334425"
+        },
+        {
+            name: "Roche",
+            email: "roche@gmail.com",
+            phoneNumber: "1122334415"
+        },
+        {
+            name: "Gador",
+            email: "gador@gmail.com",
+            phoneNumber: "1722334455"
+        }
+    ]
+    for (const data of suppliers) {
+        const existingSupplier = await em.findOne(Supplier, { name: data.name });
+        if (!existingSupplier) {
+            const supplier = new Supplier(data.name, data.email, data.phoneNumber);
+            await em.persistAndFlush(supplier);
+            console.log(`Supplier created: ${data.name}`);
+        }
+    }
+
+    // =========================================================
+    // 7. Supplier Products
+    // =========================================================
+    const supplierProductData = [
+        // Paracetamol 500
+        { product: "Paracetamol 500", supplier: "Genfar", price: 1500 },
+        { product: "Paracetamol 500", supplier: "Roemmers", price: 1580 },
+        { product: "Paracetamol 500", supplier: "Sanofi", price: 1620 },
+
+        // Ibuprofeno 400
+        { product: "Ibuprofeno 400", supplier: "Genfar", price: 1950 },
+        { product: "Ibuprofeno 400", supplier: "Roemmers", price: 2050 },
+        { product: "Ibuprofeno 400", supplier: "Bayer", price: 2100 },
+
+        // Aspirina 500
+        { product: "Aspirina 500", supplier: "Bayer", price: 1650 },
+        { product: "Aspirina 500", supplier: "Sanofi", price: 1720 },
+        { product: "Aspirina 500", supplier: "Roemmers", price: 1800 },
+
+        // Shampoo Nutritivo
+        { product: "Shampoo Nutritivo", supplier: "Gador", price: 2800 },
+        { product: "Shampoo Nutritivo", supplier: "Andrómaco", price: 2950 },
+        { product: "Shampoo Nutritivo", supplier: "Merck", price: 3100 },
+
+        // Jabón Líquido
+        { product: "Jabón Líquido", supplier: "Gador", price: 1600 },
+        { product: "Jabón Líquido", supplier: "Sanofi", price: 1700 },
+        { product: "Jabón Líquido", supplier: "Merck", price: 1780 },
+
+        // Crema Hidratante
+        { product: "Crema Hidratante", supplier: "Andrómaco", price: 3000 },
+        { product: "Crema Hidratante", supplier: "Roche", price: 3150 },
+        { product: "Crema Hidratante", supplier: "Novartis", price: 3300 },
+
+        // Perfume Blue
+        { product: "Perfume Blue", supplier: "Gador", price: 7500 },
+        { product: "Perfume Blue", supplier: "Novartis", price: 7800 },
+        { product: "Perfume Blue", supplier: "Roche", price: 8100 },
+
+        // Perfume Floral
+        { product: "Perfume Floral", supplier: "Gador", price: 8000 },
+        { product: "Perfume Floral", supplier: "Roche", price: 8250 },
+        { product: "Perfume Floral", supplier: "Novartis", price: 8500 },
+
+        // Pañales Talle M
+        { product: "Pañales Talle M", supplier: "Bayer", price: 5000 },
+        { product: "Pañales Talle M", supplier: "Sanofi", price: 5200 },
+        { product: "Pañales Talle M", supplier: "Genfar", price: 5350 },
+
+        // Vitamina C
+        { product: "Vitamina C", supplier: "Bayer", price: 3800 },
+        { product: "Vitamina C", supplier: "Roche", price: 4000 },
+        { product: "Vitamina C", supplier: "Sanofi", price: 4100 },
+        { product: "Vitamina C", supplier: "Merck", price: 4250 }
+    ];
+    for (const data of supplierProductData) {
+
+        const product = await em.findOne(
+            Product,
+            { name: data.product }
+        );
+
+        const supplier = await em.findOne(
+            Supplier,
+            { name: data.supplier }
+        );
+
+        if (!product || !supplier) {
+            console.log(
+                `Could not create SupplierProduct: ${data.product} - ${data.supplier}`
+            );
+            continue;
+        }
+
+        const existingSupplierProduct = await em.findOne(
+            SupplierProduct,
+            {
+                product: product.id!,
+                supplier: supplier.id!
+            }
+        );
+
+        if (!existingSupplierProduct) {
+
+            const supplierProduct = new SupplierProduct(
+                product.id!,
+                supplier.id!,
+                data.price
+            );
+
+            await em.persistAndFlush(supplierProduct);
+        }
+    }
+
 }

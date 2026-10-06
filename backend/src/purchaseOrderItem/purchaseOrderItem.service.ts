@@ -4,13 +4,15 @@ import { PurchaseOrder } from "../purchaseOrder/purchaseOrder.entity.js";
 import { PurchaseOrderRepository } from "../purchaseOrder/purchaseOrder.repository.js";
 import { PurchaseOrderItemRepository } from "./purchaseOrderItem.repository.js";
 import { ProductRepository } from "../product/product.repository.js";
+import { SupplierProductRepository } from "../supplierProduct/supplierProduct.repository.js";
 
 
 export class PurchaseOrderItemService {
     constructor(
         private readonly repo: PurchaseOrderItemRepository,
         private readonly purchaseOrderRepo: PurchaseOrderRepository,
-        private readonly productRepo: ProductRepository
+        private readonly productRepo: ProductRepository,
+        private readonly supplierProductRepo: SupplierProductRepository
     ) { };
     async findAll(): Promise<PurchaseOrderItem[] | undefined> {
         return await this.repo.findAll();
@@ -21,29 +23,61 @@ export class PurchaseOrderItemService {
     async create(input: PurchaseOrderItem): Promise<PurchaseOrderItem | undefined> {
 
         const product = await this.productRepo.findOne({ id: input.product });
+
         if (!product) {
             throw new Error("The product ID entered is invalid");
         }
+
+        const purchaseOrder = await this.purchaseOrderRepo.findOne({
+            id: input.purchaseOrder
+        });
+
+        if (!purchaseOrder) {
+            throw new Error("The purchase order ID entered is invalid");
+        }
+
+        const supplierProduct =
+            await this.supplierProductRepo.findByProductAndSupplier(
+                input.product,
+                purchaseOrder.supplier
+            );
+
+        if (!supplierProduct) {
+            throw new Error(
+                "The selected supplier does not offer this product"
+            );
+        }
+
         try {
 
             const purchaseOrderItem = new PurchaseOrderItem(
                 input.quantity,
-                product.price,
+                supplierProduct.price,
                 input.purchaseOrder,
-                input.product,
-            )
+                input.product
+            );
+
             const created = await this.repo.add(purchaseOrderItem);
+
             if (created) {
                 await this.updatePurchaseOrderTotal(input.purchaseOrder);
             }
+
             return created;
+
         } catch (error: any) {
             if (error.code === "ER_DUP_ENTRY") {
-                throw new Error("A purchase order item with that name already exists.");
+                throw new Error(
+                    "A purchase order item with that name already exists."
+                );
             }
+
             if (error.code === "ER_NO_REFERENCED_ROW_2") {
-                throw new Error("The purchase order or product ID entered is invalid");
+                throw new Error(
+                    "The purchase order or product ID entered is invalid"
+                );
             }
+
             throw error;
         }
     }

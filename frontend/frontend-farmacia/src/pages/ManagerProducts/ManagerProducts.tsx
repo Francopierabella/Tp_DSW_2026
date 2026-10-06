@@ -4,13 +4,11 @@ import type { Product } from "../../types/product";
 import type { ProductCategory } from "../../types/productCategory";
 import ConfirmModal from "../../components/ConfirmModal/ConfirmModal";
 import "./ManagerProducts.css";
+import Header from "../../components/Header/Header";
 
 
 export default function ManagerProducts() {
-
-    const { user } = useAuth();
     const { token } = useAuth();
-
     const [showForm, setShowForm] = useState(false);
     const [products, setProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<ProductCategory[]>([]);
@@ -287,274 +285,277 @@ export default function ManagerProducts() {
     }
 
     return (
-        <div className="manager-products-page">
+        <>
+            <Header />
+            <div className="manager-products-page">
 
-            {
-                productToDelete && (
-                    <ConfirmModal
-                        title="Eliminar producto"
-                        message={`¿Estás seguro de que querés eliminar el producto "${productToDelete.name}"?`}
-                        onConfirm={() =>
-                            handleDeleteProduct(productToDelete.id)
-                        }
-                        onCancel={() =>
-                            setProductToDelete(null)
-                        }
-                    />
-                )
-            }
-
-            <div className="manager-products-header">
-
-                <div>
-                    <h1>Productos</h1>
-
-                    <p>
-                        Gestioná los productos de Farmacia Pierabella.
-                    </p>
-                </div>
-
-                <button
-                    className="manager-primary-button"
-                    onClick={() => setShowForm(true)}
-                >
-                    + Nuevo producto
-                </button>
-
-            </div>
-
-            {showForm && (
-                <div className="manager-product-form">
-
-                    <h2>
-                        {editingProduct ? "Editar producto" : "Nuevo producto"}
-                    </h2>
-
-                    <div className="manager-form-grid">
-
-                        <div className="manager-form-field">
-                            <label>Nombre</label>
-                            <input
-                                type="text"
-                                placeholder="Nombre del producto"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                            />
-                        </div>
-
-                        <div className="manager-form-field">
-                            <label>Marca</label>
-                            <input
-                                type="text"
-                                placeholder="Marca"
-                                value={brand}
-                                onChange={(e) => setBrand(e.target.value)}
-                            />
-                        </div>
-
-                        <div className="manager-form-field">
-                            <label>Precio</label>
-                            <input
-                                type="number"
-                                placeholder="Precio"
-                                value={price}
-                                onChange={(e) => setPrice(e.target.value)}
-                            />
-                        </div>
-
-                        <div className="manager-form-field">
-                            <label>Stock</label>
-                            <input
-                                type="number"
-                                placeholder="Stock"
-                                value={stock}
-                                onChange={(e) => setStock(e.target.value)}
-                            />
-                        </div>
-
-                        <div className="manager-form-field">
-                            <label>Género</label>
-
-                            <select
-                                value={gender}
-                                onChange={(e) => setGender(e.target.value)}
-                            >
-                                <option value="" disabled>
-                                    Seleccioná un género
-                                </option>
-                                <option value="Male">Masculino</option>
-                                <option value="Female">Femenino</option>
-                            </select>
-                        </div>
-
-                        <div className="manager-form-field">
-                            <label>Categoría</label>
-
-                            <select value={category} onChange={(e) => setCategory(e.target.value)}>
-                                <option value="" disabled>
-                                    Seleccioná una categoría
-                                </option>
-
-                                {categories.map((category) => (
-                                    <option
-                                        key={category.id}
-                                        value={category.id}
-                                    >{category.name}</option>
-                                ))}
-                            </select>
-                        </div>
-
-                    </div>
-
-                    <div className="manager-form-field">
-                        <label>Descripción</label>
-
-                        <textarea
-                            placeholder="Descripción del producto"
-                            rows={4}
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
+                {
+                    productToDelete && (
+                        <ConfirmModal
+                            title="Eliminar producto"
+                            message={`¿Estás seguro de que querés eliminar el producto "${productToDelete.name}"?`}
+                            onConfirm={() =>
+                                handleDeleteProduct(productToDelete.id)
+                            }
+                            onCancel={() =>
+                                setProductToDelete(null)
+                            }
                         />
-                    </div>
+                    )
+                }
 
-                    <label className="manager-featured-checkbox">
-                        <input
-                            type="checkbox"
-                            checked={isFeatured}
-                            onChange={(e) => setIsFeatured(e.target.checked)}
-                        />
+                <div className="manager-products-header">
 
-                        Producto destacado
-                    </label>
+                    <div>
+                        <h1>Productos</h1>
 
-                    {formError && (
-                        <p className="manager-form-error">
-                            {formError}
+                        <p>
+                            Gestioná los productos de Farmacia Pierabella.
                         </p>
-                    )}
-
-                    <div className="manager-form-actions">
-
-                        <button
-                            type="button"
-                            className="manager-cancel-button"
-                            onClick={() => setShowForm(false)}
-                        >
-                            Cancelar
-                        </button>
-
-                        <button
-                            type="button"
-                            className="manager-primary-button"
-                            onClick={() => {
-                                if (editingProduct) {
-                                    handleUpdateProduct(editingProduct.id);
-                                } else {
-                                    handleCreateProduct();
-                                }
-                            }}
-                        >
-                            {editingProduct ? "Guardar cambios" : "Crear producto"}
-                        </button>
-
                     </div>
 
+                    <button
+                        className="manager-primary-button"
+                        onClick={() => setShowForm(true)}
+                    >
+                        + Nuevo producto
+                    </button>
+
                 </div>
-            )}
 
-            <div className="manager-products-table-container">
+                {showForm && (
+                    <div className="manager-product-form">
 
-                <table className="manager-products-table">
+                        <h2>
+                            {editingProduct ? "Editar producto" : "Nuevo producto"}
+                        </h2>
 
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Producto</th>
-                            <th>Marca</th>
-                            <th>Precio</th>
-                            <th>Stock</th>
-                            <th>Destacado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
+                        <div className="manager-form-grid">
 
-                    <tbody>
+                            <div className="manager-form-field">
+                                <label>Nombre</label>
+                                <input
+                                    type="text"
+                                    placeholder="Nombre del producto"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                />
+                            </div>
 
-                        {products.map((product) => (
+                            <div className="manager-form-field">
+                                <label>Marca</label>
+                                <input
+                                    type="text"
+                                    placeholder="Marca"
+                                    value={brand}
+                                    onChange={(e) => setBrand(e.target.value)}
+                                />
+                            </div>
 
-                            <tr key={product.id}>
+                            <div className="manager-form-field">
+                                <label>Precio</label>
+                                <input
+                                    type="number"
+                                    placeholder="Precio"
+                                    value={price}
+                                    onChange={(e) => setPrice(e.target.value)}
+                                />
+                            </div>
 
-                                <td>
-                                    {product.id}
-                                </td>
+                            <div className="manager-form-field">
+                                <label>Stock</label>
+                                <input
+                                    type="number"
+                                    placeholder="Stock"
+                                    value={stock}
+                                    onChange={(e) => setStock(e.target.value)}
+                                />
+                            </div>
 
-                                <td>
-                                    {product.name}
-                                </td>
+                            <div className="manager-form-field">
+                                <label>Género</label>
 
-                                <td>
-                                    {product.brand}
-                                </td>
+                                <select
+                                    value={gender}
+                                    onChange={(e) => setGender(e.target.value)}
+                                >
+                                    <option value="" disabled>
+                                        Seleccioná un género
+                                    </option>
+                                    <option value="Male">Masculino</option>
+                                    <option value="Female">Femenino</option>
+                                </select>
+                            </div>
 
-                                <td>
-                                    ${product.price.toLocaleString("es-AR")}
-                                </td>
+                            <div className="manager-form-field">
+                                <label>Categoría</label>
 
-                                <td>
-                                    {product.stock}
-                                </td>
+                                <select value={category} onChange={(e) => setCategory(e.target.value)}>
+                                    <option value="" disabled>
+                                        Seleccioná una categoría
+                                    </option>
 
-                                <td>
-                                    {product.isFeatured
-                                        ? "Sí"
-                                        : "No"}
-                                </td>
+                                    {categories.map((category) => (
+                                        <option
+                                            key={category.id}
+                                            value={category.id}
+                                        >{category.name}</option>
+                                    ))}
+                                </select>
+                            </div>
 
-                                <td>
+                        </div>
 
-                                    <div className="manager-product-actions">
+                        <div className="manager-form-field">
+                            <label>Descripción</label>
 
-                                        <button
-                                            className="manager-edit-button"
-                                            onClick={() => {
-                                                setEditingProduct(product);
+                            <textarea
+                                placeholder="Descripción del producto"
+                                rows={4}
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                            />
+                        </div>
 
-                                                setName(product.name);
-                                                setDescription(product.description);
-                                                setBrand(product.brand);
-                                                setGender(product.gender);
-                                                setPrice(String(product.price));
-                                                setStock(String(product.stock));
-                                                setCategory(String(product.category));
-                                                setIsFeatured(product.isFeatured);
+                        <label className="manager-featured-checkbox">
+                            <input
+                                type="checkbox"
+                                checked={isFeatured}
+                                onChange={(e) => setIsFeatured(e.target.checked)}
+                            />
 
-                                                setShowForm(true);
-                                            }}
-                                        >
-                                            Editar
-                                        </button>
+                            Producto destacado
+                        </label>
 
-                                        <button
-                                            className="manager-delete-button"
-                                            onClick={() => setProductToDelete(product)}
-                                        >
-                                            Eliminar
-                                        </button>
+                        {formError && (
+                            <p className="manager-form-error">
+                                {formError}
+                            </p>
+                        )}
 
-                                    </div>
+                        <div className="manager-form-actions">
 
-                                </td>
+                            <button
+                                type="button"
+                                className="manager-cancel-button"
+                                onClick={() => setShowForm(false)}
+                            >
+                                Cancelar
+                            </button>
 
+                            <button
+                                type="button"
+                                className="manager-primary-button"
+                                onClick={() => {
+                                    if (editingProduct) {
+                                        handleUpdateProduct(editingProduct.id);
+                                    } else {
+                                        handleCreateProduct();
+                                    }
+                                }}
+                            >
+                                {editingProduct ? "Guardar cambios" : "Crear producto"}
+                            </button>
+
+                        </div>
+
+                    </div>
+                )}
+
+                <div className="manager-products-table-container">
+
+                    <table className="manager-products-table">
+
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Producto</th>
+                                <th>Marca</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                                <th>Destacado</th>
+                                <th>Acciones</th>
                             </tr>
+                        </thead>
 
-                        ))}
+                        <tbody>
 
-                    </tbody>
+                            {products.map((product) => (
 
-                </table>
+                                <tr key={product.id}>
+
+                                    <td>
+                                        {product.id}
+                                    </td>
+
+                                    <td>
+                                        {product.name}
+                                    </td>
+
+                                    <td>
+                                        {product.brand}
+                                    </td>
+
+                                    <td>
+                                        ${product.price.toLocaleString("es-AR")}
+                                    </td>
+
+                                    <td>
+                                        {product.stock}
+                                    </td>
+
+                                    <td>
+                                        {product.isFeatured
+                                            ? "Sí"
+                                            : "No"}
+                                    </td>
+
+                                    <td>
+
+                                        <div className="manager-product-actions">
+
+                                            <button
+                                                className="manager-edit-button"
+                                                onClick={() => {
+                                                    setEditingProduct(product);
+
+                                                    setName(product.name);
+                                                    setDescription(product.description);
+                                                    setBrand(product.brand);
+                                                    setGender(product.gender);
+                                                    setPrice(String(product.price));
+                                                    setStock(String(product.stock));
+                                                    setCategory(String(product.category));
+                                                    setIsFeatured(product.isFeatured);
+
+                                                    setShowForm(true);
+                                                }}
+                                            >
+                                                Editar
+                                            </button>
+
+                                            <button
+                                                className="manager-delete-button"
+                                                onClick={() => setProductToDelete(product)}
+                                            >
+                                                Eliminar
+                                            </button>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            ))}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
 
             </div>
-
-        </div>
+        </>
     );
 }

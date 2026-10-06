@@ -12,17 +12,12 @@ export class SaleItemService {
         private readonly productRepo: IRepository<Product>
     ) { };
 
-    // ============================ FIND ALL ============================
     async findAll(): Promise<SaleItem[] | undefined> {
         return await this.repo.findAll();
     }
-
-    // ============================ FIND ONE ============================
     async findOne(id: number): Promise<SaleItem | undefined> {
         return await this.repo.findOne({ id });
     }
-
-    // ============================ CREATE ============================
     async create(input: SaleItem): Promise<SaleItem | undefined> {
 
         const sale = await this.saleRepo.findOne({ id: input.sale });
@@ -54,11 +49,10 @@ export class SaleItemService {
             }
             return created;
         } catch (error: any) {
-                throw error;
+            throw error;
         }
     }
 
-    // ============================ UPDATE ============================    
     async update(id: number, input: Partial<SaleItem>): Promise<SaleItem | undefined> {
 
         const saleItemFound = await this.repo.findOne({ id });
@@ -83,7 +77,6 @@ export class SaleItemService {
         return updated;
     }
 
-    // ============================ REMOVE ============================    
     async remove(id: number): Promise<SaleItem | undefined> {
         const saleItemFound = await this.repo.findOne({ id });
         if (!saleItemFound) {
@@ -103,9 +96,15 @@ export class SaleItemService {
         return deleted;
     }
 
-    // ============================ UPDATE SALE TOTAL ============================        
-    private async updateSaleTotal(saleId: number): Promise<void> {
+    async findBySale(saleId: number): Promise<SaleItem[]> {
+        const sale = await this.saleRepo.findOne({ id: saleId });
+        if (!sale) {
+            throw new Error("The sale ID entered is invalid");
+        }
+        return await this.repo.findBySale(saleId);
+    }
 
+    private async updateSaleTotal(saleId: number): Promise<void> {
         const saleItems = await this.repo.findBySale(saleId);
         let total = 0;
         if (saleItems) {
@@ -113,7 +112,6 @@ export class SaleItemService {
                 total += item.quantity * item.unitPrice;
             }
         }
-
         await this.saleRepo.update(saleId, { totalAmount: total });
     }
 }
