@@ -25,6 +25,7 @@ import { purchaseOrderItemRouter } from './purchaseOrderItem/purchaseOrderItem.r
 import { supplierRouter } from './supplier/supplier.routes.js';
 import { supplierProductRouter } from './supplierProduct/supplierProduct.routes.js';
 import { authRouter } from './auth/auth.routes.js';
+import { managerRegistrationRequestRouter } from './managerRegistrationRequest/managerRegistrationRequest.routes.js';
 
 // ===============================
 
@@ -62,6 +63,7 @@ app.use("/api/saleItems", saleItemRouter);
 app.use("/api/suppliers", supplierRouter);
 app.use("/api/supplierProducts", supplierProductRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/managerRegistrationRequests", managerRegistrationRequestRouter);
 
 app.use((_, res) => {
     return res.status(404).send({ message: "Resource not Found" })
