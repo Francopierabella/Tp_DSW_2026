@@ -214,7 +214,8 @@ export async function seedDatabase(): Promise<void> {
             price: 2500,
             stock: 50,
             category: "Medicamentos",
-            isFeatured: true
+            isFeatured: true,
+            hasHealthInsuranceCoverage: true
         },
         {
             name: "Ibuprofeno 400",
@@ -224,7 +225,9 @@ export async function seedDatabase(): Promise<void> {
             price: 3200,
             stock: 40,
             category: "Medicamentos",
-            isFeatured: true
+            isFeatured: true,
+            hasHealthInsuranceCoverage: false
+
         },
         {
             name: "Aspirina 500",
@@ -234,7 +237,8 @@ export async function seedDatabase(): Promise<void> {
             price: 2800,
             stock: 35,
             category: "Medicamentos",
-            isFeatured: false
+            isFeatured: false,
+            hasHealthInsuranceCoverage: true
         },
         {
             name: "Shampoo Nutritivo",
@@ -243,8 +247,9 @@ export async function seedDatabase(): Promise<void> {
             gender: "female",
             price: 4500,
             stock: 25,
-            category: "Higiene y cuidado personal",
-            isFeatured: true
+            category: "Higiene",
+            isFeatured: true,
+            hasHealthInsuranceCoverage: false
         },
         {
             name: "Jabón Líquido",
@@ -253,8 +258,9 @@ export async function seedDatabase(): Promise<void> {
             gender: "unisex",
             price: 2900,
             stock: 30,
-            category: "Higiene y cuidado personal",
-            isFeatured: false
+            category: "Higiene",
+            isFeatured: false,
+            hasHealthInsuranceCoverage: false
         },
         {
             name: "Crema Hidratante",
@@ -263,8 +269,9 @@ export async function seedDatabase(): Promise<void> {
             gender: "unisex",
             price: 5200,
             stock: 20,
-            category: "Higiene y cuidado personal",
-            isFeatured: true
+            category: "Higiene",
+            isFeatured: true,
+            hasHealthInsuranceCoverage: false
         },
         {
             name: "Perfume Blue",
@@ -274,7 +281,8 @@ export async function seedDatabase(): Promise<void> {
             price: 12500,
             stock: 15,
             category: "Perfumería",
-            isFeatured: true
+            isFeatured: true,
+            hasHealthInsuranceCoverage: true
         },
         {
             name: "Perfume Floral",
@@ -284,7 +292,8 @@ export async function seedDatabase(): Promise<void> {
             price: 13500,
             stock: 12,
             category: "Perfumería",
-            isFeatured: false
+            isFeatured: false,
+            hasHealthInsuranceCoverage: true
         },
         {
             name: "Pañales Talle M",
@@ -294,7 +303,8 @@ export async function seedDatabase(): Promise<void> {
             price: 8500,
             stock: 18,
             category: "Bebés",
-            isFeatured: false
+            isFeatured: false,
+            hasHealthInsuranceCoverage: false
         },
         {
             name: "Vitamina C",
@@ -304,7 +314,8 @@ export async function seedDatabase(): Promise<void> {
             price: 6500,
             stock: 25,
             category: "Vitaminas",
-            isFeatured: true
+            isFeatured: true,
+            hasHealthInsuranceCoverage: true
         }
     ];
 
@@ -327,7 +338,8 @@ export async function seedDatabase(): Promise<void> {
                 data.price,
                 data.stock,
                 category.id!,
-                data.isFeatured
+                data.isFeatured,
+                data.hasHealthInsuranceCoverage
             );
 
             await em.persistAndFlush(product);

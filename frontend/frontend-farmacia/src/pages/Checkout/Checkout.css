@@ -252,3 +252,75 @@
         font-size: 25px;
     }
 }
+
+.checkout-customer-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 16px;
+    margin-bottom: 24px;
+    background-color: #f0fafa;
+    border: 1px solid #d5eeee;
+    border-radius: 10px;
+}
+
+.checkout-customer-info strong {
+    font-size: 14px;
+    color: #155568;
+    font-weight: 600;
+}
+
+.checkout-customer-info span {
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+}
+
+.checkout-coverage-info {
+    margin-top: 24px;
+    padding: 20px;
+    background-color: #f0fafa;
+    border: 1px solid #d5eeee;
+    border-radius: 12px;
+}
+
+.checkout-coverage-info>div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid #dceeee;
+}
+
+.checkout-coverage-info>div:last-child {
+    border-bottom: none;
+}
+
+.checkout-coverage-info span {
+    color: #555;
+    font-size: 15px;
+}
+
+.checkout-coverage-info strong {
+    color: #155568;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.checkout-final-total {
+    margin-top: 8px;
+    padding-top: 16px !important;
+}
+
+.checkout-final-total span {
+    color: #155568;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.checkout-final-total strong {
+    color: #16aaa5;
+    font-size: 22px;
+    font-weight: 700;
+}

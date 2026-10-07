@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
@@ -6,24 +6,117 @@ import Toast from "../../components/Toast/Toast";
 import { useCart } from "../../context/CartContext";
 import { createSale, createSaleItem } from "../../services/sale.service";
 import "./Checkout.css";
+import { useAuth } from "../../context/AuthContext";
+import { getCustomerProfile } from "../../services/customer.service";
+import { getHealthInsurances } from "../../services/healthInsurance.service";
 
 export default function Checkout() {
     const { cartItems, total, clearCart } = useCart();
+    const { user, role, token } = useAuth();
 
-    const [paymentMethod, setPaymentMethod] = useState<'CASH' | 'CREDIT_CARD' | 'DEBIT_CARD' | 'TRANSFER'>('CASH');
-    const [deliveryMethod, setDeliveryMethod] = useState<'PICKUP' | 'DELIVERY'>('PICKUP');
-    const [customerName, setCustomerName] = useState("");
-    const [customerDni, setCustomerDni] = useState("");
+    const [coveragePercentage, setCoveragePercentage] = useState(0);
+    const [healthInsuranceName, setHealthInsuranceName] = useState<string | null>(null);
+
+    const [paymentMethod, setPaymentMethod] =
+        useState<'CASH' | 'CREDIT_CARD' | 'DEBIT_CARD' | 'TRANSFER'>('CASH');
+
+    const [deliveryMethod, setDeliveryMethod] =
+        useState<'PICKUP' | 'DELIVERY'>('PICKUP');
+
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [createdSaleId, setCreatedSaleId] = useState<number | null>(null);
     const [showToast, setShowToast] = useState(false);
 
+    // Calcula cuánto cubre la obra social
+    const calculateCoverage = () => {
+        if (coveragePercentage === 0) {
+            return 0;
+        }
+
+        return cartItems.reduce((totalCoverage, item) => {
+            // Si el producto no tiene cobertura, no se aplica descuento
+            if (!item.product.hasCoverage) {
+                return totalCoverage;
+            }
+
+            const itemTotal = item.product.price * item.quantity;
+
+            const itemCoverage =
+                itemTotal * (coveragePercentage / 100);
+
+            return totalCoverage + itemCoverage;
+        }, 0);
+    };
+
+    // Calculamos estos valores directamente, sin guardarlos en estados
+    const coverageAmount = calculateCoverage();
+    const finalTotal = total - coverageAmount;
+
+    // Obtener la obra social del cliente logueado
+    useEffect(() => {
+        const loadHealthInsurance = async () => {
+            if (!user || role !== "CUSTOMER" || !token) {
+                return;
+            }
+
+            try {
+                // Obtener los datos del cliente logueado
+                const customer = await getCustomerProfile(user.id, token);
+
+                // Si el cliente no tiene obra social
+                if (!customer.healthInsurance) {
+                    setCoveragePercentage(0);
+                    setHealthInsuranceName(null);
+                    return;
+                }
+
+                // Obtener todas las obras sociales
+                const healthInsurances = await getHealthInsurances();
+
+                // Buscar la obra social del cliente
+                const healthInsurance = healthInsurances.find(
+                    (insurance) => insurance.id === customer.healthInsurance
+                );
+
+                if (!healthInsurance) {
+                    setCoveragePercentage(0);
+                    setHealthInsuranceName(null);
+                    return;
+                }
+
+                // Guardar los datos de la obra social
+                setCoveragePercentage(healthInsurance.coveragePercentage);
+                setHealthInsuranceName(healthInsurance.name);
+
+            } catch (error) {
+                console.error(
+                    "Error al obtener la obra social:",
+                    error
+                );
+
+                setCoveragePercentage(0);
+                setHealthInsuranceName(null);
+            }
+        };
+
+        loadHealthInsurance();
+    }, [user, role, token]);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (cartItems.length === 0) {
-            setErrorMessage("El carrito está vacío. Agregá productos antes de comprar.");
+            setErrorMessage(
+                "El carrito está vacío. Agregá productos antes de comprar."
+            );
+            return;
+        }
+
+        if (!user || role !== "CUSTOMER" || !token) {
+            setErrorMessage(
+                "Debes iniciar sesión como cliente para realizar la compra."
+            );
             return;
         }
 
@@ -31,29 +124,15 @@ export default function Checkout() {
         setErrorMessage(null);
 
         try {
-            // 1. Buscar al cliente por DNI en el backend
-            const customerResponse = await fetch(`http://localhost:3000/api/customers/dni/${customerDni}`);
-
-            if (!customerResponse.ok) {
-                if (customerResponse.status === 404) {
-                    throw new Error("No se encontró ningún cliente con ese DNI. Por favor, registrate primero.");
-                }
-                throw new Error("Error al verificar el cliente.");
-            }
-
-            // Extraer el ID del cliente que nos devolvió el backend
-            const customer = await customerResponse.json();
-            const realCustomerId = customer.id;
-
-            // 2. Crear la venta usando el ID real del cliente
+            // 1. Crear la venta usando el cliente logueado
             const newSale = await createSale({
                 paymentMethod,
                 deliveryMethod,
-                customer: realCustomerId, // 👈 ¡Ahora usamos el ID real!
-                manager: 1 // Manager temporal hasta tener autenticación
+                customer: user.id,
+                manager: 1 // Temporal hasta resolver el manager autenticado
             });
 
-            // 3. Crear los ítems de la venta
+            // 2. Crear los ítems de la venta
             for (const item of cartItems) {
                 await createSaleItem({
                     sale: newSale.id,
@@ -62,12 +141,16 @@ export default function Checkout() {
                 });
             }
 
-            // 4. Limpiar carrito y mostrar éxito
+            // 3. Limpiar carrito y mostrar éxito
             clearCart();
             setCreatedSaleId(newSale.id);
             setShowToast(true);
+
         } catch (error: any) {
-            setErrorMessage(error.message || "Ocurrió un error al procesar la compra.");
+            setErrorMessage(
+                error.message ||
+                "Ocurrió un error al procesar la compra."
+            );
         } finally {
             setLoading(false);
         }
@@ -119,40 +202,38 @@ export default function Checkout() {
                                 )}
 
                                 <form onSubmit={handleSubmit}>
-                                    <div className="checkout-form-group">
-                                        <label className="checkout-label" htmlFor="customerName">
-                                            Tu nombre y apellido
-                                        </label>
-                                        <input
-                                            id="customerName"
-                                            type="text"
-                                            className="checkout-input"
-                                            placeholder="Ingresá tu nombre y apellido"
-                                            value={customerName}
-                                            onChange={(e) => setCustomerName(e.target.value)}
-                                            required
-                                            onInvalid={(e) => e.currentTarget.setCustomValidity("Debes ingresar tu nombre y apellido.")}
-                                            onInput={(e) => e.currentTarget.setCustomValidity("")}
-                                        />
-                                    </div>
 
-                                    <div className="checkout-form-group">
-                                        <label className="checkout-label" htmlFor="customerDni">
-                                            Tu DNI
-                                        </label>
-                                        <input
-                                            id="customerDni"
-                                            type="text"
-                                            className="checkout-input"
-                                            placeholder="Ingresá tu DNI"
-                                            value={customerDni}
-                                            onChange={(e) => setCustomerDni(e.target.value)}
-                                            required
-                                            onInvalid={(e) => e.currentTarget.setCustomValidity("Debes ingresar un DNI.")}
-                                            onInput={(e) => e.currentTarget.setCustomValidity("")}
-                                        />
-                                    </div>
+                                    <div className="checkout-customer-info">
+                                        <strong>Compra como</strong>
+                                        <span>
+                                            {user?.firstName} {user?.lastName}
+                                        </span>
+                                        <div className="checkout-coverage-info">
+                                            <div>
+                                                <span>Obra social</span>
+                                                <strong>{healthInsuranceName ?? "Sin obra social"}</strong>
+                                            </div>
 
+                                            <div>
+                                                <span>Cobertura</span>
+                                                <strong>{coveragePercentage}%</strong>
+                                            </div>
+
+                                            <div>
+                                                <span>Monto cubierto</span>
+                                                <strong>
+                                                    ${coverageAmount.toLocaleString("es-AR")}
+                                                </strong>
+                                            </div>
+
+                                            <div className="checkout-final-total">
+                                                <span>Total final</span>
+                                                <strong>
+                                                    ${finalTotal.toLocaleString("es-AR")}
+                                                </strong>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div className="checkout-form-group">
                                         <label className="checkout-label" htmlFor="paymentMethod">
                                             Método de pago

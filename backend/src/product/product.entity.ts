@@ -21,10 +21,15 @@ export class Product extends BaseEntity {
     stock!: number
     @Property({ nullable: false })
     isFeatured!: boolean
+    @Property({ nullable: false })
+    hasCoverage!: boolean
     @ManyToOne(() => ProductCategory)
     category!: number
 
-    constructor(name: string, description: string, brand: string, gender: string, price: number, stock: number, category: number, isFeatured: boolean = false) {
+    constructor(name: string, description: string, brand: string,
+        gender: string, price: number, stock: number, category: number,
+        isFeatured: boolean = false,
+        hasCoverage: boolean = false) {
         super();
         this.name = name;
         this.description = description;
@@ -33,6 +38,7 @@ export class Product extends BaseEntity {
         this.price = price;
         this.stock = stock;
         this.isFeatured = isFeatured;
-        this.category = category
+        this.category = category;
+        this.hasCoverage = hasCoverage;
     }
 }

@@ -12,12 +12,11 @@ export default function ManagerSales() {
     const [sales, setSales] = useState<SaleResponse[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-
     const [saleItems, setSaleItems] = useState<SaleItemResponse[]>([]);
-    const [managerFilter, setManagerFilter] = useState("ALL");
     const [statusFilter, setStatusFilter] = useState("ALL");
     const [dateFrom, setDateFrom] = useState("");
     const [dateTo, setDateTo] = useState("");
+    const [customerFilter, setCustomerFilter] = useState("");
 
     const [saleToConfirm, setSaleToConfirm] =
         useState<SaleResponse | null>(null);
@@ -64,9 +63,10 @@ export default function ManagerSales() {
 
     const filteredSales = sales.filter((sale) => {
 
-        const matchesManager =
-            managerFilter === "ALL" ||
-            sale.manager.id.toString() === managerFilter;
+        const matchesCustomer =
+            !customerFilter ||
+            sale.customer.firstName.toLowerCase().includes(customerFilter.toLowerCase()) ||
+            sale.customer.lastName.toLowerCase().includes(customerFilter.toLowerCase());
 
         const matchesStatus =
             statusFilter === "ALL" ||
@@ -84,23 +84,12 @@ export default function ManagerSales() {
             !dateTo || saleDate <= dateTo;
 
         return (
-            matchesManager &&
             matchesStatus &&
             matchesDateFrom &&
-            matchesDateTo
+            matchesDateTo &&
+            matchesCustomer
         );
     });
-
-
-    const managers = Array.from(
-        new Map(
-            sales.map((sale) => [
-                sale.manager.id,
-                sale.manager
-            ])
-        ).values()
-    );
-
 
     const handleConfirmSale = async () => {
 
@@ -231,40 +220,6 @@ export default function ManagerSales() {
 
                     <div className="manager-sales-filter">
 
-                        <label htmlFor="manager-filter">
-                            Manager
-                        </label>
-
-                        <select
-                            id="manager-filter"
-                            value={managerFilter}
-                            onChange={(event) =>
-                                setManagerFilter(event.target.value)
-                            }
-                        >
-
-                            <option value="ALL">
-                                Todos
-                            </option>
-
-                            {managers.map((manager) => (
-
-                                <option
-                                    key={manager.id}
-                                    value={manager.id}
-                                >
-                                    {manager.firstName} {manager.lastName}
-                                </option>
-
-                            ))}
-
-                        </select>
-
-                    </div>
-
-
-                    <div className="manager-sales-filter">
-
                         <label htmlFor="status-filter">
                             Estado
                         </label>
@@ -277,21 +232,13 @@ export default function ManagerSales() {
                             }
                         >
 
-                            <option value="ALL">
-                                Todos
-                            </option>
+                            <option value="ALL">Todos</option>
 
-                            <option value="PENDING">
-                                Pendiente
-                            </option>
+                            <option value="PENDING">Pendiente</option>
 
-                            <option value="CONFIRMED">
-                                Confirmada
-                            </option>
+                            <option value="CONFIRMED">Confirmada</option>
 
-                            <option value="CANCELLED">
-                                Cancelada
-                            </option>
+                            <option value="CANCELLED">Cancelada</option>
 
                         </select>
 
@@ -334,14 +281,29 @@ export default function ManagerSales() {
                     </div>
 
 
+                    <div className="manager-sales-filter">
+
+                        <label htmlFor="customer-filter">Cliente</label>
+
+                        <input
+                            id="customer-filter"
+                            type="text"
+                            value={customerFilter}
+                            onChange={(event) =>
+                                setCustomerFilter(event.target.value)
+                            }
+                        />
+
+                    </div>
+
                     <button
                         className="manager-sales-clear-button"
                         onClick={() => {
 
-                            setManagerFilter("ALL");
                             setStatusFilter("ALL");
                             setDateFrom("");
                             setDateTo("");
+                            setCustomerFilter("");
 
                         }}
                     >
@@ -393,11 +355,6 @@ export default function ManagerSales() {
                                     <td>
                                         {sale.customer.firstName}{" "}
                                         {sale.customer.lastName}
-                                    </td>
-
-                                    <td>
-                                        {sale.manager.firstName}{" "}
-                                        {sale.manager.lastName}
                                     </td>
 
                                     <td>
@@ -544,14 +501,6 @@ export default function ManagerSales() {
                                         <strong>
                                             {saleToView.customer.firstName}{" "}
                                             {saleToView.customer.lastName}
-                                        </strong>
-                                    </div>
-
-                                    <div className="sale-detail-row">
-                                        <span>Manager</span>
-                                        <strong>
-                                            {saleToView.manager.firstName}{" "}
-                                            {saleToView.manager.lastName}
                                         </strong>
                                     </div>
 

@@ -23,6 +23,7 @@ export default function ManagerProducts() {
     const [stock, setStock] = useState("");
     const [category, setCategory] = useState("");
     const [isFeatured, setIsFeatured] = useState(false);
+    const [hasCoverage, setHasCoverage] = useState(false);
     const [formError, setFormError] = useState("");
     const [productToDelete, setProductToDelete] = useState<Product | null>(null);
 
@@ -146,7 +147,8 @@ export default function ManagerProducts() {
             price: Number(price),
             stock: Number(stock),
             category: Number(category),
-            isFeatured
+            isFeatured,
+            hasCoverage
         };
 
         try {
@@ -184,6 +186,7 @@ export default function ManagerProducts() {
             setStock("");
             setCategory("");
             setIsFeatured(false);
+            setHasCoverage(false);
             setFormError("");
             setShowForm(false);
 
@@ -209,7 +212,8 @@ export default function ManagerProducts() {
             price: Number(price),
             stock: Number(stock),
             category: Number(category),
-            isFeatured
+            isFeatured,
+            hasCoverage
         };
 
         try {
@@ -246,6 +250,7 @@ export default function ManagerProducts() {
             setStock("");
             setCategory("");
             setIsFeatured(false);
+            setHasCoverage(false);
             setFormError("");
             setShowForm(false);
             setEditingProduct(null);
@@ -427,6 +432,16 @@ export default function ManagerProducts() {
                             Producto destacado
                         </label>
 
+                        <label className="manager-featured-checkbox">
+                            <input
+                                type="checkbox"
+                                checked={hasCoverage}
+                                onChange={(e) => setHasCoverage(e.target.checked)}
+                            />
+
+                            Tiene cobertura de obra social
+                        </label>
+
                         {formError && (
                             <p className="manager-form-error">
                                 {formError}
@@ -506,6 +521,12 @@ export default function ManagerProducts() {
 
                                     <td>
                                         {product.isFeatured
+                                            ? "Sí"
+                                            : "No"}
+                                    </td>
+
+                                    <td>
+                                        {product.hasCoverage
                                             ? "Sí"
                                             : "No"}
                                     </td>

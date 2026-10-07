@@ -30,14 +30,10 @@ interface AuthProviderProps {
     children: ReactNode;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(
-    undefined
-);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: AuthProviderProps) {
-
     const [session, setSession] = useState<AuthSession | null>(() => {
-
         const savedSession = localStorage.getItem("auth");
 
         if (!savedSession) {
@@ -47,30 +43,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
         return JSON.parse(savedSession);
     });
 
-    const login = (
-        user: User,
-        role: "CUSTOMER" | "MANAGER",
-        token: string
-    ) => {
-
-        const newSession: AuthSession = {
-            user,
-            role,
-            token
-        };
-
+    const login = (user: User, role: "CUSTOMER" | "MANAGER", token: string) => {
+        const newSession: AuthSession = { user, role, token };
         setSession(newSession);
-
-        localStorage.setItem(
-            "auth",
-            JSON.stringify(newSession)
-        );
+        localStorage.setItem("auth", JSON.stringify(newSession));
     };
 
     const logout = () => {
-
         setSession(null);
-
         localStorage.removeItem("auth");
     };
 

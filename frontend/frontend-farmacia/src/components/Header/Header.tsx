@@ -54,12 +54,8 @@ export default function Header() {
                 </nav>
 
                 <div className="header-actions">
-
-                    {/* Icono de usuario: siempre el mismo SVG.
-                        Si está logueado → va a /perfil (ícono en color activo)
-                        Si no está logueado → va a /login */}
                     <Link
-                        to={user && role === "MANAGER" ? "/manager" : user ? "/customer" : "/login"}
+                        to={user && role === "MANAGER" ? "/manager" : user ? "/profile" : "/login"}
                         className="icon-button"
                         aria-label={user ? "Ver perfil" : "Iniciar sesión"}
                     >
@@ -75,7 +71,6 @@ export default function Header() {
                         </svg>
                     </Link>
 
-                    {/* Botón de cerrar sesión: solo aparece si hay usuario logueado */}
                     {user && (
                         <button
                             className="logout-button"

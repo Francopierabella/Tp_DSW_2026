@@ -8,6 +8,7 @@ export interface Product {
     stock: number;
     category: number;
     isFeatured: boolean;
+    hasCoverage: boolean;
 }
 
 export interface ProductInput {
@@ -19,4 +20,5 @@ export interface ProductInput {
     stock: number;
     category: number;
     isFeatured: boolean;
+    hasCoverage: boolean;
 }

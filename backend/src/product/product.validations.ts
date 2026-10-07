@@ -14,7 +14,8 @@ export const sanitizedProductInput = (
         brand,
         gender,
         isFeatured,
-        category
+        category,
+        hasCoverage
     } = req.body;
 
     if (!name || name.trim() === "") {
@@ -29,13 +30,13 @@ export const sanitizedProductInput = (
         });
     }
 
-    if (typeof stock !== "number" || stock < 0) {
+    if (stock !== undefined && (typeof stock !== "number" || stock < 0)) {
         return res.status(400).send({
             message: "Stock must be a positive number or zero"
         });
     }
 
-    if (typeof price !== "number" || price < 0) {
+    if (price !== undefined && (typeof price !== "number" || price < 0)) {
         return res.status(400).send({
             message: "Price must be a positive number or zero"
         });
@@ -51,6 +52,14 @@ export const sanitizedProductInput = (
             message: "Category is required"
         });
     }
+    if (
+        hasCoverage !== undefined &&
+        typeof hasCoverage !== "boolean"
+    ) {
+        return res.status(400).send({
+            message: "hasCoverage must be a boolean"
+        });
+    }
 
     req.body.sanitizedProductInput = {
         name: name.trim(),
@@ -60,7 +69,8 @@ export const sanitizedProductInput = (
         brand: brand.trim(),
         gender,
         isFeatured,
-        category
+        category,
+        hasCoverage
     };
 
     next();
@@ -80,7 +90,8 @@ export const sanitizedUpdateProductInput = (
         brand,
         gender,
         isFeatured,
-        category
+        category,
+        hasCoverage
     } = req.body;
 
     if (name && name.trim() === "") {
@@ -95,13 +106,13 @@ export const sanitizedUpdateProductInput = (
         });
     }
 
-    if (stock && (typeof stock !== "number" || stock < 0)) {
+    if (stock !== undefined && (typeof stock !== "number" || stock < 0)) {
         return res.status(400).send({
             message: "Stock must be a positive number or zero"
         });
     }
 
-    if (price && (typeof price !== "number" || price < 0)) {
+    if (price !== undefined && (typeof price !== "number" || price < 0)) {
         return res.status(400).send({
             message: "Price must be a positive number or zero"
         });
@@ -119,17 +130,24 @@ export const sanitizedUpdateProductInput = (
         });
     }
 
+    if (hasCoverage && typeof hasCoverage !== "boolean") {
+        return res.status(400).send({
+            message: "hasCoverage must be a boolean"
+        });
+    }
+
     //Evita que se agreguen propiedades con valor undefined o false al objeto sanitizado.
     // Solo se incluirán aquellas claves cuyos datos hayan sido proporcionados.
     req.body.sanitizedProductInput = {
         ...(name && { name: name.trim() }),
         ...(description && { description: description.trim() }),
-        ...(stock && { stock }),
-        ...(price && { price }),
+        ...(stock !== undefined && { stock }),
+        ...(price !== undefined && { price }),
         ...(brand && { brand: brand.trim() }),
         ...(gender && { gender }),
         ...(isFeatured !== undefined && { isFeatured }),
-        ...(category && { category })
+        ...(category && { category }),
+        ...(hasCoverage !== undefined && { hasCoverage })
     };
 
     next();
