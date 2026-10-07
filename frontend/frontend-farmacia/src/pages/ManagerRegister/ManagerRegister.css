@@ -1,0 +1,211 @@
+.manager-register-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    background: #f4fafa;
+}
+
+.manager-register-card {
+    width: 100%;
+    max-width: 720px;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 42px;
+    box-shadow: 0 12px 35px rgba(21, 85, 104, 0.1);
+}
+
+.manager-register-header {
+    position: relative;
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.manager-register-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: none;
+    background: transparent;
+    color: #16aaa5;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.manager-register-back:hover {
+    text-decoration: underline;
+}
+
+.manager-register-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #e3f7f6;
+    font-size: 28px;
+}
+
+.manager-register-header h1 {
+    margin: 0;
+    color: #155568;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.manager-register-header p {
+    margin: 10px auto 0;
+    max-width: 500px;
+    color: #6b7d82;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.manager-register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.manager-register-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.manager-register-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.manager-register-field label {
+    color: #155568;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.manager-register-field input {
+    width: 100%;
+    min-height: 46px;
+    box-sizing: border-box;
+    padding: 0 14px;
+    border: 1px solid #dce8e9;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #155568;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.manager-register-field input::placeholder {
+    color: #a7b3b6;
+}
+
+.manager-register-field input:focus {
+    border-color: #16aaa5;
+    box-shadow: 0 0 0 3px rgba(22, 170, 165, 0.1);
+}
+
+.manager-register-hint {
+    color: #8a999d;
+    font-size: 12px;
+}
+
+.manager-register-error,
+.manager-register-success {
+    margin: 0;
+    padding: 13px 15px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.manager-register-error {
+    background: #fff1f1;
+    color: #b43f3f;
+}
+
+.manager-register-success {
+    background: #e8f7f3;
+    color: #23776d;
+}
+
+.manager-register-button {
+    width: 100%;
+    min-height: 48px;
+    margin-top: 6px;
+    border: none;
+    border-radius: 10px;
+    background: #16aaa5;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.manager-register-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(22, 170, 165, 0.25);
+}
+
+.manager-register-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+.manager-register-login {
+    margin-top: 26px;
+    text-align: center;
+    color: #6b7d82;
+    font-size: 14px;
+}
+
+.manager-register-login button {
+    margin-left: 6px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #16aaa5;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.manager-register-login button:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 650px) {
+    .manager-register-page {
+        padding: 24px 14px;
+    }
+
+    .manager-register-card {
+        padding: 30px 20px;
+        border-radius: 16px;
+    }
+
+    .manager-register-header h1 {
+        font-size: 25px;
+    }
+
+    .manager-register-row {
+        grid-template-columns: 1fr;
+    }
+
+    .manager-register-back {
+        position: static;
+        display: block;
+        margin-bottom: 20px;
+    }
+}
