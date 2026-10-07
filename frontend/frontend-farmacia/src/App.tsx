@@ -12,6 +12,10 @@ import Manager from "./pages/Manager/Manager";
 import ManagerCategories from "./pages/ManagerCategories/ManagerCategories";
 import ManagerSales from "./pages/ManagerSales/ManagerSales";
 import ManagerSuppliers from "./pages/ManagerSuppliers/ManagerSupplier";
+import ManagerConfirmation from "./pages/ManagerConfirmation/ManagerConfirmation";
+import Register from "./pages/Register/Register";
+import CustomerRegister from "./pages/CustomerRegister/CustomerRegister";
+import ManagerRegister from "./pages/ManagerRegister/ManagerRegister";
 
 //React Router se encarga de relacionar una URL con un componente de React.
 function App() {
@@ -34,6 +38,11 @@ function App() {
             <Checkout />
           </ProtectedRoute>
         } />
+
+        <Route path="/register" element={<Register />} />
+        <Route path="/register/customer" element={<CustomerRegister />} />
+
+        <Route path="/register/manager" element={<ManagerRegister />} />
 
         <Route path="/login" element={<Login />} />
 
@@ -64,6 +73,11 @@ function App() {
             <ManagerSuppliers />
           </ProtectedRoute>
         }
+        />
+
+        <Route
+          path="/manager/confirm/:token"
+          element={<ManagerConfirmation />}
         />
 
       </Routes>

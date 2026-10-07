@@ -91,3 +91,26 @@
 .login-button:active {
     transform: scale(0.98);
 }
+
+.login-register {
+    margin-top: 24px;
+    text-align: center;
+    color: #6b7d82;
+    font-size: 14px;
+}
+
+.login-register button {
+    margin-left: 6px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #16aaa5;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.login-register button:hover {
+    text-decoration: underline;
+}

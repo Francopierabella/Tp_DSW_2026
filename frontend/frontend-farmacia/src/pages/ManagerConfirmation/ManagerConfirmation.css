@@ -1,0 +1,224 @@
+.manager-confirmation-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background: #f4fafa;
+}
+
+.manager-confirmation-card {
+    width: 100%;
+    max-width: 620px;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 42px;
+    box-shadow: 0 12px 35px rgba(21, 85, 104, 0.12);
+}
+
+/* Encabezado */
+
+.manager-confirmation-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.manager-confirmation-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #e3f7f6;
+    color: #16aaa5;
+    font-size: 28px;
+}
+
+.manager-confirmation-title {
+    margin: 0;
+    color: #155568;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.manager-confirmation-subtitle {
+    margin: 10px 0 0;
+    color: #6b7d82;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+/* Datos */
+
+.manager-request-info {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 28px;
+}
+
+.manager-request-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 15px 18px;
+    border-radius: 12px;
+    background: #f7fbfb;
+    border: 1px solid #e6eeee;
+}
+
+.manager-request-label {
+    color: #6b7d82;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.manager-request-value {
+    color: #155568;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: right;
+}
+
+/* Estado */
+
+.manager-request-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 13px;
+    border-radius: 20px;
+    background: #e3f7f6;
+    color: #138d89;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+/* Botones */
+
+.manager-confirmation-actions {
+    display: flex;
+    gap: 14px;
+    margin-top: 30px;
+}
+
+.manager-confirm-button,
+.manager-reject-button {
+    flex: 1;
+    min-height: 48px;
+    border: none;
+    border-radius: 10px;
+    padding: 0 20px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.manager-confirm-button {
+    background: #16aaa5;
+    color: #ffffff;
+}
+
+.manager-confirm-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(22, 170, 165, 0.25);
+}
+
+.manager-reject-button {
+    background: #ffffff;
+    color: #c44d4d;
+    border: 1px solid #e5bcbc;
+}
+
+.manager-reject-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    background: #fff7f7;
+    box-shadow: 0 8px 18px rgba(196, 77, 77, 0.12);
+}
+
+.manager-confirm-button:disabled,
+.manager-reject-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Mensajes */
+
+.manager-confirmation-message {
+    margin-top: 24px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    background: #e8f7f3;
+    color: #23776d;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.manager-confirmation-error {
+    margin-top: 24px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    background: #fff1f1;
+    color: #b43f3f;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Loading */
+
+.manager-confirmation-loading {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #155568;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* Responsive */
+
+@media (max-width: 600px) {
+    .manager-confirmation-page {
+        padding: 24px 14px;
+    }
+
+    .manager-confirmation-card {
+        padding: 28px 20px;
+        border-radius: 16px;
+    }
+
+    .manager-confirmation-title {
+        font-size: 24px;
+    }
+
+    .manager-request-field {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .manager-request-value {
+        text-align: left;
+        word-break: break-word;
+    }
+
+    .manager-confirmation-actions {
+        flex-direction: column;
+    }
+
+    .manager-confirm-button,
+    .manager-reject-button {
+        width: 100%;
+    }
+}

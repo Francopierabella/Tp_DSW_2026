@@ -4,9 +4,13 @@ import { ManagerRegistrationRequestService } from "./managerRegistrationRequest.
 import { ManagerRegistrationRequestRepository } from "./managerRegistrationRequest.repository.js";
 import { ManagerRegistrationRequestStatus } from "./managerRegistrationRequest.entity.js";
 import { validateManagerRegistrationRequest } from "./managerRegistrationRequest.validations.js";
+import { ManagerRepository } from "../manager/manager.repository.js";
+import { EmailService } from "../email/email.service.js";
 
 const service = new ManagerRegistrationRequestService(
-    new ManagerRegistrationRequestRepository()
+    new ManagerRegistrationRequestRepository(),
+    new ManagerRepository(),
+    new EmailService()
 );
 
 export async function findAll(req: Request, res: Response) {
@@ -20,7 +24,17 @@ export async function findOne(req: Request, res: Response) {
 
 export async function findByToken(req: Request, res: Response) {
     const found = await service.findByToken(req.params.token as string);
-    return found ? res.json(found) : res.status(404).send();
+    if (!found) {
+        return res.status(404).send({ message: "Solicitud no encontrada" });
+    }
+    return res.json({
+        id: found.id,
+        firstName: found.firstName,
+        lastName: found.lastName,
+        e_mail: found.e_mail,
+        status: found.status,
+        createdAt: found.createdAt
+    });
 }
 
 export async function findByEmail(req: Request, res: Response) {
@@ -38,6 +52,26 @@ export async function create(req: Request, res: Response) {
     }
 }
 
+export async function approve(req: Request, res: Response) {
+    try {
+        const result = await service.approve(req.params.token as string);
+        if (!result) return res.status(404).send({ message: "Solicitud no encontrada" });
+        return res.status(201).send({ message: "Solicitud aprobada correctamente" });
+    } catch (err: any) {
+        return res.status(400).send({ message: err.message });
+    }
+}
+
+export async function reject(req: Request, res: Response) {
+    try {
+        const result = await service.reject(req.params.token as string);
+        if (!result) return res.status(404).send({ message: "Solicitud no encontrada" });
+        return res.status(201).send({ message: "Solicitud rechazada correctamente" });
+    } catch (err: any) {
+        return res.status(400).send({ message: err.message });
+    }
+}
+
 export async function updateStatus(req: Request, res: Response) {
     const { id, status } = req.body;
     const updated = await service.updateStatus(Number(id), status as ManagerRegistrationRequestStatus);
@@ -45,11 +79,32 @@ export async function updateStatus(req: Request, res: Response) {
 }
 
 export async function remove(req: Request, res: Response) {
-
     const found = await service.findOne(Number(req.params.id));
     if (!found) {
         return res.status(404).send();
     }
     const removed = await service.remove(Number(found.id));
     return removed ? res.json(removed) : res.status(404).send();
+}
+
+export async function testEmail(req: Request, res: Response) {
+    try {
+        const emailService = new EmailService();
+        await emailService.sendManagerRegistrationEmail(
+            "Franco",
+            "Pierabella",
+            "[EMAIL_ADDRESS]",
+            "token-de-prueba"
+        );
+
+        return res.status(200).send({
+            message: "Email enviado correctamente"
+        });
+    } catch (error) {
+        console.error("Error al enviar email:", error);
+
+        return res.status(500).send({
+            message: "Error al enviar email"
+        });
+    }
 }

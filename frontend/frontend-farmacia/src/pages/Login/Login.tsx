@@ -130,6 +130,11 @@ export default function Login() {
                         Iniciar sesión
                     </button>
 
+                    <div className="login-register">
+                        <span> ¿No tenés una cuenta? </span>
+                        <button type="button" onClick={() => navigate("/register")} > Registrate acá </button>
+                    </div>
+
                 </form>
 
             </div>
