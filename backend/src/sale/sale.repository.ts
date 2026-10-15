@@ -1,8 +1,9 @@
 import { IRepository } from "../shared/base.repository.js";
 import { orm } from "../shared/db/orm.js";
 import { Sale } from "./sale.entity.js";
+import { ISaleRepository } from "./sale.interface.js";
 
-export class SaleRepository implements IRepository<Sale> {
+export class SaleRepository implements ISaleRepository {
     public async findAll(): Promise<Sale[] | undefined> {
         return await orm.em.find(Sale, {}, {
             populate: ["customer", "manager", "saleItems", "saleItems.product"]
@@ -68,5 +69,10 @@ export class SaleRepository implements IRepository<Sale> {
         }
         await orm.em.removeAndFlush(found)
         return found;
+    }
+
+    public async findByCustomer(customerId: number): Promise<Sale[] | undefined> {
+        const found = await orm.em.find(Sale, { customer: customerId });
+        return found ?? undefined;
     }
 }

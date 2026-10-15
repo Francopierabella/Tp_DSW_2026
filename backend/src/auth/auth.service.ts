@@ -73,19 +73,28 @@ export class AuthService {
         role: "CUSTOMER" | "MANAGER"
     ): string {
 
-        const secret = process.env.JWT_SECRET;
+        // es el metodo que me genera el token
+        // cuando un usuario se registra o se logue correctamente.
+        // firma el token con un secreto que esta en el archivo .env.
 
+
+        const secret = process.env.JWT_SECRET;
+        // si no esta configurado el secreto, lanzo un error.
         if (!secret) {
             throw new Error("JWT_SECRET is not configured");
         }
 
+        // jwt.sign lleva 3 parametros.
         return jwt.sign(
+            // payload: es la informacion que quiero guardar en el token.
             {
                 userId,
                 e_mail,
                 role
             },
+            // secret: es la clave privada que solo la conoce el servidor.
             secret,
+            // options: es la informacion que quiero guardar en el token.
             {
                 expiresIn: "2h"
             }

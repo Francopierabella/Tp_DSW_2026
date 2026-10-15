@@ -34,3 +34,7 @@ export async function getCustomerProfile(
     return await response.json();
 }
 
+export async function getSalesByCustomer(id: number, token: string) {
+
+}
+

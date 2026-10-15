@@ -180,3 +180,64 @@
     font-size: 14px;
     font-weight: 600;
 }
+
+/* =========================
+   FILTROS DE PRODUCTOS
+   ========================= */
+
+.manager-filters {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 25px;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(21, 85, 104, 0.08);
+}
+
+.manager-filters input,
+.manager-filters select {
+    flex: 1;
+    min-width: 170px;
+    padding: 10px 14px;
+    border: 1px solid #d9e3e5;
+    border-radius: 8px;
+    background: white;
+    color: #444;
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.manager-filters input::placeholder {
+    color: #888;
+}
+
+.manager-filters input:focus,
+.manager-filters select:focus {
+    border-color: #16aaa5;
+    box-shadow: 0 0 0 3px rgba(22, 170, 165, 0.1);
+}
+
+/* Responsive para dispositivos móviles */
+@media (max-width: 600px) {
+    .manager-filters {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 14px;
+        margin-bottom: 18px;
+    }
+
+    .manager-filters input,
+    .manager-filters select {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        padding: 9px 10px;
+        font-size: 13px;
+    }
+}

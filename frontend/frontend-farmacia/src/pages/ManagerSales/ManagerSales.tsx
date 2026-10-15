@@ -324,7 +324,6 @@ export default function ManagerSales() {
                                 <th>ID</th>
                                 <th>Fecha</th>
                                 <th>Cliente</th>
-                                <th>Manager</th>
                                 <th>Total</th>
                                 <th>Pago</th>
                                 <th>Entrega</th>

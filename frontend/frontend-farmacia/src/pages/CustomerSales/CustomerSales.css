@@ -1,0 +1,444 @@
+/* =========================
+   PÁGINA PRINCIPAL
+   ========================= */
+
+.customer-sales-page {
+    min-height: 100vh;
+    padding: 50px 20px 80px;
+    background: #f4fafa;
+    display: flex;
+    flex-direction: column;
+}
+
+.customer-sales-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* =========================
+   ENCABEZADO
+   ========================= */
+
+.customer-sales-header {
+    margin-bottom: 25px;
+}
+
+.customer-sales-back-button {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: #16aaa5;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.customer-sales-back-button:hover {
+    color: #128f8b;
+    text-decoration: underline;
+}
+
+.customer-sales-header h1 {
+    margin: 0 0 6px;
+    color: #155568;
+    font-size: 30px;
+}
+
+.customer-sales-header p {
+    margin: 0;
+    color: #6b7d82;
+    font-size: 14px;
+}
+
+/* =========================
+   FILTROS
+   ========================= */
+
+.customer-sales-filters {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 25px;
+    padding: 20px;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 5px 20px rgba(21, 85, 104, 0.08);
+}
+
+.customer-sales-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    flex: 1;
+    min-width: 150px;
+}
+
+.customer-sales-filter label {
+    color: #155568;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.customer-sales-filter select,
+.customer-sales-filter input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1px solid #d9e3e5;
+    border-radius: 8px;
+    background: white;
+    color: #444;
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.customer-sales-filter select:focus,
+.customer-sales-filter input:focus {
+    border-color: #16aaa5;
+    box-shadow: 0 0 0 3px rgba(22, 170, 165, 0.1);
+}
+
+.customer-sales-clear-button {
+    border: 1px solid #d9e3e5;
+    background: white;
+    color: #155568;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+    transition: background-color 0.2s ease;
+}
+
+.customer-sales-clear-button:hover {
+    background: #f5fafa;
+}
+
+/* =========================
+   TABLA DE COMPRAS
+   ========================= */
+
+.customer-sales-table-container {
+    background: white;
+    border-radius: 14px;
+    overflow-x: auto;
+    box-shadow: 0 5px 20px rgba(21, 85, 104, 0.08);
+}
+
+.customer-sales-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.customer-sales-table th,
+.customer-sales-table td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid #edf1f2;
+}
+
+.customer-sales-table th {
+    background: #f5fafa;
+    color: #155568;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.customer-sales-table td {
+    color: #444;
+    font-size: 14px;
+}
+
+.customer-sales-amount {
+    color: #155568;
+    font-weight: 700;
+}
+
+/* Badges de estado */
+.customer-sales-status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.customer-sales-status.confirmed {
+    background: #e6f7f5;
+    color: #128f8b;
+}
+
+.customer-sales-status.cancelled {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.customer-sales-status.pending {
+    background: #fff8e1;
+    color: #b78103;
+}
+
+/* Botón Ver Detalle */
+.customer-sales-view-button {
+    border: 1px solid #16aaa5;
+    background: white;
+    color: #16aaa5;
+    padding: 7px 14px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.customer-sales-view-button:hover {
+    background: #16aaa5;
+    color: white;
+}
+
+/* Estados vacíos y cargas */
+.customer-sales-empty,
+.customer-sales-loading {
+    padding: 40px 20px;
+    text-align: center;
+    color: #6b7d82;
+    font-size: 14px;
+}
+
+.customer-sales-error {
+    color: #c62828;
+    margin-bottom: 18px;
+    font-weight: 600;
+}
+
+/* =========================
+   MODAL DETALLE DE COMPRA
+   ========================= */
+
+.sale-detail-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.sale-detail-modal {
+    width: 100%;
+    max-width: 520px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    max-height: 90vh;
+}
+
+.sale-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 25px;
+    border-bottom: 1px solid #e5eeee;
+}
+
+.sale-detail-header h2 {
+    margin: 0;
+    color: #155568;
+    font-size: 20px;
+}
+
+.sale-detail-close {
+    border: none;
+    background: transparent;
+    color: #777;
+    font-size: 28px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.sale-detail-close:hover {
+    color: #155568;
+}
+
+.sale-detail-content {
+    padding: 22px 25px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.sale-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 12px 0;
+    border-bottom: 1px solid #edf2f2;
+}
+
+.sale-detail-row span {
+    color: #777;
+    font-size: 14px;
+}
+
+.sale-detail-row strong {
+    color: #155568;
+    text-align: right;
+    font-size: 14px;
+}
+
+.sale-detail-products {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.sale-detail-products h3 {
+    margin: 0 0 14px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #155568;
+}
+
+.sale-detail-product {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    background-color: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.sale-detail-product>div:first-child {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sale-detail-product>div:first-child strong {
+    font-size: 14px;
+    color: #155568;
+}
+
+.sale-detail-product>div:first-child span {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.sale-detail-product>div:last-child {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.sale-detail-product>div:last-child span {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.sale-detail-product>div:last-child strong {
+    font-size: 14px;
+    color: #111827;
+    white-space: nowrap;
+}
+
+.sale-detail-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 2px solid #16aaa5;
+}
+
+.sale-detail-total span {
+    color: #155568;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.sale-detail-total strong {
+    color: #16aaa5;
+    font-size: 22px;
+}
+
+.sale-detail-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 18px 25px;
+    background: #f8fbfb;
+    border-top: 1px solid #edf2f2;
+}
+
+.sale-detail-close-button {
+    border: none;
+    background: #16aaa5;
+    color: white;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.2s ease;
+}
+
+.sale-detail-close-button:hover {
+    background: #128f8b;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 768px) {
+    .customer-sales-filters {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .customer-sales-filter {
+        min-width: 130px;
+    }
+
+    .customer-sales-clear-button {
+        width: 100%;
+        margin-top: 5px;
+    }
+}
+
+@media (max-width: 600px) {
+    .customer-sales-page {
+        padding: 30px 14px 60px;
+    }
+
+    .customer-sales-table th,
+    .customer-sales-table td {
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+
+    /* Ocultar columnas secundarias en móviles */
+    .customer-sales-table th:nth-child(4),
+    .customer-sales-table td:nth-child(4),
+    .customer-sales-table th:nth-child(5),
+    .customer-sales-table td:nth-child(5) {
+        display: none;
+    }
+
+    .sale-detail-modal {
+        width: calc(100% - 24px);
+    }
+}

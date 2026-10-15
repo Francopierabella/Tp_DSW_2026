@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../../context/AuthContext";
 import type { Product } from "../../types/product";
 import type { ProductCategory } from "../../types/productCategory";
 import ConfirmModal from "../../components/ConfirmModal/ConfirmModal";
 import "./ManagerProducts.css";
 import Header from "../../components/Header/Header";
-
+import { getProducts, createProduct, updateProduct, deleteProduct } from "../../services/product.service";
+import { getProductCategories } from "../../services/productCategory.service";
 
 export default function ManagerProducts() {
-    const { token } = useAuth();
+    const LOW_STOCK = 15;
+
     const [showForm, setShowForm] = useState(false);
     const [products, setProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<ProductCategory[]>([]);
@@ -26,59 +27,33 @@ export default function ManagerProducts() {
     const [hasCoverage, setHasCoverage] = useState(false);
     const [formError, setFormError] = useState("");
     const [productToDelete, setProductToDelete] = useState<Product | null>(null);
+    const [nameFilter, setNameFilter] = useState("");
+    const [categoryFilter, setCategoryFilter] = useState("");
+    const [stockFilter, setStockFilter] = useState("");
 
     useEffect(() => {
-
         async function loadProducts() {
-
             try {
-
-                const response = await fetch(
-                    "http://localhost:3000/api/products"
-                );
-
-                if (!response.ok) {
-                    throw new Error("No se pudieron cargar los productos");
-                }
-
-                const data = await response.json();
-
-                setProducts(data);
-
+                const products = await getProducts();
+                setProducts(products);
             } catch (error) {
-
                 console.error(error);
-
-                setError(
-                    "No se pudieron cargar los productos"
-                );
-
+                setError("No se pudieron cargar los productos");
             } finally {
-
                 setLoading(false);
 
             }
         }
         async function loadCategories() {
             try {
-                const response = await fetch(
-                    "http://localhost:3000/api/productCategories"
-                );
-
-                if (!response.ok) {
-                    throw new Error("No se pudieron cargar las categorías");
-                }
-
-                const data = await response.json();
-                setCategories(data);
+                const categories = await getProductCategories();
+                setCategories(categories);
             } catch (error) {
                 console.error(error);
             }
         }
-
         loadProducts();
         loadCategories();
-
     }, []);
 
     if (loading) {
@@ -152,32 +127,13 @@ export default function ManagerProducts() {
         };
 
         try {
-            const response = await fetch(
-                "http://localhost:3000/api/products",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    },
-                    body: JSON.stringify(productData)
-                }
-            );
+            const newProduct = await createProduct(productData);
 
-            const data = await response.json();
-
-            if (!response.ok) {
-                setFormError(data.message || "No se pudo crear el producto");
+            if (!newProduct) {
+                setFormError("No se pudo crear el producto");
                 return;
             }
-
-            const newProduct = data.data;
-
-            setProducts((currentProducts) => [
-                ...currentProducts,
-                newProduct
-            ]);
-
+            setProducts((currentProducts) => [...currentProducts, newProduct]);
             setName("");
             setDescription("");
             setBrand("");
@@ -203,7 +159,7 @@ export default function ManagerProducts() {
             setFormError(validationError);
             return;
         }
-
+        // lo que ingreso en el formulario
         const productData = {
             name: name.trim(),
             description: description.trim(),
@@ -217,26 +173,12 @@ export default function ManagerProducts() {
         };
 
         try {
-            const response = await fetch(
-                `http://localhost:3000/api/products/${id}`,
-                {
-                    method: "PATCH",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    },
-                    body: JSON.stringify(productData)
-                }
-            );
+            const updatedProduct = await updateProduct(id, productData);
 
-            const data = await response.json();
-
-            if (!response.ok) {
-                setFormError(data.message || "No se pudo actualizar el producto");
+            if (!updatedProduct) {
+                setFormError("No se pudo actualizar el producto");
                 return;
             }
-
-            const updatedProduct = data;
 
             setProducts((currentProducts) =>
                 currentProducts.map((p) => (p.id === id ? updatedProduct : p))
@@ -263,19 +205,10 @@ export default function ManagerProducts() {
 
     async function handleDeleteProduct(id: number) {
         try {
-            const response = await fetch(
-                `http://localhost:3000/api/products/${id}`,
-                {
-                    method: "DELETE",
-                    headers: {
+            const productDeleted = await deleteProduct(id);
 
-                        "Authorization": `Bearer ${token}`
-                    },
-                }
-            );
-            const data = await response.json();
-            if (!response.ok) {
-                setFormError(data.message || "No se pudo eliminar el producto");
+            if (!productDeleted) {
+                setFormError("No se pudo eliminar el producto");
                 return;
             }
             setProducts((currentProducts) =>
@@ -288,6 +221,13 @@ export default function ManagerProducts() {
             setFormError("No se pudo conectar con el servidor");
         }
     }
+
+    const filteredProducts = products.filter((p) => {
+        const matchesName = p.name.toLowerCase().includes(nameFilter.toLowerCase());
+        const matchesCategory = categoryFilter === "" || p.category === Number(categoryFilter);
+        const matchesStock = stockFilter === "" || p.stock === Number(stockFilter) || p.stock <= Number(stockFilter);
+        return matchesName && matchesCategory && matchesStock;
+    })
 
     return (
         <>
@@ -326,6 +266,36 @@ export default function ManagerProducts() {
                         + Nuevo producto
                     </button>
 
+                </div>
+
+                <div className="manager-filters">
+                    <input
+                        type="text"
+                        placeholder="Nombre"
+                        value={nameFilter}
+                        onChange={(e) => setNameFilter(e.target.value)}
+                    />
+
+                    <select
+                        value={categoryFilter}
+                        onChange={(e) => setCategoryFilter(e.target.value)}
+                    >
+                        <option value="">Todas las categorías</option>
+                        {categories.map((category) => (
+                            <option key={category.id} value={category.id}>
+                                {category.name}
+                            </option>
+                        ))}
+                    </select>
+
+                    <select
+                        value={stockFilter}
+                        onChange={(e) => setStockFilter(e.target.value)}
+                    >
+                        <option value="">Todos</option>
+                        <option value="0">Sin stock</option>
+                        <option value={String(LOW_STOCK)}>Stock bajo</option>
+                    </select>
                 </div>
 
                 {showForm && (
@@ -489,13 +459,14 @@ export default function ManagerProducts() {
                                 <th>Precio</th>
                                 <th>Stock</th>
                                 <th>Destacado</th>
+                                <th>Cobertura</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
 
                         <tbody>
 
-                            {products.map((product) => (
+                            {filteredProducts.map((product) => (
 
                                 <tr key={product.id}>
 

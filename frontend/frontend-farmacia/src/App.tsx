@@ -17,6 +17,8 @@ import Register from "./pages/Register/Register";
 import CustomerRegister from "./pages/CustomerRegister/CustomerRegister";
 import ManagerRegister from "./pages/ManagerRegister/ManagerRegister";
 import CustomerProfile from "./pages/Customer/CustomerProfile";
+import NotFound from "./pages/NotFound/NotFound";
+import CustomerSales from "./pages/CustomerSales/CustomerSales";
 
 //React Router se encarga de relacionar una URL con un componente de React.
 function App() {
@@ -56,6 +58,12 @@ function App() {
             <CustomerProfile />
           </ProtectedRoute>
         } />
+        <Route path="/sales/customer/:customerId" element={
+          <ProtectedRoute allowedRole="CUSTOMER">
+            <CustomerSales />
+          </ProtectedRoute>
+        }
+        />
 
         <Route path="/manager/products" element={
           <ProtectedRoute allowedRole="MANAGER">
@@ -84,6 +92,8 @@ function App() {
           element={<ManagerConfirmation />}
         />
 
+        <Route path="*" element={<NotFound />} />
+        {/* Esto seria un 404, cualquier ruta que no exista se redirigira a NotFound. */}
       </Routes>
 
     </BrowserRouter>

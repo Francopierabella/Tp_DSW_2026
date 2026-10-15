@@ -72,12 +72,13 @@ export default function Header() {
                     </Link>
 
                     {user && (
-                        <button
+                        <Link
                             className="logout-button"
                             onClick={handleLogout}
+                            to="/login"
                         >
                             Cerrar sesión
-                        </button>
+                        </Link>
                     )}
 
                     <button

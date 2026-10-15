@@ -285,3 +285,31 @@
     box-shadow: none;
     transform: none;
 }
+
+.customer-profile-sales-button {
+    min-height: 44px;
+    padding: 0 22px;
+    border: none;
+    margin: 12px 0;
+    border-radius: 10px;
+    background: #16aaa5;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.customer-profile-sales-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(22, 170, 165, 0.25);
+}
+
+.customer-profile-sales-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}

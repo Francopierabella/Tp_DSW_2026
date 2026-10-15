@@ -1,9 +1,10 @@
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { getCustomerProfile } from "../../services/customer.service";
-import { getHealthInsurances, type HealthInsurance } from "../../services/healthInsurance.service";
+import { getHealthInsurances } from "../../services/healthInsurance.service";
+import type { HealthInsurance } from "../../types/healthInsurances";
 import Header from "../../components/Header/Header";
 import "./CustomerProfile.css";
 import Footer from "../../components/Footer/Footer";
@@ -54,12 +55,13 @@ export default function CustomerProfile() {
             try {
                 const [customerData, healthInsuranceData] =
                     await Promise.all([
-                        getCustomerProfile(user.id, token),
-                        getHealthInsurances()
+                        getCustomerProfile(user.id, token), // traigo el customer
+                        getHealthInsurances() // traigo las obras sociales
                     ]);
+                // Promise.all hago peticiones en paralelo. await espera a que ambos terminen.
 
-                setCustomer(customerData);
-                setHealthInsurances(healthInsuranceData);
+                setCustomer(customerData); // guardo el customer
+                setHealthInsurances(healthInsuranceData); // guardo las obras sociales
 
                 setFormData({
                     firstName: customerData.firstName,
@@ -68,9 +70,12 @@ export default function CustomerProfile() {
                     address: customerData.address,
                     healthInsurance:
                         customerData.healthInsurance
-                            ? String(customerData.healthInsurance)
+                            ? String(customerData.healthInsurance) // convierto a string para que sea compatible luego con el select de HTML.
                             : ""
                 });
+                // Inicializo formData con los valores traídos del backend
+                // para que los inputs editables del formulario ya muestren
+                // la información del cliente.
             } catch (error) {
                 console.error(error);
                 setError(
@@ -83,6 +88,7 @@ export default function CustomerProfile() {
 
         loadProfile();
     }, [user, role, token]);
+    // se ejecuta cada vez q se muestra la pantalla y cada vez q cambie alguno de esos 3 valores. No necesito cargarlo de nuevo si no cambiaron.
 
     const handleChange = (
         event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -174,16 +180,7 @@ export default function CustomerProfile() {
                 return;
             }
 
-            /*
-             * El backend devuelve:
-             *
-             * {
-             *     message: "...",
-             *     customerWithThisId: ...
-             * }
-             */
-            const updatedCustomer =
-                data.customerWithThisId;
+            const updatedCustomer = data.customerWithThisId;
 
             setCustomer(updatedCustomer);
 
@@ -278,6 +275,10 @@ export default function CustomerProfile() {
         <>
             <Header />
             <div className="customer-profile-page">
+                <Link to={`/sales/customer/${user.id}`}>
+                    <button className="customer-profile-sales-button">Ver mis compras</button>
+                </Link>
+
                 <div className="customer-profile-card">
 
                     <div className="customer-profile-header">

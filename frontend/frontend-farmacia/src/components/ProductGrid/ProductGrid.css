@@ -63,3 +63,27 @@
         line-height: 1.5;
     }
 }
+
+.not-found__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 12px;
+    min-height: 46px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    background-color: #16aaa5;
+    color: #ffffff;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.not-found__button:hover {
+    background-color: #138d89;
+}
+
+.not-found__button:focus-visible {
+    outline: 3px solid #155568;
+    outline-offset: 4px;
+}

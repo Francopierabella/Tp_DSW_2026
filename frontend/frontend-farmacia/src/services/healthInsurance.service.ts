@@ -1,9 +1,5 @@
 
-export interface HealthInsurance {
-    id: number;
-    name: string;
-    coveragePercentage: number;
-}
+import type { HealthInsurance } from "../types/healthInsurances.ts";
 
 const API_URL = "http://localhost:3000/api/healthInsurances";
 
