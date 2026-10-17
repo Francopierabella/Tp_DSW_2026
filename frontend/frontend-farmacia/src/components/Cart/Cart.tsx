@@ -1,6 +1,9 @@
 import { useCart } from "../../context/CartContext";
 import "./Cart.css";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import Toast from "../Toast/Toast";
+import { useState } from "react";
 
 interface CartProps {
     onClose: () => void;
@@ -8,8 +11,9 @@ interface CartProps {
 
 export default function Cart({ onClose }: CartProps) {
 
+    const { role, user } = useAuth();
     const navigate = useNavigate();
-
+    const [toastMessage, setToastMessage] = useState("");
     const {
         cartItems,
         increaseQuantity,
@@ -134,14 +138,31 @@ export default function Cart({ onClose }: CartProps) {
                             </div>
                             <button
                                 className="checkout-button"
-                                onClick={() => navigate("/checkout")}
+                                onClick={() => {
+                                    if (!user) {
+                                        setToastMessage("error: Debes iniciar sesión para realizar una compra");
+                                        return;
+                                    }
+
+                                    if (role === 'MANAGER') {
+                                        setToastMessage("error: No puedes realizar compras como Manager");
+                                        return;
+                                    }
+
+                                    navigate("/checkout");
+                                }}
                             >
                                 Continuar con la compra
                             </button>
                         </div>
                     </>
                 )}
+
             </aside>
+
+            {toastMessage && (
+                <Toast message={toastMessage} onClose={() => setToastMessage("")} />
+            )}
         </div>
     );
 }

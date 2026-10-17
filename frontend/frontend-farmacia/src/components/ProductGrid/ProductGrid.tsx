@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ProductCard from "../ProductCard/ProductCard";
 import "./ProductGrid.css";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { getProducts } from "../../services/product.service.ts";
 import { getProductCategories } from "../../services/productCategory.service.ts";
 import type { Product } from "../../types/product.ts";
@@ -47,6 +47,9 @@ export default function ProductGrid() {
                         No hay productos que coincidan con tu búsqueda.
                         Probá con otro nombre o categoría.
                     </p>
+                    <Link to="/productos" className="not-found__button">
+                        Volver a productos
+                    </Link>
                 </div>
             ) : (
                 <div className="product-grid">

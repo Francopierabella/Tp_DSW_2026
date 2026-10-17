@@ -4,14 +4,16 @@ import { useAuth } from "../../context/AuthContext";
 import { useCart } from "../../context/CartContext";
 import Cart from "../Cart/Cart";
 import "./Header.css";
+import { LogoutModal } from "../LogoutModal/LogoutModal";
 
 export default function Header() {
 
     const [menuOpen, setMenuOpen] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
+    const [logoutModalOpen, setLogoutModalOpen] = useState(false);
 
     const { cartItems, clearCart } = useCart();
-    const { user, role, logout } = useAuth();
+    const { user, role } = useAuth();
 
     const cartItemCount = cartItems.reduce(
         (total, item) => total + item.quantity,
@@ -19,7 +21,7 @@ export default function Header() {
     );
 
     const handleLogout = () => {
-        logout();
+        setLogoutModalOpen(false);
         clearCart();
     };
 
@@ -54,12 +56,8 @@ export default function Header() {
                 </nav>
 
                 <div className="header-actions">
-
-                    {/* Icono de usuario: siempre el mismo SVG.
-                        Si está logueado → va a /perfil (ícono en color activo)
-                        Si no está logueado → va a /login */}
                     <Link
-                        to={user && role === "MANAGER" ? "/manager" : user ? "/customer" : "/login"}
+                        to={user && role === "MANAGER" ? "/manager" : user ? "/profile" : "/login"}
                         className="icon-button"
                         aria-label={user ? "Ver perfil" : "Iniciar sesión"}
                     >
@@ -75,14 +73,17 @@ export default function Header() {
                         </svg>
                     </Link>
 
-                    {/* Botón de cerrar sesión: solo aparece si hay usuario logueado */}
                     {user && (
                         <button
                             className="logout-button"
-                            onClick={handleLogout}
+                            onClick={() => setLogoutModalOpen(true)}
                         >
                             Cerrar sesión
                         </button>
+                    )}
+
+                    {logoutModalOpen && (
+                        <LogoutModal onClose={() => setLogoutModalOpen(false)} />
                     )}
 
                     <button

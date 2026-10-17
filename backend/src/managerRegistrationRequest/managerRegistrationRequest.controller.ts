@@ -86,25 +86,3 @@ export async function remove(req: Request, res: Response) {
     const removed = await service.remove(Number(found.id));
     return removed ? res.json(removed) : res.status(404).send();
 }
-
-export async function testEmail(req: Request, res: Response) {
-    try {
-        const emailService = new EmailService();
-        await emailService.sendManagerRegistrationEmail(
-            "Franco",
-            "Pierabella",
-            "[EMAIL_ADDRESS]",
-            "token-de-prueba"
-        );
-
-        return res.status(200).send({
-            message: "Email enviado correctamente"
-        });
-    } catch (error) {
-        console.error("Error al enviar email:", error);
-
-        return res.status(500).send({
-            message: "Error al enviar email"
-        });
-    }
-}

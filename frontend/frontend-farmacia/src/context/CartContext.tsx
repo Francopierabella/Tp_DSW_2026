@@ -43,6 +43,7 @@ export function CartProvider({ children }: CartProviderProps) {
     }, [cartItems]);
 
     const addToCart = (product: Product) => {
+        // setCartItems toma currentItems como el estado que tenia antes de ejecutar esta callback digamos.
         setCartItems(currentItems => {
             const existingItem = currentItems.find(
                 item => item.product.id === product.id
@@ -52,12 +53,14 @@ export function CartProvider({ children }: CartProviderProps) {
                     console.log("Error: No se puede agregar más productos, no hay suficiente stock");
                     return currentItems;
                 }
+                // si existe, retorname el mismo array pero con la cantidad incrementada de ese producto.
                 return currentItems.map(item =>
                     item.product.id === product.id
                         ? { ...item, quantity: item.quantity + 1 }
                         : item
                 );
             }
+            // si el product no existe, agregalo al final del array.
             return [
                 ...currentItems, {
                     product,
@@ -67,9 +70,12 @@ export function CartProvider({ children }: CartProviderProps) {
         });
     };
 
+    // Es parecida  addToCart, pero la diferencia esta en que trabaja con el id del product
+    // ya agregado al carrito. 
     const increaseQuantity = (productId: number) => {
         setCartItems(currentItems =>
             currentItems.map(item => {
+                // Aca trabaja con el item.product.id --> El item seria el {product, quantity} ya en el carrito.
                 if (item.product.id !== productId) {
                     return item;
                 }
@@ -82,11 +88,14 @@ export function CartProvider({ children }: CartProviderProps) {
         );
     };
 
+    // filtra el carrito con los productos cuyo id sea distinto al parametro. 
+    // Es decir, elimina el product de ese id.
     const removeFromCart = (productId: number) => {
         setCartItems(currentItems =>
             currentItems.filter(item => item.product.id !== productId)
         );
     };
+
     const decreaseQuantity = (productId: number) => {
         setCartItems(currentItems =>
             currentItems.map(item => {
@@ -106,14 +115,15 @@ export function CartProvider({ children }: CartProviderProps) {
     }
 
 
+    // reduce recorre un array y acumula un resultado a partir de sus elementos.
     const total = cartItems.reduce(
         (accumulator, item) => {
             return accumulator + (item.product.price * item.quantity);
         },
         0 // el 0 es el valor inicial del accumulator.
     );
-    // reduce va recorriendo todos los productos y acumulando un resultado.
 
+    // Los valores que quiero compartir son los que se definen aca.
     return (
         <CartContext.Provider value={{
             cartItems,
@@ -129,6 +139,11 @@ export function CartProvider({ children }: CartProviderProps) {
     );
 
 }
+
+// El provider es un componente que envuelve a otros componentes
+// y les da acceso a un valor compartido (en este caso, el carrito)
+// sin necesidad de pasar props manualmente.
+// El value es la info que quiero compartir
 export function useCart() {
     const context = useContext(CartContext);
 
@@ -138,7 +153,4 @@ export function useCart() {
 
     return context;
 }
-// El provider es un componente que envuelve a otros componentes
-// y les da acceso a un valor compartido (en este caso, el carrito)
-// sin necesidad de pasar props manualmente.
-// El value es la info que quiero compartir
+// hook personalizado: me da acceso al carrito en cualquier componente.

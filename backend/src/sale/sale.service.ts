@@ -1,13 +1,14 @@
 import { SaleItemRepository } from "../saleItem/saleItem.repository.js";
 import { IRepository } from "../shared/base.repository.js";
 import { Sale, typesStatus } from "./sale.entity.js";
+import { ISaleRepository } from "./sale.interface.js";
 
 
 // el SaleService es el encargado de decidir qué se puede hacer según el estado de la venta.
 export class SaleService {
 
     constructor(
-        private readonly repo: IRepository<Sale>,
+        private readonly repo: ISaleRepository,
         private readonly saleItemRepo: SaleItemRepository
     ) { };
 
@@ -69,5 +70,9 @@ export class SaleService {
             await this.saleItemRepo.delete({ id: item.id! });
         }
         return await this.repo.delete({ id });
+    }
+    async findByCustomer(customerId: number): Promise<Sale[] | undefined> {
+
+        return await this.repo.findByCustomer(customerId);
     }
 }

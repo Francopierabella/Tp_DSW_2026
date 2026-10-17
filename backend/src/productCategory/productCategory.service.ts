@@ -23,8 +23,6 @@ export class ProductCategoryService {
                 // MySQL utiliza ER_DUP_ENTRY cuando intentamos insertar un valor que viola una restricción UNIQUE.
             }
             throw error;
-            // Si el error no era un duplicado 
-            //  que sea tratado como otro error
         }
     }
     async update(id: number, input: ProductCategory): Promise<ProductCategory | undefined> {

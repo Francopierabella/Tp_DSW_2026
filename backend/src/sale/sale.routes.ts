@@ -1,13 +1,14 @@
 import { Router } from "express";
-import { findAll, findOne, create, update, confirm, cancel, remove } from "./sale.controller.js";
+import { findAll, findOne, create, update, confirm, cancel, remove, findByCustomer } from "./sale.controller.js";
 import { sanitizedSaleInput, sanitizedSaleUpdateInput } from "./sale.validations.js";
 import { authorizeRole, authenticateToken } from "../middleware/auth.middleware.js";
 export const saleRouter = Router();
 
 saleRouter.get("/", authenticateToken, authorizeRole("MANAGER"), findAll);
+saleRouter.get("/customer/:customerId", authenticateToken, authorizeRole("CUSTOMER", "MANAGER"), findByCustomer)
 saleRouter.get("/:id", authenticateToken, authorizeRole("CUSTOMER", "MANAGER"), findOne);
 saleRouter.post("/", authenticateToken, authorizeRole("CUSTOMER", "MANAGER"), sanitizedSaleInput, create);
-saleRouter.patch("/:id", authenticateToken, sanitizedSaleUpdateInput, update);
+saleRouter.patch("/:id", authenticateToken, authorizeRole("CUSTOMER", "MANAGER"), sanitizedSaleUpdateInput, update);
 saleRouter.patch("/:id/confirm", authenticateToken, authorizeRole("MANAGER"), confirm);
 saleRouter.patch("/:id/cancel", authenticateToken, authorizeRole("MANAGER"), cancel)
 saleRouter.delete("/:id", authenticateToken, authorizeRole("MANAGER"), remove);

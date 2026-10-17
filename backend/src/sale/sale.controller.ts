@@ -47,6 +47,14 @@ export async function update(req: Request, res: Response) {
         throw new AppError("Internal server error", 500);
     }
 }
+export async function findByCustomer(req: Request, res: Response) {
+    const customerId = Number(req.params.customerId);
+    const sales = await service.findByCustomer(customerId);
+    if (!sales) {
+        throw new AppError(`Sales with customer id ${customerId} not found`, 404);
+    }
+    return res.json(sales);
+}
 export async function confirm(req: Request, res: Response) {
     try {
         const id = Number(req.params.id);

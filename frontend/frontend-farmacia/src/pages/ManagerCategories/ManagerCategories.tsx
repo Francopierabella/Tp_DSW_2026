@@ -13,6 +13,7 @@ export default function ManagerCategories() {
     const [showForm, setShowForm] = useState(false);
     const [editingCategoryId, setEditingCategoryId] = useState<number | null>(null);
     const [categoryToDelete, setCategoryToDelete] = useState<ProductCategory | null>(null);
+    const [nameFilter, setNameFilter] = useState("");
 
     const { token } = useAuth();
 
@@ -206,6 +207,11 @@ export default function ManagerCategories() {
         }
     }
 
+    const filteredCategories = categories.filter((cat) => {
+        const matchesName = cat.name.toLowerCase().includes(nameFilter.toLocaleLowerCase());
+        return matchesName;
+    });
+
     return (
         <>
             <Header />
@@ -244,6 +250,10 @@ export default function ManagerCategories() {
                     >
                         + Nueva categoría
                     </button>
+                </div>
+
+                <div className="manager-categories-filter">
+                    <input type="text" placeholder="Nombre" value={nameFilter} onChange={(e) => setNameFilter(e.target.value)} />
                 </div>
 
                 {showForm && (
@@ -322,7 +332,7 @@ export default function ManagerCategories() {
                         </thead>
 
                         <tbody>
-                            {categories.map((category) => (
+                            {filteredCategories.map((category) => (
                                 <tr key={category.id}>
                                     <td>{category.id}</td>
                                     <td>{category.name}</td>

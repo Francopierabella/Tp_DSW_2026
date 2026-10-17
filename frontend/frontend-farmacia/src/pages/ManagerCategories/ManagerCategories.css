@@ -180,3 +180,16 @@
     font-size: 14px;
     margin: 10px 0 0;
 }
+
+.manager-categories-filter {
+    margin-bottom: 20px;
+}
+
+.manager-categories-filter input {
+    padding: 12px 14px;
+    border: 1px solid #d9e3e5;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    width: 45%;
+}

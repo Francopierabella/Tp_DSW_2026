@@ -11,5 +11,6 @@ createRoot(document.getElementById('root')!).render(
         <App />
       </CartProvider>
     </AuthProvider>
-  </StrictMode>,
+  </StrictMode>
 )
+// Hcer page 404 not found

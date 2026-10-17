@@ -5,19 +5,25 @@ import { useNavigate } from "react-router-dom";
 
 export default function Login() {
 
+    // Accedemos a la funcion login que me da el contexto.
     const { login } = useAuth();
+    // hook para navegar entre rutas
     const navigate = useNavigate();
 
+    // Hooks para guardar el valor del input
     const [e_mail, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
+    // Maneja el envio del formulario.
     const handleSubmit = async (event: React.FormEvent) => {
 
+        // Evita que la pagina se recargue.
         event.preventDefault();
 
         setError("");
 
+        // validaciones
         if (!e_mail.trim()) {
             setError("El email es obligatorio");
             return;
@@ -30,6 +36,7 @@ export default function Login() {
 
         try {
 
+            // hago la peticion al backend
             const response = await fetch(
                 "http://localhost:3000/api/auth/login",
                 {
@@ -37,6 +44,7 @@ export default function Login() {
                     headers: {
                         "Content-Type": "application/json"
                     },
+                    // Mando la info del formulario al backend.
                     body: JSON.stringify({
                         e_mail: e_mail.trim(),
                         password: password.trim()

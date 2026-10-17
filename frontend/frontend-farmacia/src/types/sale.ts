@@ -3,7 +3,6 @@ export interface Sale {
     paymentMethod: 'CASH' | 'CREDIT_CARD' | 'DEBIT_CARD' | 'TRANSFER';
     deliveryMethod: 'PICKUP' | 'DELIVERY';
     customer: number;
-    manager: number;
     totalAmount: number;
     date: Date;
     paidDate?: Date;
@@ -19,11 +18,6 @@ export interface SaleResponse {
         firstName: string;
         lastName: string;
     };
-    manager: {
-        id: number;
-        firstName: string;
-        lastName: string;
-    };
     totalAmount: number;
     date: Date;
     paidDate?: Date;
@@ -34,7 +28,6 @@ export interface SaleCreateInput {
     paymentMethod: 'CASH' | 'CREDIT_CARD' | 'DEBIT_CARD' | 'TRANSFER';
     deliveryMethod: 'PICKUP' | 'DELIVERY';
     customer: number;
-    manager: number;
 }
 
 export interface SaleUpdateInput {

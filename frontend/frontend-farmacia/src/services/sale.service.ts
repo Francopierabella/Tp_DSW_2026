@@ -67,6 +67,26 @@ export async function createSale(sale: SaleCreateInput): Promise<Sale> {
     return result.data;
 }
 
+export async function getSalesByCustomer(id: number, token: string) {
+    const response = await fetch(`${API_URL}/customer/${id}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+
+    console.log("RESPONSEE getSalesByCustomer", response);
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message);
+    }
+
+    const result = await response.json();
+
+    return result;
+}
+
+
 export async function updateSale(
     id: number,
     sale: SaleUpdateInput

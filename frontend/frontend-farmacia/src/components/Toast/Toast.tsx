@@ -30,8 +30,10 @@ export default function Toast({ message, onClose }: ToastProps) {
 
     return createPortal(
         <div className="toast">
-            <span className="toast-icon">✓</span>
-            <span>{message}</span>
+            <span className={message.includes("error") ? "toast-error" : "toast-success"}>
+                {message.includes("error") ? "✗" : "✓"}
+            </span>
+            <span>{message.replace(/error:/, "")}</span>
         </div>,
         document.body
     );

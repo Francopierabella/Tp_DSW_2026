@@ -17,11 +17,9 @@ export async function getPurchaseOrders(): Promise<PurchaseOrder[]> {
             "Authorization": `Bearer ${token}`
         }
     });
-
     if (!response.ok) {
         throw new Error("Error al obtener los pedidos de compra");
     }
-
     return await response.json();
 }
 export async function getPurchaseOrderById(

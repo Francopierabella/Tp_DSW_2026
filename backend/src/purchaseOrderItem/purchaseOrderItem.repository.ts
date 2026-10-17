@@ -44,6 +44,8 @@ export class PurchaseOrderItemRepository implements IRepository<PurchaseOrderIte
         return found;
     }
     async findByPurchaseOrder(orderId: number): Promise<PurchaseOrderItem[] | undefined> {
-        return await orm.em.find(PurchaseOrderItem, { purchaseOrder: orderId });
+        return await orm.em.find(PurchaseOrderItem, { purchaseOrder: orderId }, {
+            populate: ["product"] as any
+        });
     }
 }
