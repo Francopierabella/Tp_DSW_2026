@@ -16,14 +16,24 @@
     z-index: 3000;
 }
 
+.toast-success {
+    background-color: #d9f5f3;
+    color: #12837f;
+    border-color: #12837f;
+}
+
+.toast-error {
+    background-color: #fef2f2;
+    color: #b91c1c;
+    border-color: #fecaca;
+}
+
 .toast-icon {
     width: 22px;
     height: 22px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #16aaa5;
-    color: white;
     border-radius: 50%;
     font-size: 13px;
     font-weight: 700;

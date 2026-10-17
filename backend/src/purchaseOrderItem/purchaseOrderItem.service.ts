@@ -91,6 +91,13 @@ export class PurchaseOrderItemService {
     async remove(id: number): Promise<PurchaseOrderItem | undefined> {
         return await this.repo.delete({ id });
     }
+    async findByPurchaseOrder(orderId: number): Promise<PurchaseOrderItem[]> {
+        const purchaseOrder = await this.purchaseOrderRepo.findOne({ id: orderId });
+        if (!purchaseOrder) {
+            throw new Error("The purchase order ID entered is invalid");
+        }
+        return (await this.repo.findByPurchaseOrder(orderId)) ?? [];
+    }
     private async updatePurchaseOrderTotal(orderId: number): Promise<void> {
         const orderItems = await this.repo.findByPurchaseOrder(orderId);
         let total = 0;

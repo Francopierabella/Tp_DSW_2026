@@ -17,23 +17,13 @@ export default function ManagerSales() {
     const [dateFrom, setDateFrom] = useState("");
     const [dateTo, setDateTo] = useState("");
     const [customerFilter, setCustomerFilter] = useState("");
-
-    const [saleToConfirm, setSaleToConfirm] =
-        useState<SaleResponse | null>(null);
-
-    const [saleToCancel, setSaleToCancel] =
-        useState<SaleResponse | null>(null);
-
-    const [saleToView, setSaleToView] =
-        useState<SaleResponse | null>(null);
-
+    const [saleToConfirm, setSaleToConfirm] = useState<SaleResponse | null>(null);
+    const [saleToCancel, setSaleToCancel] = useState<SaleResponse | null>(null);
+    const [saleToView, setSaleToView] = useState<SaleResponse | null>(null);
 
     useEffect(() => {
-
         async function loadSales() {
-
             try {
-
                 setLoading(true);
                 setError("");
 

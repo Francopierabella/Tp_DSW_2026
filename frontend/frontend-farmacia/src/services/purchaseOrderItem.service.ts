@@ -1,4 +1,4 @@
-import type { PurchaseOrderItem } from "../types/purchaseOrderItem.js";
+import type { PurchaseOrderItem, PurchaseOrderItemResponse } from "../types/purchaseOrderItem.js";
 
 const API_URL = "http://localhost:3000/api/purchaseOrderItems";
 
@@ -31,6 +31,30 @@ export async function createPurchaseOrderItem(
 
     if (!response.ok) {
         throw new Error("Error al crear el detalle del pedido de compra");
+    }
+
+    return await response.json();
+}
+
+export async function getPurchaseOrderItemsByOrder(
+    orderId: number
+): Promise<PurchaseOrderItemResponse[]> {
+    const token = getToken();
+
+    const response = await fetch(
+        `${API_URL}/purchaseOrder/${orderId}`,
+        {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }
+    );
+
+    if (!response.ok) {
+        const error = await response.json().catch(() => null);
+        throw new Error(
+            error?.message || "Error al obtener los productos del pedido de compra"
+        );
     }
 
     return await response.json();

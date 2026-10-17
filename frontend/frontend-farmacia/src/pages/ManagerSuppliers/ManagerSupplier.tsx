@@ -4,13 +4,15 @@ import type { Product } from "../../types/product.js";
 import type { Supplier } from "../../types/supplier.js";
 import type { SupplierProduct } from "../../types/supplierProduct.js";
 import type { PurchaseOrder } from "../../types/purchaseOrder.js";
+import type { PurchaseOrderItemResponse } from "../../types/purchaseOrderItem.js";
 import { getProducts } from "../../services/product.service.js";
 import { getSuppliers } from "../../services/suppliers.service.js";
 import { getSupplierProductsByProduct } from "../../services/suppliersProduct.service.js";
 import { createPurchaseOrder, updatePurchaseOrder, getPurchaseOrders, getPurchaseOrderById } from "../../services/purchaseOrder.service.js";
-import { createPurchaseOrderItem } from "../../services/purchaseOrderItem.service.js";
+import { createPurchaseOrderItem, getPurchaseOrderItemsByOrder } from "../../services/purchaseOrderItem.service.js";
 import Header from "../../components/Header/Header.js";
 import Footer from "../../components/Footer/Footer.js";
+import Toast from "../../components/Toast/Toast.js";
 
 interface PurchaseCartItem {
     product: Product;
@@ -24,17 +26,21 @@ export default function ManagerSuppliers() {
     const [suppliers, setSuppliers] = useState<Supplier[]>([]);
     const [supplierProducts, setSupplierProducts] = useState<SupplierProduct[]>([]);
     const [confirmingPurchase, setConfirmingPurchase] = useState<boolean>(false);
-    const [successMessage, setSuccessMessage] = useState<string>("");
     const [selectedProduct, setSelectedProduct] = useState<number | null>(null);
-
+    const [orderItems, setOrderItems] = useState<PurchaseOrderItemResponse[]>([]);
+    const [loadingOrderItems, setLoadingOrderItems] = useState<boolean>(false);
     const [loadingProducts, setLoadingProducts] = useState(true);
     const [loadingSuppliers, setLoadingSuppliers] = useState(true);
     const [loadingOffers, setLoadingOffers] = useState(false);
-
+    const [toastMessage, setToastMessage] = useState<string | null>("");
     const [purchaseOrders, setPurchaseOrders] = useState<PurchaseOrder[]>([]);
     const [loadingPurchaseOrders, setLoadingPurchaseOrders] = useState(true);
     const [updatingOrderId, setUpdatingOrderId] = useState<number | null>(null);
     const [error, setError] = useState("");
+    const [supplierFilter, setSupplierFilter] = useState<string>("");
+
+    const [orderToView, setOrderToView] = useState<PurchaseOrder | null>(null);
+
 
     const [purchaseCart, setPurchaseCart] = useState<PurchaseCartItem[]>([]);
 
@@ -54,7 +60,7 @@ export default function ManagerSuppliers() {
                 getProducts(),
                 getSuppliers(),
                 getPurchaseOrders()
-            ]);
+            ]); // para ejecutar promesas en paralelo
 
             setProducts(productsData);
             setSuppliers(suppliersData);
@@ -229,14 +235,9 @@ export default function ManagerSuppliers() {
         try {
             setConfirmingPurchase(true);
             setError("");
-            setSuccessMessage("");
-
             const createdOrders: PurchaseOrder[] = [];
-            console.log("GROUPED CART", groupedCart);
 
             for (const [supplierId, items] of Object.entries(groupedCart)) {
-                console.log("CREANDO ORDEN PARA PROVEEDOR", supplierId, items);
-
                 const purchaseOrder = await createPurchaseOrder({
                     date: new Date().toISOString(),
                     status: "pending",
@@ -264,10 +265,6 @@ export default function ManagerSuppliers() {
             ]);
 
             setPurchaseCart([]);
-
-            setSuccessMessage(
-                "Los pedidos de compra se confirmaron correctamente."
-            );
         } catch (error) {
             console.error(error);
 
@@ -286,8 +283,6 @@ export default function ManagerSuppliers() {
         try {
             setUpdatingOrderId(orderId);
             setError("");
-            setSuccessMessage("");
-
             const updatedOrder = await updatePurchaseOrder(
                 orderId,
                 status
@@ -300,12 +295,6 @@ export default function ManagerSuppliers() {
                         : order
                 )
             );
-
-            setSuccessMessage(
-                status === "received"
-                    ? "Pedido marcado como recibido."
-                    : "Pedido cancelado correctamente."
-            );
         } catch (error) {
             console.error(error);
             setError(
@@ -315,6 +304,29 @@ export default function ManagerSuppliers() {
             setUpdatingOrderId(null);
         }
     }
+
+    const handleViewOrder = async (order: PurchaseOrder) => {
+        try {
+            setError("");
+            setLoadingOrderItems(true);
+            setOrderToView(order);
+
+            const items = await getPurchaseOrderItemsByOrder(order.id);
+            setOrderItems(items);
+        } catch (error: any) {
+            console.error(error);
+            setError(error.message || "Error al obtener los productos del pedido");
+        } finally {
+            setLoadingOrderItems(false);
+        }
+    };
+    const filteredOrders = purchaseOrders.filter((order) => {
+        const matchesName = !supplierFilter ||
+            getSupplierById(order.supplier)?.name.toLowerCase()
+                .includes(supplierFilter.toLowerCase());
+
+        return matchesName;
+    })
 
     return (
         <>
@@ -381,11 +393,6 @@ export default function ManagerSuppliers() {
                         {error && (
                             <p className="supplier-error">
                                 {error}
-                            </p>
-                        )}
-                        {successMessage && (
-                            <p className="supplier-success">
-                                {successMessage}
                             </p>
                         )}
 
@@ -522,10 +529,6 @@ export default function ManagerSuppliers() {
                                 )}
                         </div>
                     </section>
-
-                    {/* =========================
-                    CARRITO
-                ========================= */}
 
                     <aside className="purchase-cart">
 
@@ -694,6 +697,8 @@ export default function ManagerSuppliers() {
                             </div>
                         )}
 
+
+
                         <div className="purchase-cart-footer">
 
                             <div className="purchase-total">
@@ -713,18 +718,31 @@ export default function ManagerSuppliers() {
                                     purchaseCart.length === 0 ||
                                     confirmingPurchase
                                 }
-                                onClick={handleConfirmPurchase}
+                                onClick={() => {
+                                    handleConfirmPurchase();
+                                    setToastMessage("Pedidos confirmados");
+                                }}
                             >
                                 {confirmingPurchase
                                     ? "Confirmando..."
                                     : "Confirmar pedidos"}
                             </button>
-
                         </div>
 
-                    </aside>
+                        {toastMessage && (
+                            <Toast
+                                message={toastMessage}
+                                onClose={() => setToastMessage(null)}
+                            />
+                        )}
 
+                    </aside>
                 </section>
+                <div className="search-supplier">
+                    <h1>Buscar pedidos a Proveedores</h1>
+                    <input type="text" placeholder="Proveedor" value={supplierFilter} className="supplier-filter-input"
+                        onChange={(e) => setSupplierFilter(e.target.value)} />
+                </div>
                 <section className="purchase-orders-section">
 
                     <div className="purchase-orders-header">
@@ -737,8 +755,8 @@ export default function ManagerSuppliers() {
                         </div>
 
                         <span>
-                            {purchaseOrders.length}{" "}
-                            {purchaseOrders.length === 1
+                            {filteredOrders.length}{" "}
+                            {filteredOrders.length === 1
                                 ? "pedido"
                                 : "pedidos"}
                         </span>
@@ -749,7 +767,7 @@ export default function ManagerSuppliers() {
                             <span>⏳</span>
                             <p>Cargando pedidos...</p>
                         </div>
-                    ) : purchaseOrders.length === 0 ? (
+                    ) : filteredOrders.length === 0 ? (
                         <div className="purchase-orders-empty">
                             <span>📋</span>
                             <p>
@@ -759,11 +777,11 @@ export default function ManagerSuppliers() {
                     ) : (
                         <div className="purchase-orders-list">
 
-                            {purchaseOrders.map((order) => {
+                            {filteredOrders.map((order) => {
+                                console.log("ORDER", order);
                                 const supplier = getSupplierById(
                                     order.supplier
                                 );
-
                                 return (
                                     <article
                                         key={order.id}
@@ -853,6 +871,16 @@ export default function ManagerSuppliers() {
                                                 </>
                                             )}
 
+                                            <button
+                                                type="button"
+                                                className="purchase-order-view-button"
+                                                onClick={() =>
+                                                    handleViewOrder(order)
+                                                }
+                                            >
+                                                Ver
+                                            </button>
+
                                         </div>
                                     </article>
                                 );
@@ -862,6 +890,150 @@ export default function ManagerSuppliers() {
                     )}
 
                 </section>
+
+                {orderToView && (
+                    <div className="purchase-order-detail-overlay">
+                        <div className="purchase-order-detail-modal">
+
+                            <div className="purchase-order-detail-header">
+                                <h2>Detalle de pedido #{orderToView.id}</h2>
+
+                                <button
+                                    type="button"
+                                    className="purchase-order-detail-close"
+                                    onClick={() => {
+                                        setOrderToView(null);
+                                        setOrderItems([]);
+                                    }}
+                                >
+                                    ×
+                                </button>
+                            </div>
+
+                            <div className="purchase-order-detail-content">
+
+                                <div className="purchase-order-detail-row">
+                                    <span>Fecha</span>
+                                    <strong>
+                                        {new Date(
+                                            orderToView.date
+                                        ).toLocaleDateString("es-AR")}
+                                    </strong>
+                                </div>
+
+                                <div className="purchase-order-detail-row">
+                                    <span>Proveedor</span>
+                                    <strong>
+                                        {getSupplierById(orderToView.supplier)?.name ||
+                                            `Proveedor #${orderToView.supplier}`}
+                                    </strong>
+                                </div>
+
+                                <div className="purchase-order-detail-row">
+                                    <span>Estado</span>
+                                    <strong>
+                                        {orderToView.status === "pending" &&
+                                            "Pendiente"}
+                                        {orderToView.status === "received" &&
+                                            "Recibido"}
+                                        {orderToView.status === "cancelled" &&
+                                            "Cancelado"}
+                                    </strong>
+                                </div>
+
+                                {/* PRODUCTOS DEL PEDIDO */}
+                                <div className="purchase-order-detail-products">
+                                    <h3>Productos</h3>
+
+                                    {loadingOrderItems ? (
+                                        <p>Cargando productos...</p>
+                                    ) : orderItems.length === 0 ? (
+                                        <p>No hay productos asociados a este pedido.</p>
+                                    ) : (
+                                        orderItems.map((item) => {
+                                            const productObj =
+                                                typeof item.product === "object" && item.product !== null
+                                                    ? item.product
+                                                    : products.find(
+                                                        (p) => p.id === item.product.id
+                                                    );
+
+                                            const productName =
+                                                productObj?.name ||
+                                                `Producto #${typeof item.product === "number" ? item.product : item.id}`;
+
+                                            const productBrand =
+                                                productObj?.brand || "";
+
+                                            return (
+                                                <div
+                                                    key={item.id}
+                                                    className="purchase-order-detail-product"
+                                                >
+                                                    <div>
+                                                        <strong>
+                                                            {productName}
+                                                        </strong>
+
+                                                        {productBrand && (
+                                                            <span>
+                                                                {productBrand}
+                                                            </span>
+                                                        )}
+                                                    </div>
+
+                                                    <div>
+                                                        <span>
+                                                            Cantidad: {item.quantity}
+                                                        </span>
+
+                                                        <span>
+                                                            ${item.unitPrice.toLocaleString("es-AR")} c/u
+                                                        </span>
+
+                                                        <strong>
+                                                            $
+                                                            {(
+                                                                item.unitPrice *
+                                                                item.quantity
+                                                            ).toLocaleString("es-AR")}
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })
+                                    )}
+                                </div>
+
+                                <div className="purchase-order-detail-total">
+                                    <span>Total</span>
+
+                                    <strong>
+                                        $
+                                        {orderToView.totalAmount.toLocaleString(
+                                            "es-AR"
+                                        )}
+                                    </strong>
+                                </div>
+
+                            </div>
+
+                            <div className="purchase-order-detail-footer">
+                                <button
+                                    type="button"
+                                    className="purchase-order-detail-close-button"
+                                    onClick={() => {
+                                        setOrderToView(null);
+                                        setOrderItems([]);
+                                    }}
+                                >
+                                    Cerrar
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                )}
             </main>
             <Footer />
         </>

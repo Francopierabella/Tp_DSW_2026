@@ -129,7 +129,6 @@ export default function Checkout() {
                 paymentMethod,
                 deliveryMethod,
                 customer: user.id,
-                manager: 1 // Temporal hasta resolver el manager autenticado
             });
 
             // 2. Crear los ítems de la venta

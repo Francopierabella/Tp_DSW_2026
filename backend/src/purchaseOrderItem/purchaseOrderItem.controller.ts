@@ -23,6 +23,23 @@ export async function findOne(req: Request, res: Response) {
     }
     return res.json(found);
 }
+export async function findByPurchaseOrder(req: Request, res: Response) {
+    const orderId = Number(req.params.orderId);
+
+    if (Number.isNaN(orderId)) {
+        throw new AppError("Invalid purchase order ID", 400);
+    }
+
+    try {
+        const orderItems = await service.findByPurchaseOrder(orderId);
+        return res.json(orderItems);
+    } catch (error: any) {
+        if (error.message === "The purchase order ID entered is invalid") {
+            throw new AppError(error.message, 404);
+        }
+        throw new AppError("Internal server error", 500);
+    }
+}
 export async function create(req: Request, res: Response) {
     try {
         const data = req.body.sanitizedPurchaseOrderItemInput;
