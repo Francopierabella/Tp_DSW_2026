@@ -48,6 +48,17 @@ export async function createSale(sale: SaleCreateInput): Promise<Sale> {
     const session = savedAuth ? JSON.parse(savedAuth) : null;
     const token = session?.token;
 
+    console.log("¿Hay sesión guardada?", !!savedAuth);
+    console.log("¿Hay token?", !!token);
+    console.log("Rol de la sesión:", session?.role);
+
+    if (!token) {
+        throw new Error(
+            "No se encontró un token de autenticación. Iniciá sesión nuevamente."
+        );
+    }
+
+    console.log("Authorization enviado:", `Bearer ${token ? "[TOKEN PRESENTE]" : "FALTA TOKEN"}`);
     const response = await fetch(API_URL, {
         method: "POST",
         headers: {
@@ -63,7 +74,6 @@ export async function createSale(sale: SaleCreateInput): Promise<Sale> {
     }
 
     const result = await response.json();
-
     return result.data;
 }
 
@@ -139,7 +149,6 @@ export async function remove(id: number): Promise<Sale> {
 }
 
 export async function confirmSale(id: number): Promise<SaleResponse> {
-
     const savedAuth = localStorage.getItem("auth");
     const session = savedAuth ? JSON.parse(savedAuth) : null;
     const token = session?.token;

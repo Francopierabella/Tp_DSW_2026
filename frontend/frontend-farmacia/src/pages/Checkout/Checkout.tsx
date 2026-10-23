@@ -246,7 +246,7 @@ export default function Checkout() {
                                             onInvalid={(e) => e.currentTarget.setCustomValidity("Debes seleccionar un método de pago.")}
                                             onInput={(e) => e.currentTarget.setCustomValidity("")}
                                         >
-                                            <option value="" disabled selected>Seleccionar</option>
+                                            <option value="" disabled>Seleccionar</option>
                                             <option value="CASH">Efectivo</option>
                                             <option value="CREDIT_CARD">Tarjeta de Crédito</option>
                                             <option value="DEBIT_CARD">Tarjeta de Débito</option>
@@ -267,7 +267,7 @@ export default function Checkout() {
                                             onInvalid={(e) => e.currentTarget.setCustomValidity("Debes seleccionar un método de entrega.")}
                                             onInput={(e) => e.currentTarget.setCustomValidity("")}
                                         >
-                                            <option value="" disabled selected>Seleccionar</option>
+                                            <option value="" disabled>Seleccionar</option>
                                             <option value="PICKUP">Retiro en sucursal</option>
                                             <option value="DELIVERY">Envío a domicilio</option>
                                         </select>

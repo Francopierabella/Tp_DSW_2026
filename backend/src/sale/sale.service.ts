@@ -1,5 +1,4 @@
 import { SaleItemRepository } from "../saleItem/saleItem.repository.js";
-import { IRepository } from "../shared/base.repository.js";
 import { Sale, typesStatus } from "./sale.entity.js";
 import { ISaleRepository } from "./sale.interface.js";
 
@@ -27,7 +26,6 @@ export class SaleService {
             input.paymentMethod,
             input.deliveryMethod,
             input.customer,
-            input.manager
         );
         return await this.repo.add(sale);
     }

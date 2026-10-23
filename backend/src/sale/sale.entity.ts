@@ -46,13 +46,10 @@ export class Sale extends BaseEntity {
     @ManyToOne(() => Customer)
     customer!: number
 
-    @ManyToOne(() => Manager)
-    manager!: number
-
     @OneToMany(() => SaleItem, saleItem => saleItem.sale)
     saleItems = new Collection<SaleItem>(this)
 
-    constructor(date: Date, paymentMethod: typesPayment, deliveryMethod: typesDelivery, customer: number, manager: number) {
+    constructor(date: Date, paymentMethod: typesPayment, deliveryMethod: typesDelivery, customer: number) {
         super()
         this.date = date
         this.paidDate = undefined
@@ -61,6 +58,5 @@ export class Sale extends BaseEntity {
         this.paymentMethod = paymentMethod
         this.totalAmount = 0
         this.customer = customer
-        this.manager = manager
     }
 }
