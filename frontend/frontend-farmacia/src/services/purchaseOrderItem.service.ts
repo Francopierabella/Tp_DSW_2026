@@ -1,6 +1,8 @@
 import type { PurchaseOrderItem, PurchaseOrderItemResponse } from "../types/purchaseOrderItem.js";
+import { API_BASE_URL } from "../config/api";
 
-const API_URL = "http://localhost:3000/api/purchaseOrderItems";
+const API_URL = `${API_BASE_URL}/purchaseOrderItems`;
+
 
 function getToken() {
     const savedAuth = localStorage.getItem("auth");

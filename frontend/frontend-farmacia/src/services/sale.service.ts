@@ -1,11 +1,8 @@
-import type {
-    Sale,
-    SaleResponse,
-    SaleCreateInput,
-    SaleUpdateInput
-} from "../types/sale";
+import type { Sale, SaleResponse, SaleCreateInput, SaleUpdateInput } from "../types/sale";
+import { API_BASE_URL } from "../config/api";
 
-const API_URL = "http://localhost:3000/api/sales";
+const API_URL = `${API_BASE_URL}/sales`;
+
 
 export async function getSales(): Promise<SaleResponse[]> {
     const savedAuth = localStorage.getItem("auth");

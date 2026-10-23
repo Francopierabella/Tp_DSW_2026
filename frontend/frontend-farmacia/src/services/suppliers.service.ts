@@ -1,6 +1,7 @@
 import type { Supplier } from "../types/supplier.js";
+import { API_BASE_URL } from "../config/api";
 
-const API_URL = "http://localhost:3000/api/suppliers";
+const API_URL = `${API_BASE_URL}/suppliers`;
 
 function getToken() {
     const savedAuth = localStorage.getItem("auth");

@@ -1,9 +1,10 @@
 import type { ProductCategory } from "../types/productCategory";
+import { API_BASE_URL } from "../config/api";
 
+const API_URL = `${API_BASE_URL}/products`;
 // l frontend se relaciona con el backend exactamente en el momento en que ejecuta fetch() hacia una URL de tu API,
 //  y el backend responde con datos en formato JSON.
 
-const API_URL = "http://localhost:3000/api/productCategories";
 
 export async function getProductCategories(): Promise<ProductCategory[]> {
   const response = await fetch(API_URL);
