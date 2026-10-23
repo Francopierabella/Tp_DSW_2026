@@ -100,7 +100,7 @@ export default function ManagerSales() {
             );
 
             setSaleToConfirm(null);
-            setError(null);
+            setError("");
 
         } catch (error: unknown) {
             console.error(error);
