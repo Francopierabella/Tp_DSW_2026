@@ -192,6 +192,10 @@ export default function ManagerSuppliers() {
         );
     }
 
+    //.reduce() =>  recibe una callback y un valor inicial.
+    // callback => (acumulador, valorActual) => nuevoAcumulador
+    // valorInicial => 0
+
     const totalProducts = purchaseCart.reduce(
         (total, item) => total + item.quantity,
         0
@@ -213,19 +217,26 @@ export default function ManagerSuppliers() {
             : null;
 
     const groupedCart = useMemo(() => {
-        return purchaseCart.reduce<
-            Record<number, PurchaseCartItem[]>
-        >((groups, item) => {
+        return purchaseCart.reduce<Record<number, PurchaseCartItem[]>>((groups, item) => {
             if (!groups[item.supplier.id]) {
                 groups[item.supplier.id] = [];
             }
 
             groups[item.supplier.id].push(item);
+            console.log("aca está el grupo");
+            console.log(groups);
+            console.log("aca está el item");
+            console.log(item);
 
             return groups;
         }, {});
     }, [purchaseCart]);
 
+    // useMemo memoriza el resultado del cálculo.
+    // toma el array purchaseCart, y lo agrupa por proveedor devolviendo un objeto donde:
+    // Clave => supplier.id (número)
+    // Valor => array de items de ese proveedor
+    //es una optimización de rendimiento para no repetir el agrupamiento en cada render innecesariamente.
 
     async function handleConfirmPurchase() {
         if (purchaseCart.length === 0) {
@@ -778,7 +789,6 @@ export default function ManagerSuppliers() {
                         <div className="purchase-orders-list">
 
                             {filteredOrders.map((order) => {
-                                console.log("ORDER", order);
                                 const supplier = getSupplierById(
                                     order.supplier
                                 );

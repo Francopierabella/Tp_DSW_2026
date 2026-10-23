@@ -114,3 +114,21 @@
 .login-register button:hover {
     text-decoration: underline;
 }
+
+.back-button {
+    display: block;
+    margin-top: 25px;
+    margin-bottom: auto;
+    padding: 5px;
+    color: #155568;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    width: 50%;
+}
+
+.back-button:hover {
+    text-decoration: underline;
+    color: #138f8b;
+}

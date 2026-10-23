@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import "./Login.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
 
@@ -78,6 +78,7 @@ export default function Login() {
 
     return (
         <div className="login-page">
+
             <div className="login-container">
 
                 <h1 className="login-title">
@@ -142,6 +143,10 @@ export default function Login() {
                         <span> ¿No tenés una cuenta? </span>
                         <button type="button" onClick={() => navigate("/register")} > Registrate acá </button>
                     </div>
+
+                    <Link to="/" className="back-button">
+                        ← Volver al inicio
+                    </Link>
 
                 </form>
 

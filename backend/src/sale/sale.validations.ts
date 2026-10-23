@@ -3,7 +3,7 @@ import { typesPayment, typesDelivery } from "./sale.entity.js";
 
 export const sanitizedSaleInput = (req: Request, res: Response, next: NextFunction) => {
 
-    const { date, paymentMethod, deliveryMethod, customer, manager } = req.body;
+    const { date, paymentMethod, deliveryMethod, customer } = req.body;
 
     const saleDate = date ? new Date(date) : new Date();
 
@@ -30,18 +30,17 @@ export const sanitizedSaleInput = (req: Request, res: Response, next: NextFuncti
             message: "The customer ID entered is invalid"
         });
     }
-    if (typeof manager !== "number" || manager <= 0) {
-        return res.status(400).send({
-            message: "The manager ID entered is invalid"
-        });
-    }
+    // if (typeof manager !== "number" || manager <= 0) {
+    //     return res.status(400).send({
+    //         message: "The manager ID entered is invalid"
+    //     });
+    // }
 
     req.body.sanitizedSaleInput = {
         date: saleDate,
         paymentMethod,
         deliveryMethod,
         customer,
-        manager
     };
 
     next();

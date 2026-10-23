@@ -1,17 +1,18 @@
+import { Manager } from "../manager/manager.entity.js";
 import { IRepository } from "../shared/base.repository.js";
 import { orm } from "../shared/db/orm.js";
-import { Sale } from "./sale.entity.js";
+import { Sale, typesStatus } from "./sale.entity.js";
 import { ISaleRepository } from "./sale.interface.js";
 
 export class SaleRepository implements ISaleRepository {
     public async findAll(): Promise<Sale[] | undefined> {
         return await orm.em.find(Sale, {}, {
-            populate: ["customer", "manager", "saleItems", "saleItems.product"]
+            populate: ["customer", "saleItems", "saleItems.product"]
         });
     }
     public async findOne(item: { id: number }): Promise<Sale | undefined> {
         const found = await orm.em.findOne(Sale, { id: item.id }, {
-            populate: ["customer", "manager", "saleItems", "saleItems.product"]
+            populate: ["customer", "saleItems", "saleItems.product"]
         });
 
         return found ?? undefined;
@@ -23,7 +24,7 @@ export class SaleRepository implements ISaleRepository {
             return created;
         } catch (error: any) {
             if (error.code === "ER_NO_REFERENCED_ROW_2") {
-                throw new Error("The customer or manager ID entered is invalid");
+                throw new Error("The customer ID entered is invalid");
             }
             throw error;
         }
@@ -44,9 +45,6 @@ export class SaleRepository implements ISaleRepository {
         }
         if (input.customer !== undefined) {
             found.customer = input.customer;
-        }
-        if (input.manager !== undefined) {
-            found.manager = input.manager;
         }
         if (input.totalAmount !== undefined) {
             found.totalAmount = input.totalAmount;
@@ -74,5 +72,27 @@ export class SaleRepository implements ISaleRepository {
     public async findByCustomer(customerId: number): Promise<Sale[] | undefined> {
         const found = await orm.em.find(Sale, { customer: customerId });
         return found ?? undefined;
+    }
+    public async confirm(id: number): Promise<Sale | undefined> {
+        const sale = await orm.em.findOne(Sale, { id });
+
+        if (!sale) {
+            return undefined;
+        }
+
+        if (sale.status !== typesStatus.PENDING) {
+            throw new Error("Only pending sales can be confirmed");
+        }
+
+        if (sale.totalAmount === 0) {
+            throw new Error("Cannot confirm a sale with no items");
+        }
+
+        sale.status = typesStatus.CONFIRMED;
+        sale.paidDate = new Date();
+
+        await orm.em.flush();
+
+        return sale;
     }
 }
