@@ -18,10 +18,14 @@ export default function ProductCard({
     image
 }: ProductCardProps) {
 
-    const { addToCart } = useCart();
+    const { addToCart, cartItems } = useCart();
     const { user } = useAuth();
     const navigate = useNavigate();
     const [toastMessage, setToastMessage] = useState<string | null>(null);
+    const cartItem = cartItems.find(item => item.product.id === product.id);
+    const quantityInCart = cartItem?.quantity ?? 0;
+    const noStockAvailable = quantityInCart >= product.stock;
+
     return (
         <Link
             to={`/productos/${product.id}`}
@@ -49,20 +53,25 @@ export default function ProductCard({
                             ${product.price.toLocaleString("es-AR")}
                         </span>
 
+
                         <button
                             className="add-button"
+                            disabled={noStockAvailable}
                             onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
+
+                                if (noStockAvailable) return;
+
                                 if (!user) {
                                     navigate("/login");
                                 } else {
                                     addToCart(product);
-                                    setToastMessage(`${product.name} agregado al carrito!`)
+                                    setToastMessage(`${product.name} agregado al carrito!`);
                                 }
                             }}
                         >
-                            Agregar
+                            {noStockAvailable ? "Sin stock" : "Agregar"}
                         </button>
 
                     </div>

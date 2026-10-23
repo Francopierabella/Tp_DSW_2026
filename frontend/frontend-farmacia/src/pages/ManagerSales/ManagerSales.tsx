@@ -6,6 +6,7 @@ import { getSales, confirmSale, cancelSale } from "../../services/sale.service";
 import { getSaleItemsBySale } from "../../services/saleItem.service";
 import type { SaleItemResponse } from "../../types/saleItem";
 import Header from "../../components/Header/Header";
+import Toast from "../../components/Toast/Toast";
 
 export default function ManagerSales() {
 
@@ -20,6 +21,8 @@ export default function ManagerSales() {
     const [saleToConfirm, setSaleToConfirm] = useState<SaleResponse | null>(null);
     const [saleToCancel, setSaleToCancel] = useState<SaleResponse | null>(null);
     const [saleToView, setSaleToView] = useState<SaleResponse | null>(null);
+    const [toastMessage, setToastMessage] = useState<string | null>(null);
+    const [showToast, setShowToast] = useState(false);
 
     useEffect(() => {
         async function loadSales() {
@@ -81,15 +84,12 @@ export default function ManagerSales() {
         );
     });
 
-    const handleConfirmSale = async () => {
 
+    const handleConfirmSale = async () => {
         if (!saleToConfirm) return;
 
         try {
-
-            const updatedSale = await confirmSale(
-                saleToConfirm.id
-            );
+            const updatedSale = await confirmSale(saleToConfirm.id);
 
             setSales((prevSales) =>
                 prevSales.map((sale) =>
@@ -100,18 +100,31 @@ export default function ManagerSales() {
             );
 
             setSaleToConfirm(null);
+            setError(null);
 
-        } catch (error) {
-
+        } catch (error: unknown) {
             console.error(error);
 
-            setError(
-                "No se pudo confirmar la venta"
-            );
+            if (error instanceof Error) {
+                if (error.message.startsWith("Insufficient stock for product")) {
+                    const productName = error.message.replace(
+                        "Insufficient stock for product",
+                        ""
+                    ).trim();
 
+                    setToastMessage(`error: No hay stock suficiente de ${productName}`);
+                    setShowToast(true);
+                    setSaleToConfirm(null)
+
+                } else {
+                    setError(error.message);
+                }
+            } else {
+                setError("Ocurrió un error inesperado al confirmar la venta.");
+            }
         }
-
     };
+
 
 
     const handleCancelSale = async () => {
@@ -585,6 +598,16 @@ export default function ManagerSales() {
 
                             </div>
                         </div>
+                    )}
+
+                    {showToast && toastMessage && (
+                        <Toast
+                            message={toastMessage}
+                            onClose={() => {
+                                setShowToast(false);
+                                setToastMessage(null);
+                            }}
+                        />
                     )}
 
                 </div>
