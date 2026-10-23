@@ -186,7 +186,7 @@ export async function cancelSale(id: number): Promise<SaleResponse> {
     return await response.json();
 }
 export async function createSaleItem(item: { quantity: number; sale: number; product: number }) {
-    const response = await fetch("http://localhost:3000/api/saleItems", {
+    const response = await fetch(`${API_URL}/saleItems`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
