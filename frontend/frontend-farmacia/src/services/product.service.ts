@@ -1,9 +1,11 @@
 
 import type { Product } from "../types/product.ts";
 import type { ProductInput } from "../types/product.ts";
+import { API_BASE_URL } from "../config/api";
+
+const API_URL = `${API_BASE_URL}/products`;
 
 
-const API_URL = "http://localhost:3000/api/products";
 
 function getToken() {
     const savedAuth = localStorage.getItem("auth");

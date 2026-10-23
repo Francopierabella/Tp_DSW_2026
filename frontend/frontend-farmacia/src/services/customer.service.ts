@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "../config/api";
+
 export interface CustomerProfile {
     id: number;
     firstName: string;
@@ -9,7 +11,7 @@ export interface CustomerProfile {
     healthInsurance?: number;
 }
 
-const API_URL = "http://localhost:3000/api/customers";
+const API_URL = `${API_BASE_URL}/customers`;
 
 
 

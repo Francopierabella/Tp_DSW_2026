@@ -1,7 +1,8 @@
 
 import type { SaleItemResponse } from "../types/saleItem";
+import { API_BASE_URL } from "../config/api";
 
-const API_URL = "http://localhost:3000/api/saleItems";
+const API_URL = `${API_BASE_URL}/saleItems`;
 
 export async function getSaleItemsBySale(
     saleId: number
