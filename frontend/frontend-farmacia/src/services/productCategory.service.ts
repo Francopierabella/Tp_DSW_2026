@@ -1,7 +1,7 @@
 import type { ProductCategory } from "../types/productCategory";
 import { API_BASE_URL } from "../config/api";
 
-const API_URL = `${API_BASE_URL}/products`;
+const API_URL = `${API_BASE_URL}/productCategories`;
 // l frontend se relaciona con el backend exactamente en el momento en que ejecuta fetch() hacia una URL de tu API,
 //  y el backend responde con datos en formato JSON.
 
