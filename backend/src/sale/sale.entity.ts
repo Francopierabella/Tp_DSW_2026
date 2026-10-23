@@ -2,7 +2,6 @@ import { Collection, Entity, Enum, ManyToOne, OneToMany, Property } from "@mikro
 import { BaseEntity } from "../shared/baseEntity.entity.js";
 import { Customer } from "../customer/customer.entity.js";
 import { SaleItem } from "../saleItem/saleItem.entity.js";
-import { Manager } from "../manager/manager.entity.js";
 
 export enum typesPayment {
     CASH = 'CASH',
