@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getHealthInsurances } from "../../services/healthInsurance.service";
-import type { HealthInsurance } from "../../services/healthInsurance.service";
+import type { HealthInsurance } from "../../types/healthInsurances.ts";
 import "./CustomerRegister.css";
 
 export default function CustomerRegister() {
