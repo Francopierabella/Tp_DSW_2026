@@ -1,8 +1,12 @@
-import { IRepository } from "../shared/base.repository.js";
+import { LockMode } from "@mikro-orm/core";
 import { orm } from "../shared/db/orm.js";
 import { PurchaseOrder } from "./purchaseOrder.entity.js";
+import { IPurchaseOrderRepository } from "./purchaseOrder.interface.js";
+import { PurchaseOrderStatus } from "./purchaseOrder.entity.js";
+import { PurchaseOrderItem } from "../purchaseOrderItem/purchaseOrderItem.entity.js";
+import { Product } from "../product/product.entity.js";
 
-export class PurchaseOrderRepository implements IRepository<PurchaseOrder> {
+export class PurchaseOrderRepository implements IPurchaseOrderRepository {
     public async findAll(): Promise<PurchaseOrder[] | undefined> {
         return await orm.em.find(PurchaseOrder, {});
     }
@@ -46,5 +50,27 @@ export class PurchaseOrderRepository implements IRepository<PurchaseOrder> {
         }
         await orm.em.removeAndFlush(found);
         return found;
+    }
+    public async receive(id: number): Promise<PurchaseOrder | undefined> {
+        return await orm.em.transactional(async (em) => {
+            const purchaseOrder = await em.findOne(PurchaseOrder, { id }, { lockMode: LockMode.PESSIMISTIC_WRITE });
+            if (!purchaseOrder) return undefined;
+            if (purchaseOrder.status !== PurchaseOrderStatus.Pending)
+                throw new Error("Only pending purchase orders can be received");
+            const items = await em.find(PurchaseOrderItem, { purchaseOrder: id });
+            for (const item of items) {
+                if (item.quantity <= 0) {
+                    throw new Error("Order Item quantity must be greater than zero");
+                }
+                const product = await em.findOne(Product, { id: item.product }, { lockMode: LockMode.PESSIMISTIC_WRITE });
+                if (!product)
+                    throw new Error(`Product ${item.product} not found`);
+                product.stock += item.quantity;
+                em.flush();
+            }
+            purchaseOrder.status = PurchaseOrderStatus.Received;
+            await em.flush();
+            return purchaseOrder;
+        })
     }
 }

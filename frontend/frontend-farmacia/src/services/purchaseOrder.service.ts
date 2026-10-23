@@ -85,3 +85,23 @@ export async function updatePurchaseOrder(
 
     return await response.json();
 }
+
+export async function receiveOrder(id: number): Promise<PurchaseOrder> {
+    const savedAuth = localStorage.getItem("auth");
+    const session = savedAuth ? JSON.parse(savedAuth) : null;
+    const token = session?.token;
+
+
+    const response = await fetch(`${API_URL}/${id}/receive`, {
+        method: "PATCH",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error("Error al recibir el pedido de compra");
+    }
+
+    return await response.json();
+}

@@ -55,21 +55,36 @@ export async function findByCustomer(req: Request, res: Response) {
     }
     return res.json(sales);
 }
+
 export async function confirm(req: Request, res: Response) {
     try {
         const id = Number(req.params.id);
         const saleConfirmed = await service.confirm(id);
+
         if (!saleConfirmed) {
             throw new AppError(`Sale with id ${id} not found`, 404);
         }
+
         return res.status(200).json(saleConfirmed);
     } catch (error: any) {
-        if (error.message === "Only pending sales can be confirmed" || error.message === "Cannot confirm a sale with no items") {
+        if (error instanceof AppError) {
+            throw error;
+        }
+
+        if (
+            error.message === "Only pending sales can be confirmed" ||
+            error.message === "Cannot confirm a sale with no items" ||
+            error.message.startsWith("Insufficient stock for product")
+        ) {
             throw new AppError(error.message, 409);
         }
+
+        console.error("Error confirming sale:", error);
+
         throw new AppError("Internal server error", 500);
     }
 }
+
 export async function cancel(req: Request, res: Response) {
     try {
         const id = Number(req.params.id);

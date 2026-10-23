@@ -42,13 +42,7 @@ export class SaleService {
     }
 
     async confirm(id: number): Promise<Sale | undefined> {
-        const sale = await this.repo.findOne({ id });
-        if (!sale) return undefined;
-        if (sale.status !== typesStatus.PENDING) throw new Error("Only pending sales can be confirmed");
-        if (sale.totalAmount === 0) throw new Error("Cannot confirm a sale with no items");
-        sale.status = typesStatus.CONFIRMED;
-        sale.paidDate = new Date();
-        return await this.repo.update(id, sale);
+        return await this.repo.confirm(id);
     }
 
     async cancel(id: number): Promise<Sale | undefined> {

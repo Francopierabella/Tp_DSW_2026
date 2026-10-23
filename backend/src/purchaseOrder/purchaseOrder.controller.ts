@@ -58,3 +58,16 @@ export async function remove(req: Request, res: Response) {
         throw new AppError("Internal server error", 500);
     }
 }
+export async function receive(req: Request, res: Response) {
+    try {
+        const id = Number(req.params.id);
+        const received = await service.receive(id);
+        if (!received) {
+            throw new AppError(`Purchase Order with id ${id} not found`, 404);
+        }
+        return res.status(200).json(received);
+    }
+    catch (error: any) {
+        throw new AppError("Internal server error", 500);
+    }
+}

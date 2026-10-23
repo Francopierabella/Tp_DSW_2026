@@ -41,4 +41,7 @@ export class PurchaseOrderService {
     async remove(id: number): Promise<PurchaseOrder | undefined> {
         return await this.repo.delete({ id });
     }
+    async receive(id: number): Promise<PurchaseOrder | undefined> {
+        return await this.repo.receive(id);
+    }
 }

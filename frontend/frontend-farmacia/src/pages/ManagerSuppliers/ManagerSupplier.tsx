@@ -8,7 +8,7 @@ import type { PurchaseOrderItemResponse } from "../../types/purchaseOrderItem.js
 import { getProducts } from "../../services/product.service.js";
 import { getSuppliers } from "../../services/suppliers.service.js";
 import { getSupplierProductsByProduct } from "../../services/suppliersProduct.service.js";
-import { createPurchaseOrder, updatePurchaseOrder, getPurchaseOrders, getPurchaseOrderById } from "../../services/purchaseOrder.service.js";
+import { createPurchaseOrder, updatePurchaseOrder, getPurchaseOrders, getPurchaseOrderById, receiveOrder } from "../../services/purchaseOrder.service.js";
 import { createPurchaseOrderItem, getPurchaseOrderItemsByOrder } from "../../services/purchaseOrderItem.service.js";
 import Header from "../../components/Header/Header.js";
 import Footer from "../../components/Footer/Footer.js";
@@ -310,6 +310,29 @@ export default function ManagerSuppliers() {
             console.error(error);
             setError(
                 "No se pudo actualizar el pedido de compra."
+            );
+        } finally {
+            setUpdatingOrderId(null);
+        }
+    }
+
+    async function handleRecieveOrder(id: number) {
+        try {
+            setError("");
+            setUpdatingOrderId(id);
+            const receivedOrder = await receiveOrder(id);
+
+            setPurchaseOrders((currentOrders) =>
+                currentOrders.map((order) =>
+                    order.id === receivedOrder.id
+                        ? receivedOrder
+                        : order
+                )
+            );
+        } catch (error) {
+            console.error(error);
+            setError(
+                "No se pudo recibir el pedido de compra."
             );
         } finally {
             setUpdatingOrderId(null);
@@ -852,10 +875,7 @@ export default function ManagerSuppliers() {
                                                             updatingOrderId === order.id
                                                         }
                                                         onClick={() =>
-                                                            handleUpdatePurchaseOrder(
-                                                                order.id,
-                                                                "received"
-                                                            )
+                                                            handleRecieveOrder(order.id)
                                                         }
                                                     >
                                                         {updatingOrderId === order.id
