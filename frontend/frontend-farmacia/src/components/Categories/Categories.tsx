@@ -1,6 +1,9 @@
 import CategoryCard from "../CategoryCard/CategoryCard";
 import "./Categories.css";
 import { useEffect, useState } from "react";
+import { API_BASE_URL } from "../../config/api";
+
+const API_URL = `${API_BASE_URL}/productCategories`
 
 interface ProductCategory {
     id: number,
@@ -10,11 +13,11 @@ interface ProductCategory {
 export default function Categories() {
     const [categories, setCategories] = useState<ProductCategory[] | undefined>([]);
     useEffect(() => {
-        fetch("http://localhost:3000/api/productCategories")
+        fetch(API_URL)
             .then(res => res.json())
             .then(data => setCategories(data))
             .catch(error => console.error(error));
-    }, [])
+    }, []);
 
     return (
         <section className="categories">
