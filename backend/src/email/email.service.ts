@@ -15,8 +15,8 @@ export class EmailService {
         e_mail: string,
         token: string
     ): Promise<void> {
-        const confirmationUrl =
-            `http://localhost:5173/manager/confirm/${token}`;
+        const clientUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+        const confirmationUrl = `${clientUrl}/manager/confirm/${token}`;
 
         await this.transporter.sendMail({
             from: process.env.EMAIL_USER,

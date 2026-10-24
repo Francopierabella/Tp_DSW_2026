@@ -4,6 +4,10 @@ import "./ManagerCategories.css";
 import { useAuth } from "../../context/AuthContext";
 import ConfirmModal from "../../components/ConfirmModal/ConfirmModal";
 import Header from "../../components/Header/Header";
+import { API_BASE_URL } from "../../config/api";
+
+const API_URL = `${API_BASE_URL}/productCategories`
+
 
 export default function ManagerCategories() {
     const [categories, setCategories] = useState<ProductCategory[]>([]);
@@ -21,7 +25,7 @@ export default function ManagerCategories() {
         async function loadCategories() {
             try {
                 const response = await fetch(
-                    "http://localhost:3000/api/productCategories"
+                    API_URL
                 );
 
                 const data = await response.json();
@@ -70,7 +74,7 @@ export default function ManagerCategories() {
 
         try {
             const response = await fetch(
-                "http://localhost:3000/api/productCategories",
+                API_URL,
                 {
                     method: "POST",
                     headers: {
@@ -131,7 +135,7 @@ export default function ManagerCategories() {
 
         try {
             const response = await fetch(
-                `http://localhost:3000/api/productCategories/${editingCategoryId}`,
+                `${API_URL}/${editingCategoryId}`,
                 {
                     method: "PATCH",
                     headers: {
@@ -174,7 +178,7 @@ export default function ManagerCategories() {
     async function handleDeleteCategory(id: number) {
         try {
             const response = await fetch(
-                `http://localhost:3000/api/productCategories/${id}`,
+                `${API_URL}/${id}`,
                 {
                     method: "DELETE",
                     headers: {

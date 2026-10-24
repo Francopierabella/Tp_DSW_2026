@@ -2,6 +2,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ManagerRegister.css";
+import { API_BASE_URL } from "../../config/api";
+
+const API_URL = `${API_BASE_URL}/managerRegistrationRequests`
 
 export default function ManagerRegister() {
     const navigate = useNavigate();
@@ -79,7 +82,7 @@ export default function ManagerRegister() {
             setLoading(true);
 
             const response = await fetch(
-                "http://localhost:3000/api/managerRegistrationRequests",
+                API_URL,
                 {
                     method: "POST",
                     headers: {
