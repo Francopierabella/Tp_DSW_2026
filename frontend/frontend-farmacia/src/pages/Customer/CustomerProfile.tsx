@@ -8,6 +8,8 @@ import type { HealthInsurance } from "../../types/healthInsurances";
 import Header from "../../components/Header/Header";
 import "./CustomerProfile.css";
 import Footer from "../../components/Footer/Footer";
+import { API_BASE_URL } from "../../config/api";
+
 
 interface CustomerProfile {
     id: number;
@@ -19,6 +21,8 @@ interface CustomerProfile {
     e_mail: string;
     healthInsurance?: number;
 }
+
+const API_URL = `${API_BASE_URL}/customers`
 
 export default function CustomerProfile() {
     const { user, role, token } = useAuth();
@@ -150,7 +154,7 @@ export default function CustomerProfile() {
             setSaving(true);
 
             const response = await fetch(
-                `http://localhost:3000/api/customers/${customer.id}`,
+                `${API_URL}/${customer.id}`,
                 {
                     method: "PATCH",
                     headers: {

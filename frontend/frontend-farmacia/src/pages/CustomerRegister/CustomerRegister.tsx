@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { getHealthInsurances } from "../../services/healthInsurance.service";
 import type { HealthInsurance } from "../../types/healthInsurances.ts";
 import "./CustomerRegister.css";
+import { API_BASE_URL } from "../../config/api";
+
+const API_URL = `${API_BASE_URL}/customers`
 
 export default function CustomerRegister() {
     const navigate = useNavigate();
@@ -118,7 +121,7 @@ export default function CustomerRegister() {
 
         try {
             const response = await fetch(
-                "http://localhost:3000/api/customers",
+                API_URL,
                 {
                     method: "POST",
                     headers: {

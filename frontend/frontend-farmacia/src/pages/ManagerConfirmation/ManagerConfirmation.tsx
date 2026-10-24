@@ -2,6 +2,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./ManagerConfirmation.css";
+import { API_BASE_URL } from "../../config/api";
+
+const API_URL = `${API_BASE_URL}/managerRegistrationRequests`
 
 interface ManagerRegistrationRequest {
     id: number;
@@ -27,7 +30,7 @@ export default function ManagerConfirmation() {
         const fetchRequest = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:3000/api/managerRegistrationRequests/token/${token}`
+                    `${API_URL}/token/${token}`
                 );
 
                 const data = await response.json();
@@ -62,7 +65,7 @@ export default function ManagerConfirmation() {
 
         try {
             const response = await fetch(
-                `http://localhost:3000/api/managerRegistrationRequests/${decision}/${token}`,
+                `${API_URL}/${decision}/${token}`,
                 {
                     method: "POST"
                 }
