@@ -29,6 +29,7 @@ import { managerRegistrationRequestRouter } from './managerRegistrationRequest/m
 // ===============================
 
 dotenv.config(); // importo la config de mi .env ( variables de entorno => Enviroment Variables)
+
 const app = express();
 // registra un middleware de Express.
 // Un middleware es una función que se ejecuta durante el procesamiento de una petición.
@@ -64,9 +65,19 @@ app.use("/api/supplierProducts", supplierProductRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/managerRegistrationRequests", managerRegistrationRequestRouter);
 
+// 404 handler: si no se encuentra ninguna de las rutas anteriores,
+// se ejecuta este middleware. Envía una respuesta con el estado 404
+// (Not Found) y un mensaje indicando que el recurso no existe.
 app.use((_, res) => {
     return res.status(404).send({ message: "Resource not Found" })
 })
+
+// Parámetro _ (req): Se usa el guion bajo _ como convención 
+// para indicar que el parámetro req (la petición) no se utiliza 
+// en la función.
+
+// Error Handler: Si se produce un error en cualquiera de las rutas anteriores,
+// se ejecuta este middleware.
 
 app.use(ErrorHandler)
 
