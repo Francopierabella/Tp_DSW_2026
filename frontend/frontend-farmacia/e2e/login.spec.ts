@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
 dotenv.config();
 
 test('Flujo de login completo', async ({ page }) => {

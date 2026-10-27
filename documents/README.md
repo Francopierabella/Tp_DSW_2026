@@ -76,18 +76,18 @@ Ingresar a la carpeta: cd Tp_DSW_2026
 
 El proyecto está dividido principalmente en dos partes:
 
-Tp_DSW_2026/
-│
-├── backend/
-│   ├── src/
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── .env
-│
-└── frontend/
-    └── frontend-farmacia/
-        ├── src/
-        ├── package.json
+Tp_DSW_2026/ <br>
+│ <br>
+├── backend/ <br>
+│   ├── src/ <br>
+│   ├── package.json <br>
+│   ├── tsconfig.json <br>
+│   └── .env <br>
+│<br>
+└── frontend/ <br>
+    └── frontend-farmacia/ <br>
+        ├── src/ <br>
+        ├── package.json <br>
         └── ...
 
 El **backend** se encarga de:
