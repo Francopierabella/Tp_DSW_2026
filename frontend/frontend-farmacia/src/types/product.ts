@@ -15,7 +15,6 @@ export interface ProductInput {
     name: string;
     description: string;
     brand: string;
-    gender: string;
     price: number;
     stock: number;
     category: number;

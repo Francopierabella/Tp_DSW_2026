@@ -42,9 +42,9 @@ export const sanitizedProductInput = (
         });
     }
 
-    if (gender !== "Male" && gender !== "Female") {
+    if (gender !== "Male" && gender !== "Female" && gender !== "Unisex") {
         return res.status(400).send({
-            message: "Gender must be Male or Female"
+            message: "Gender must be Male, Female or Unisex"
         });
     }
     if (!category || typeof category !== "number") {

@@ -359,6 +359,7 @@ export default function ManagerProducts() {
                                     </option>
                                     <option value="Male">Masculino</option>
                                     <option value="Female">Femenino</option>
+                                    <option value="Unisex">Unisex</option>
                                 </select>
                             </div>
 
@@ -398,7 +399,6 @@ export default function ManagerProducts() {
                                 checked={isFeatured}
                                 onChange={(e) => setIsFeatured(e.target.checked)}
                             />
-
                             Producto destacado
                         </label>
 
