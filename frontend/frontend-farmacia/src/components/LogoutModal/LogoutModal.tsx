@@ -1,7 +1,9 @@
 import { useAuth } from "../../context/AuthContext";
+import { useCart } from "../../context/CartContext";
 import "./LogoutModal.css";
 export function LogoutModal({ onClose }: { onClose: () => void }) {
     const { logout } = useAuth();
+    const { clearCart } = useCart();
     return (
         <div className="logout-modal">
             <div className="logout-modal-content">
@@ -21,6 +23,7 @@ export function LogoutModal({ onClose }: { onClose: () => void }) {
                     <button className="logout-modal-confirm" onClick={() => {
                         logout();
                         onClose();
+                        clearCart();
                     }}>
                         Cerrar Sesión
                     </button>

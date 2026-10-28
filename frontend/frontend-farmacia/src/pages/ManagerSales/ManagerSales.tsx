@@ -401,6 +401,14 @@ export default function ManagerSales() {
                                                 >
                                                     Cancelar
                                                 </button>
+                                                <button
+                                                    className="manager-sales-view-button"
+                                                    onClick={() =>
+                                                        handleViewSale(sale)
+                                                    }
+                                                >
+                                                    Ver
+                                                </button>
 
                                             </div>
 

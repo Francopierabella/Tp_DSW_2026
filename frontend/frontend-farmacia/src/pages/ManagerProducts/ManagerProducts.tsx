@@ -6,6 +6,7 @@ import "./ManagerProducts.css";
 import Header from "../../components/Header/Header";
 import { getProducts, createProduct, updateProduct, deleteProduct } from "../../services/product.service";
 import { getProductCategories } from "../../services/productCategory.service";
+import Toast from "../../components/Toast/Toast";
 
 export default function ManagerProducts() {
     const LOW_STOCK = 15;
@@ -13,6 +14,7 @@ export default function ManagerProducts() {
     const [showForm, setShowForm] = useState(false);
     const [products, setProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<ProductCategory[]>([]);
+    const [toastMessage, setToastMessage] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
     const [error, setError] = useState("");
@@ -134,6 +136,7 @@ export default function ManagerProducts() {
                 return;
             }
             setProducts((currentProducts) => [...currentProducts, newProduct]);
+            setToastMessage("Producto creado correctamente");
             setName("");
             setDescription("");
             setBrand("");
@@ -185,6 +188,7 @@ export default function ManagerProducts() {
             );
 
             setName("");
+            setToastMessage("Producto actualizado correctamente");
             setDescription("");
             setBrand("");
             setGender("");
@@ -248,6 +252,8 @@ export default function ManagerProducts() {
                         />
                     )
                 }
+
+                {toastMessage && <Toast message={toastMessage} onClose={() => setToastMessage("")} />}
 
                 <div className="manager-products-header">
 
@@ -434,6 +440,7 @@ export default function ManagerProducts() {
                                 onClick={() => {
                                     if (editingProduct) {
                                         handleUpdateProduct(editingProduct.id);
+                                        setToastMessage("Producto actualizado correctamente");
                                     } else {
                                         handleCreateProduct();
                                     }
