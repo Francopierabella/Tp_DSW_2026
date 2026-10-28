@@ -57,7 +57,7 @@ export async function createProduct(product: ProductInput): Promise<Product> {
 
     const result = await response.json();
 
-    return result.data;
+    return result.data ?? result;
 }
 
 export async function updateProduct(
@@ -69,7 +69,7 @@ export async function updateProduct(
     if (!token) {
         throw new Error("No hay sesión activa");
     }
-
+    console.log(product);
     const response = await fetch(`${API_URL}/${id}`, {
         method: "PATCH",
         headers: {
@@ -79,14 +79,16 @@ export async function updateProduct(
         body: JSON.stringify(product),
     });
 
+
     if (!response.ok) {
         const error = await response.json();
+        console.log(error);
         throw new Error(error.message);
     }
 
     const result = await response.json();
 
-    return result.data;
+    return result.data ?? result;
 }
 
 export async function deleteProduct(id: number): Promise<Product> {
@@ -110,6 +112,5 @@ export async function deleteProduct(id: number): Promise<Product> {
 
     const result = await response.json();
 
-    return result.data;
+    return result.data ?? result;
 }
-
