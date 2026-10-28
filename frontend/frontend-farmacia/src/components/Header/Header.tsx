@@ -13,7 +13,7 @@ export default function Header() {
     const [logoutModalOpen, setLogoutModalOpen] = useState(false);
 
     const { cartItems, clearCart } = useCart();
-    const { user, role } = useAuth();
+    const { user, role, logout } = useAuth();
 
     const cartItemCount = cartItems.reduce(
         (total, item) => total + item.quantity,
@@ -23,6 +23,7 @@ export default function Header() {
     const handleLogout = () => {
         setLogoutModalOpen(false);
         clearCart();
+        logout();
     };
 
     return (
