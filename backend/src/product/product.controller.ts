@@ -19,6 +19,7 @@ const service = new ProductService(new ProductRepository());
 export async function findAll(req: Request, res: Response) {
     return res.json(await service.findAll());
 }
+
 export async function findOne(req: Request, res: Response) {
     const id = Number(req.params.id); // req.params.id is a string => Number.
     const product = await service.findOne(id);

@@ -136,7 +136,7 @@ export default function ManagerProducts() {
                 return;
             }
             setProducts((currentProducts) => [...currentProducts, newProduct]);
-            setToastMessage("Producto creado correctamente");
+            setToastMessage(`Producto: ${newProduct.name} creado correctamente`);
             setName("");
             setDescription("");
             setBrand("");
@@ -188,7 +188,7 @@ export default function ManagerProducts() {
             );
 
             setName("");
-            setToastMessage("Producto actualizado correctamente");
+            setToastMessage(`${updateProduct.name}actualizado correctamente`);
             setDescription("");
             setBrand("");
             setGender("");
