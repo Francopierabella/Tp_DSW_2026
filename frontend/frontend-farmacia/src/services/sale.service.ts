@@ -76,8 +76,6 @@ export async function getSalesByCustomer(id: number, token: string) {
         }
     });
 
-    console.log("RESPONSEE getSalesByCustomer", response);
-
     if (!response.ok) {
         const error = await response.json();
         throw new Error(error.message);

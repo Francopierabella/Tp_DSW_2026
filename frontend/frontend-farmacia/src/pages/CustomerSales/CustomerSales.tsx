@@ -39,7 +39,6 @@ export default function CustomerSales() {
                 setError("");
                 const data = await getSalesByCustomer(user!.id, token!);
                 // Si el service devuelve data directamente o dentro de .data
-                console.log("Respuesta de APi   ", data);
                 setSales(Array.isArray(data) ? data : (data?.data ?? []));
             } catch (err: any) {
                 console.error(err);

@@ -35,9 +35,11 @@ export function CartProvider({ children }: CartProviderProps) {
         if (savedCart) {
             return JSON.parse(savedCart);
         }
-
         return [];
     });
+
+    // Hook para guardar el carrito en localStorage. 
+    // Se ejecuta cada vez que cartItems cambia.
     useEffect(() => {
         localStorage.setItem("cart", JSON.stringify(cartItems));
     }, [cartItems]);
