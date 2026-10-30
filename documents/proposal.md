@@ -43,7 +43,7 @@ El sistema será desarrollado utilizando:
 
 ### Modelo
 
-![imagen del modelo](./MD-Farmacia-TpDSW.png)
+![imagen del modelo](./MD-TP-Farmacia-DSW.drawio.png)
 
 ---
 

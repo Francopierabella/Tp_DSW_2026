@@ -7,14 +7,15 @@ import { Product } from "../product/product.entity.js";
 @Unique({ properties: ["product", "supplier"] })
 export class SupplierProduct extends BaseEntity {
 
+    @Property({ nullable: false })
+    price!: number;
+
     @ManyToOne(() => Product)
     product!: number;
 
     @ManyToOne(() => Supplier)
     supplier!: number;
 
-    @Property({ nullable: false })
-    price!: number;
 
     constructor(product: number, supplier: number, price: number) {
         super();
