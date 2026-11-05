@@ -15,6 +15,8 @@ export class Customer extends User {
     phoneNumber!: string;
     @Property({ nullable: false })
     address!: string;
+    @Property({ nullable: false })
+    isActive!: boolean;
     @ManyToOne(() => HealthInsurance, { nullable: true })
     healthInsurance?: number;
 
@@ -24,6 +26,7 @@ export class Customer extends User {
         dni: string,
         phoneNumber: string,
         address: string,
+        isActive: boolean = true,
         e_mail: string,
         password: string,
         healthInsurance?: number,
@@ -34,6 +37,7 @@ export class Customer extends User {
         this.dni = dni;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.isActive = isActive;
         this.healthInsurance = healthInsurance;
     }
 }

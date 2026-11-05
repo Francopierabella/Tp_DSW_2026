@@ -41,6 +41,7 @@ export async function findByPurchaseOrder(req: Request, res: Response) {
     }
 }
 export async function create(req: Request, res: Response) {
+    console.log("REQ:SAN", req.body.sanitizedPurchaseOrderItemInput);
     try {
         const data = req.body.sanitizedPurchaseOrderItemInput;
         const created = await service.create(data);

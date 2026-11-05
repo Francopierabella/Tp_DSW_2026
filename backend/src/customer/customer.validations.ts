@@ -9,6 +9,7 @@ export const sanitizedCustomerInput = (req: Request, res: Response, next: NextFu
         dni,
         phoneNumber,
         address,
+        isActive,
         e_mail,
         password,
         healthInsurance
@@ -48,6 +49,11 @@ export const sanitizedCustomerInput = (req: Request, res: Response, next: NextFu
             message: "Address is required"
         });
     }
+    if (typeof isActive !== "boolean") {
+        return res.status(400).send({
+            message: "invalid isActive"
+        })
+    }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // sirven para chequear validez
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d).+$/;
@@ -74,10 +80,6 @@ export const sanitizedCustomerInput = (req: Request, res: Response, next: NextFu
         return res.status(400).send({
             message: "Password must contain at least one uppercase letter and one number"
         });
-    }
-
-    if (healthInsurance !== undefined && (typeof healthInsurance !== "number" || healthInsurance <= 0)) {
-        return res.status(400).send({ message: "Health insurance is not valid" });
     }
 
     req.body.sanitizedCustomerInput = {
@@ -144,10 +146,6 @@ export const sanitizedCustomerUpdateInput = (req: Request, res: Response, next: 
         if (!passwordRegex.test(password)) {
             return res.status(400).send({ message: "Password must contain at least one uppercase letter and one number" });
         }
-    }
-
-    if (healthInsurance !== undefined && (typeof healthInsurance !== "number" || healthInsurance <= 0)) {
-        return res.status(400).send({ message: "Health insurance is not valid" });
     }
 
     // Build the sanitized object with ONLY the fields that were provided

@@ -37,7 +37,7 @@ export class ProductService {
                 input.stock,
                 input.category,
                 input.isFeatured,
-                input.hasCoverage
+                new Date(`${input.expirationDate}T00:00:00`), input.barCode
             );
             return await this.repo.add(newProduct);
         } catch (error: any) {

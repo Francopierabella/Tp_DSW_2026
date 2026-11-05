@@ -1,9 +1,10 @@
 // To be updated
 
 
-import { Entity, ManyToOne, Property } from "@mikro-orm/core";
+import { Entity, ManyToOne, Property, Collection, OneToMany } from "@mikro-orm/core";
 import { BaseEntity } from "../shared/baseEntity.entity.js";
 import { ProductCategory } from "../productCategory/productCategory.entity.js";
+import { ProductHealthInsurance } from "../productHealthInsurance/productHealthInsurance.entity.js";
 
 @Entity()
 export class Product extends BaseEntity {
@@ -22,14 +23,17 @@ export class Product extends BaseEntity {
     @Property({ nullable: false })
     isFeatured!: boolean
     @Property({ nullable: false })
-    hasCoverage!: boolean
+    expirationDate!: Date
+    @Property({ nullable: false, unique: true })
+    barCode!: string;
     @ManyToOne(() => ProductCategory)
     category!: number
+    @OneToMany(() => ProductHealthInsurance, phi => phi.product)
+    productHealthInsurances = new Collection<ProductHealthInsurance>(this);
 
     constructor(name: string, description: string, brand: string,
         gender: string, price: number, stock: number, category: number,
-        isFeatured: boolean = false,
-        hasCoverage: boolean = false) {
+        isFeatured: boolean = false, expirationDate: Date, barCode: string) {
         super();
         this.name = name;
         this.description = description;
@@ -38,7 +42,8 @@ export class Product extends BaseEntity {
         this.price = price;
         this.stock = stock;
         this.isFeatured = isFeatured;
+        this.expirationDate = expirationDate;
+        this.barCode = barCode;
         this.category = category;
-        this.hasCoverage = hasCoverage;
     }
 }

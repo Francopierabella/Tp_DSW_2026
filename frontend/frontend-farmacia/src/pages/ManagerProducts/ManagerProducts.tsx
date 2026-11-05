@@ -26,12 +26,14 @@ export default function ManagerProducts() {
     const [stock, setStock] = useState("");
     const [category, setCategory] = useState("");
     const [isFeatured, setIsFeatured] = useState(false);
-    const [hasCoverage, setHasCoverage] = useState(false);
+    const [expirationDate, setExpirationDate] = useState("")
+    const [barCode, setBarCode] = useState("")
     const [formError, setFormError] = useState("");
     const [productToDelete, setProductToDelete] = useState<Product | null>(null);
     const [nameFilter, setNameFilter] = useState("");
     const [categoryFilter, setCategoryFilter] = useState("");
     const [stockFilter, setStockFilter] = useState("");
+    const [productToView, setProductToView] = useState<Product | null>(null)
 
     useEffect(() => {
         async function loadProducts() {
@@ -116,6 +118,7 @@ export default function ManagerProducts() {
             return;
         }
 
+
         const productData = {
             name: name.trim(),
             description: description.trim(),
@@ -125,7 +128,8 @@ export default function ManagerProducts() {
             stock: Number(stock),
             category: Number(category),
             isFeatured,
-            hasCoverage
+            expirationDate: expirationDate,
+            barCode
         };
 
         try {
@@ -145,7 +149,8 @@ export default function ManagerProducts() {
             setStock("");
             setCategory("");
             setIsFeatured(false);
-            setHasCoverage(false);
+            setExpirationDate("");
+            setBarCode("");
             setFormError("");
             setShowForm(false);
 
@@ -172,7 +177,8 @@ export default function ManagerProducts() {
             stock: Number(stock),
             category: Number(category),
             isFeatured,
-            hasCoverage
+            expirationDate: expirationDate,
+            barCode
         };
 
         try {
@@ -196,7 +202,8 @@ export default function ManagerProducts() {
             setStock("");
             setCategory("");
             setIsFeatured(false);
-            setHasCoverage(false);
+            setExpirationDate("");
+            setBarCode("");
             setFormError("");
             setShowForm(false);
             setEditingProduct(null);
@@ -357,7 +364,8 @@ export default function ManagerProducts() {
                                 <label>Género</label>
 
                                 <select
-                                    value={gender}
+                                    // value={gender}
+                                    defaultValue={gender}
                                     onChange={(e) => setGender(e.target.value)}
                                 >
                                     <option value="" disabled>
@@ -386,6 +394,24 @@ export default function ManagerProducts() {
                                 </select>
                             </div>
 
+                            <div className="manager-form-field">
+                                <label>Fecha de Vencimiento</label>
+                                <input
+                                    type="date"
+                                    value={expirationDate}
+                                    min={new Date().toISOString().split("T")[0]}
+                                    onChange={(e) => setExpirationDate(e.target.value)}
+                                />
+                            </div>
+                            <div className="manager-form-field">
+                                <label>Codigo De Barra</label>
+                                <input
+                                    type="text"
+                                    placeholder="Codigo de Barra"
+                                    value={barCode}
+                                    onChange={(e) => setBarCode(e.target.value)}
+                                />
+                            </div>
                         </div>
 
                         <div className="manager-form-field">
@@ -408,15 +434,6 @@ export default function ManagerProducts() {
                             Producto destacado
                         </label>
 
-                        <label className="manager-featured-checkbox">
-                            <input
-                                type="checkbox"
-                                checked={hasCoverage}
-                                onChange={(e) => setHasCoverage(e.target.checked)}
-                            />
-
-                            Tiene cobertura de obra social
-                        </label>
 
                         {formError && (
                             <p className="manager-form-error">
@@ -466,7 +483,6 @@ export default function ManagerProducts() {
                                 <th>Precio</th>
                                 <th>Stock</th>
                                 <th>Destacado</th>
-                                <th>Cobertura</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -493,7 +509,7 @@ export default function ManagerProducts() {
                                         ${product.price.toLocaleString("es-AR")}
                                     </td>
 
-                                    <td>
+                                    <td className={`${product.stock === 0 ? "product-stock-zero" : (product.stock >= 1 && product.stock <= 15 ? "product-stock-low" : "product-stock-normal")}`}>
                                         {product.stock}
                                     </td>
 
@@ -503,11 +519,6 @@ export default function ManagerProducts() {
                                             : "No"}
                                     </td>
 
-                                    <td>
-                                        {product.hasCoverage
-                                            ? "Sí"
-                                            : "No"}
-                                    </td>
 
                                     <td>
 
@@ -539,6 +550,13 @@ export default function ManagerProducts() {
                                             >
                                                 Eliminar
                                             </button>
+                                            <button
+                                                type="button"
+                                                className="manager-view-product"
+                                                onClick={() => setProductToView(product)}
+                                            >
+                                                Ver Detalles
+                                            </button>
 
                                         </div>
 
@@ -551,6 +569,52 @@ export default function ManagerProducts() {
                         </tbody>
 
                     </table>
+                    {productToView && (
+                        <div className="manager-modal-overlay">
+                            <div className="manager-modal">
+                                <div className="manager-modal-header">
+                                    <h2>Detalles del producto</h2>
+
+                                    <button
+                                        className="manager-modal-close"
+                                        onClick={() => setProductToView(null)}
+                                    >
+                                        ×
+                                    </button>
+                                </div>
+
+                                <div className="manager-modal-body">
+                                    <div className="manager-detail-item">
+                                        <span>Producto</span>
+                                        <strong>{productToView.name}</strong>
+                                    </div>
+
+                                    <div className="manager-detail-item">
+                                        <span>Fecha de vencimiento</span>
+                                        <strong>
+                                            {productToView.expirationDate
+                                                ? new Date(productToView.expirationDate).toLocaleDateString("es-AR")
+                                                : "No especificada"}
+                                        </strong>
+                                    </div>
+
+                                    <div className="manager-detail-item">
+                                        <span>Código de barras</span>
+                                        <strong>{productToView.barCode}</strong>
+                                    </div>
+                                </div>
+
+                                <div className="manager-modal-footer">
+                                    <button
+                                        className="manager-btn manager-btn-primary"
+                                        onClick={() => setProductToView(null)}
+                                    >
+                                        Cerrar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                 </div>
 

@@ -1,0 +1,236 @@
+/* =========================
+   CONTENEDOR GENERAL
+   ========================= */
+.manager-customers-page {
+    padding: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: calc(100vh - 160px);
+}
+
+.manager-customers-container {
+    width: 100%;
+}
+
+/* =========================
+   HEADER
+   ========================= */
+.manager-customers-header {
+    margin-bottom: 30px;
+}
+
+.manager-customers-header h1 {
+    margin: 0 0 8px;
+    color: #155568;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.manager-customers-header p {
+    margin: 0;
+    color: #666;
+    font-size: 15px;
+}
+
+/* =========================
+   MENSAJES DE ERROR / CARGA
+   ========================= */
+.manager-customers-error {
+    background: #fde8e8;
+    color: #c62828;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.manager-customers-loading,
+.manager-customers-empty {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(21, 85, 104, 0.08);
+    font-size: 15px;
+}
+
+/* =========================
+   BARRA DE FILTROS
+   ========================= */
+.manager-customers-filters {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(21, 85, 104, 0.08);
+}
+
+.manager-customers-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.manager-customers-filter label {
+    color: #155568;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.manager-customers-filter select,
+.manager-customers-filter input {
+    min-width: 180px;
+    padding: 10px 12px;
+    border: 1px solid #d9e3e5;
+    border-radius: 8px;
+    background: white;
+    color: #444;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.manager-customers-filter select:focus,
+.manager-customers-filter input:focus {
+    border-color: #16aaa5;
+    box-shadow: 0 0 0 3px rgba(22, 170, 165, 0.1);
+}
+
+.manager-customers-clear-button {
+    border: 1px solid #d9e3e5;
+    background: white;
+    color: #155568;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.manager-customers-clear-button:hover {
+    background: #f5fafa;
+}
+
+/* =========================
+   TABLA DE CLIENTES
+   ========================= */
+.manager-customers-table-container {
+    background: white;
+    border-radius: 12px;
+    overflow-x: auto;
+    box-shadow: 0 5px 20px rgba(21, 85, 104, 0.08);
+}
+
+.manager-customers-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.manager-customers-table th,
+.manager-customers-table td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid #edf1f2;
+}
+
+.manager-customers-table th {
+    background: #f5fafa;
+    color: #155568;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.manager-customers-table td {
+    color: #444;
+    font-size: 14px;
+}
+
+.manager-customers-table tbody tr:hover {
+    background: #fafcfc;
+}
+
+/* =========================
+   BADGES DE ESTADO
+   ========================= */
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.status-badge.active {
+    background: #e8f7f6;
+    color: #128f8b;
+}
+
+.status-badge.inactive {
+    background: #fde8e8;
+    color: #c62828;
+}
+
+/* =========================
+   ACCIONES (BOTONES)
+   ========================= */
+.manager-customers-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-activate,
+.btn-deactivate {
+    border: none;
+    padding: 7px 14px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, opacity 0.2s;
+}
+
+/* Botón Activar (Verde/Turquesa) */
+.btn-activate {
+    background: #16aaa5;
+    color: white;
+}
+
+.btn-activate:hover {
+    background: #128f8b;
+}
+
+/* Botón Desactivar (Rojo) */
+.btn-deactivate {
+    background: #c62828;
+    color: white;
+}
+
+.btn-deactivate:hover {
+    background: #a91f1f;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+@media (max-width: 768px) {
+    .manager-customers-page {
+        padding: 20px;
+    }
+
+    .manager-customers-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .manager-customers-filter select,
+    .manager-customers-filter input {
+        width: 100%;
+    }
+}

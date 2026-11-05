@@ -52,7 +52,7 @@
 .manager-products-table th,
 .manager-products-table td {
     padding: 16px;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid #edf1f2;
 }
 
@@ -63,12 +63,12 @@
 }
 
 .manager-products-table td {
-    color: #444;
     font-size: 14px;
 }
 
 .manager-product-actions {
     display: flex;
+    justify-content: center;
     gap: 8px;
 }
 
@@ -240,4 +240,125 @@
         padding: 9px 10px;
         font-size: 13px;
     }
+}
+
+.product-stock-zero {
+    color: rgb(207, 1, 1);
+    font-weight: bold;
+}
+
+.product-stock-low {
+    color: rgb(255, 157, 1);
+    font-weight: bold;
+}
+
+.product-stock-normal {
+    color: rgb(17, 189, 1);
+    font-weight: bold;
+
+}
+
+.manager-view-product {
+    border: 1px solid #16aaa5;
+    background: white;
+    color: #16aaa5;
+    padding: 7px 14px;
+    border-radius: 7px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.manager-view-product:hover {
+    background: #16aaa5;
+    color: white;
+}
+
+.manager-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.manager-modal {
+    background: white;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.manager-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.manager-modal-header h2 {
+    margin: 0;
+    color: #155568;
+    font-size: 20px;
+}
+
+.manager-modal-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666;
+}
+
+.manager-modal-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.manager-detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.manager-detail-item span {
+    color: #777;
+    font-size: 13px;
+}
+
+.manager-detail-item strong {
+    color: #155568;
+    font-size: 15px;
+}
+
+.manager-modal-footer {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid #eee;
+}
+
+.manager-btn-primary {
+    background-color: #16aaa5;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.manager-btn-primary:hover {
+    background-color: #138d89;
 }

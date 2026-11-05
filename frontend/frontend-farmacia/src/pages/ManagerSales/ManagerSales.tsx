@@ -435,14 +435,17 @@ export default function ManagerSales() {
 
                     </table>
 
+                    {
+                        sales.length === 0 ? (
+                            <p>No se encontraron ventas {":("}</p>
+                        ) : filteredSales.length === 0 && (
 
-                    {filteredSales.length === 0 && (
+                            <p className="manager-sales-empty">
+                                No se encontraron ventas con los filtros seleccionados.
+                            </p>
 
-                        <p className="manager-sales-empty">
-                            No se encontraron ventas con los filtros seleccionados.
-                        </p>
-
-                    )}
+                        )
+                    }
 
 
                     {saleToConfirm && (

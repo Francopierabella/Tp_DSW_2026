@@ -53,6 +53,22 @@ export default function Manager() {
                             Gestionar categorías
                         </button>
                     </article>
+                    <article className="manager-card">
+                        <div className="manager-card-icon">👥</div>
+
+                        <h2>Gestión de clientes</h2>
+
+                        <p>
+                            Consultá, administrá y gestioná la información
+                            de los clientes de la farmacia.
+                        </p>
+
+                        <button
+                            onClick={() => navigate("/manager/customers")}
+                        >
+                            Gestionar clientes
+                        </button>
+                    </article>
 
                     <article className="manager-card">
                         <div className="manager-card-icon">💰</div>

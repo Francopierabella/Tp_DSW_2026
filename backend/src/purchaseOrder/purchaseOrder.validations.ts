@@ -6,7 +6,7 @@ export const sanitizedPurchaseOrderInput = (
     res: Response,
     next: NextFunction
 ) => {
-    const { date, status, totalAmount, supplier } = req.body;
+    const { date, status, totalAmount, manager, supplier } = req.body;
 
     if (!date) {
         return res.status(400).send({
@@ -28,17 +28,30 @@ export const sanitizedPurchaseOrderInput = (
         });
     }
 
-    if (typeof supplier !== "number" || supplier <= 0) {
+    if (typeof manager !== "number" || manager <= 0) {
         return res.status(400).send({
-            message: "Invalid supplier ID"
+            message: "Invalid manager ID"
         });
     }
+    if (!supplier) {
+        return res.status(400).send({
+            message: "Supplier ID is required",
+        });
+    }
+
+    if (typeof supplier !== 'number' || supplier <= 0) {
+        return res.status(400).send({
+            message: 'Invalid supplier ID. Must be a positive number.',
+        });
+    }
+
 
     // Guardamos únicamente los datos validados y preparados
     req.body.sanitizedPurchaseOrderInput = {
         date: purchaseOrderDate,
         status,
         totalAmount,
+        manager,
         supplier
     };
 
@@ -50,13 +63,13 @@ export const sanitizedPurchaseOrderUpdate = (
     res: Response,
     next: NextFunction
 ) => {
-    const { date, status, totalAmount, supplier } = req.body;
+    const { date, status, totalAmount, manager } = req.body;
 
     if (
         date === undefined &&
         status === undefined &&
         totalAmount === undefined &&
-        supplier === undefined
+        manager === undefined
     ) {
         return res.status(400).send({
             message: "At least one field is required"
@@ -97,17 +110,60 @@ export const sanitizedPurchaseOrderUpdate = (
         sanitizedInput.totalAmount = totalAmount;
     }
 
-    if (supplier !== undefined) {
-        if (typeof supplier !== "number" || supplier <= 0) {
+    if (manager !== undefined) {
+        if (typeof manager !== "number" || manager <= 0) {
             return res.status(400).send({
-                message: "Invalid supplier ID"
+                message: "Invalid manager ID"
             });
         }
 
-        sanitizedInput.supplier = supplier;
+        sanitizedInput.manager = manager;
     }
 
     req.body.sanitizedPurchaseOrderInput = sanitizedInput;
+
+    next();
+};
+export const sanitizedPurchaseOrdersInput = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    const { items } = req.body;
+
+    if (!Array.isArray(items) || items.length === 0) {
+        return res.status(400).send({
+            message: "At least one purchase order item is required"
+        });
+    }
+
+    for (const item of items) {
+        if (
+            typeof item.supplierProduct !== "number" ||
+            !Number.isInteger(item.supplierProduct) ||
+            item.supplierProduct <= 0
+        ) {
+            return res.status(400).send({
+                message: "Invalid supplier product ID"
+            });
+        }
+
+        if (
+            !Number.isInteger(item.quantity) ||
+            item.quantity <= 0
+        ) {
+            return res.status(400).send({
+                message: "Invalid quantity"
+            });
+        }
+    }
+
+    req.body.sanitizedPurchaseOrdersInput = {
+        items: items.map((item: any) => ({
+            supplierProduct: item.supplierProduct,
+            quantity: item.quantity
+        }))
+    };
 
     next();
 };

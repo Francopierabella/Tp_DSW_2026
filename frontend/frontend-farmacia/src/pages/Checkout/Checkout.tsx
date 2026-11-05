@@ -9,13 +9,15 @@ import "./Checkout.css";
 import { useAuth } from "../../context/AuthContext";
 import { getCustomerProfile } from "../../services/customer.service";
 import { getHealthInsurances } from "../../services/healthInsurance.service";
+import { productHealthInsuranceService } from "../../services/productHealthInsurance.service";
+import type { ProductHealthInsurance } from "../../types/productHealthInsurance";
 
 export default function Checkout() {
     const { cartItems, total, clearCart } = useCart();
     const { user, role, token } = useAuth();
 
-    const [coveragePercentage, setCoveragePercentage] = useState(0);
     const [healthInsuranceName, setHealthInsuranceName] = useState<string | null>(null);
+    const [customerCoverages, setCustomerCoverages] = useState<ProductHealthInsurance[]>([]);
 
     const [paymentMethod, setPaymentMethod] =
         useState<'CASH' | 'CREDIT_CARD' | 'DEBIT_CARD' | 'TRANSFER'>('CASH');
@@ -28,32 +30,7 @@ export default function Checkout() {
     const [createdSaleId, setCreatedSaleId] = useState<number | null>(null);
     const [showToast, setShowToast] = useState(false);
 
-    // Calcula cuánto cubre la obra social
-    const calculateCoverage = () => {
-        if (coveragePercentage === 0) {
-            return 0;
-        }
-
-        return cartItems.reduce((totalCoverage, item) => {
-            // Si el producto no tiene cobertura, no se aplica descuento
-            if (!item.product.hasCoverage) {
-                return totalCoverage;
-            }
-
-            const itemTotal = item.product.price * item.quantity;
-
-            const itemCoverage =
-                itemTotal * (coveragePercentage / 100);
-
-            return totalCoverage + itemCoverage;
-        }, 0);
-    };
-
-    // Calculamos estos valores directamente, sin guardarlos en estados
-    const coverageAmount = calculateCoverage();
-    const finalTotal = total - coverageAmount;
-
-    // Obtener la obra social del cliente logueado
+    // Obtener la obra social del cliente y sus coberturas específicas
     useEffect(() => {
         const loadHealthInsurance = async () => {
             if (!user || role !== "CUSTOMER" || !token) {
@@ -61,62 +38,71 @@ export default function Checkout() {
             }
 
             try {
-                // Obtener los datos del cliente logueado
+                // 1. Obtener perfil del cliente logueado
                 const customer = await getCustomerProfile(user.id, token);
 
-                // Si el cliente no tiene obra social
                 if (!customer.healthInsurance) {
-                    setCoveragePercentage(0);
                     setHealthInsuranceName(null);
+                    setCustomerCoverages([]);
                     return;
                 }
 
-                // Obtener todas las obras sociales
+                // 2. Obtener el nombre de su obra social
                 const healthInsurances = await getHealthInsurances();
-
-                // Buscar la obra social del cliente
                 const healthInsurance = healthInsurances.find(
                     (insurance) => insurance.id === customer.healthInsurance
                 );
+                setHealthInsuranceName(healthInsurance ? healthInsurance.name : null);
 
-                if (!healthInsurance) {
-                    setCoveragePercentage(0);
-                    setHealthInsuranceName(null);
-                    return;
-                }
-
-                // Guardar los datos de la obra social
-                setCoveragePercentage(healthInsurance.coveragePercentage);
-                setHealthInsuranceName(healthInsurance.name);
+                // 3. Obtener las coberturas de esta obra social para los productos
+                const coverages = await productHealthInsuranceService.getByHealthInsurance(customer.healthInsurance);
+                setCustomerCoverages(Array.isArray(coverages) ? coverages : []);
 
             } catch (error) {
-                console.error(
-                    "Error al obtener la obra social:",
-                    error
-                );
-
-                setCoveragePercentage(0);
+                console.error("Error al obtener datos de cobertura:", error);
                 setHealthInsuranceName(null);
+                setCustomerCoverages([]);
             }
         };
 
         loadHealthInsurance();
     }, [user, role, token]);
 
+    // Helper: calcula el descuento de un producto específico
+    const getItemDiscount = (productId: number, unitPrice: number, quantity: number) => {
+        const rule = customerCoverages.find(c => c.product === productId);
+        if (!rule || rule.coveragePercentage <= 0) {
+            return { percentage: 0, discountAmount: 0 };
+        }
+        const totalItemPrice = unitPrice * quantity;
+        const discountAmount = totalItemPrice * (rule.coveragePercentage / 100);
+        return {
+            percentage: rule.coveragePercentage,
+            discountAmount
+        };
+    };
+
+    // Calcula el monto total que cubre la obra social
+    const calculateTotalCoverage = () => {
+        return cartItems.reduce((acc, item) => {
+            const { discountAmount } = getItemDiscount(item.product.id, item.product.price, item.quantity);
+            return acc + discountAmount;
+        }, 0);
+    };
+
+    const totalDiscountAmount = calculateTotalCoverage();
+    const finalTotal = total - totalDiscountAmount;
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (cartItems.length === 0) {
-            setErrorMessage(
-                "El carrito está vacío. Agregá productos antes de comprar."
-            );
+            setErrorMessage("El carrito está vacío. Agregá productos antes de comprar.");
             return;
         }
 
         if (!user || role !== "CUSTOMER" || !token) {
-            setErrorMessage(
-                "Debes iniciar sesión como cliente para realizar la compra."
-            );
+            setErrorMessage("Debes iniciar sesión como cliente para realizar la compra.");
             return;
         }
 
@@ -146,10 +132,7 @@ export default function Checkout() {
             setShowToast(true);
 
         } catch (error: any) {
-            setErrorMessage(
-                error.message ||
-                "Ocurrió un error al procesar la compra."
-            );
+            setErrorMessage(error.message || "Ocurrió un error al procesar la compra.");
         } finally {
             setLoading(false);
         }
@@ -201,38 +184,34 @@ export default function Checkout() {
                                 )}
 
                                 <form onSubmit={handleSubmit}>
-
                                     <div className="checkout-customer-info">
-                                        <strong>Compra como</strong>
-                                        <span>
-                                            {user?.firstName} {user?.lastName}
-                                        </span>
+                                        <strong>Comprando como:</strong>
+                                        <span>{user?.firstName} {user?.lastName}</span>
+
                                         <div className="checkout-coverage-info">
                                             <div>
-                                                <span>Obra social</span>
-                                                <strong>{healthInsuranceName ?? "Sin obra social"}</strong>
+                                                <span>Obra Social asignada:</span>
+                                                <strong>{healthInsuranceName ?? "Particular (Sin Obra Social)"}</strong>
                                             </div>
 
-                                            <div>
-                                                <span>Cobertura</span>
-                                                <strong>{coveragePercentage}%</strong>
-                                            </div>
-
-                                            <div>
-                                                <span>Monto cubierto</span>
-                                                <strong>
-                                                    ${coverageAmount.toLocaleString("es-AR")}
-                                                </strong>
-                                            </div>
+                                            {totalDiscountAmount > 0 && (
+                                                <div>
+                                                    <span>Ahorro por Cobertura:</span>
+                                                    <strong className="checkout-saved-amount">
+                                                        -${Math.round(totalDiscountAmount).toLocaleString("es-AR")}
+                                                    </strong>
+                                                </div>
+                                            )}
 
                                             <div className="checkout-final-total">
-                                                <span>Total final</span>
+                                                <span>Total a pagar:</span>
                                                 <strong>
-                                                    ${finalTotal.toLocaleString("es-AR")}
+                                                    ${Math.round(finalTotal).toLocaleString("es-AR")}
                                                 </strong>
                                             </div>
                                         </div>
                                     </div>
+
                                     <div className="checkout-form-group">
                                         <label className="checkout-label" htmlFor="paymentMethod">
                                             Método de pago
@@ -243,10 +222,7 @@ export default function Checkout() {
                                             value={paymentMethod}
                                             onChange={(e) => setPaymentMethod(e.target.value as any)}
                                             required
-                                            onInvalid={(e) => e.currentTarget.setCustomValidity("Debes seleccionar un método de pago.")}
-                                            onInput={(e) => e.currentTarget.setCustomValidity("")}
                                         >
-                                            <option value="" disabled>Seleccionar</option>
                                             <option value="CASH">Efectivo</option>
                                             <option value="CREDIT_CARD">Tarjeta de Crédito</option>
                                             <option value="DEBIT_CARD">Tarjeta de Débito</option>
@@ -264,10 +240,7 @@ export default function Checkout() {
                                             value={deliveryMethod}
                                             onChange={(e) => setDeliveryMethod(e.target.value as any)}
                                             required
-                                            onInvalid={(e) => e.currentTarget.setCustomValidity("Debes seleccionar un método de entrega.")}
-                                            onInput={(e) => e.currentTarget.setCustomValidity("")}
                                         >
-                                            <option value="" disabled>Seleccionar</option>
                                             <option value="PICKUP">Retiro en sucursal</option>
                                             <option value="DELIVERY">Envío a domicilio</option>
                                         </select>
@@ -286,21 +259,67 @@ export default function Checkout() {
                             <section className="checkout-summary">
                                 <h2>Resumen del pedido</h2>
                                 <div className="checkout-items">
-                                    {cartItems.map((item) => (
-                                        <div className="checkout-item" key={item.product.id}>
-                                            <div className="checkout-item-info">
-                                                <h3>{item.product.name}</h3>
-                                                <span>Cantidad: {item.quantity}</span>
+                                    {cartItems.map((item) => {
+                                        const { percentage, discountAmount } = getItemDiscount(
+                                            item.product.id,
+                                            item.product.price,
+                                            item.quantity
+                                        );
+                                        const subtotal = item.product.price * item.quantity;
+                                        const itemFinal = subtotal - discountAmount;
+
+                                        return (
+                                            <div className="checkout-item" key={item.product.id}>
+                                                <div className="checkout-item-info">
+                                                    <h3>{item.product.name}</h3>
+                                                    <span>Cantidad: {item.quantity} </span>
+
+                                                    {/* Badge de cobertura por ítem */}
+                                                    {percentage > 0 ? (
+                                                        <span className="checkout-item-badge-discount">
+                                                            ✓ {healthInsuranceName}: {percentage}% OFF (-${Math.round(discountAmount).toLocaleString("es-AR")})
+                                                        </span>
+                                                    ) : healthInsuranceName ? (
+                                                        <span className="checkout-item-badge-neutral">
+                                                            Sin cobertura con {healthInsuranceName}
+                                                        </span>
+                                                    ) : null}
+                                                </div>
+
+                                                <div className="checkout-item-pricing">
+                                                    {percentage > 0 ? (
+                                                        <>
+                                                            <span className="checkout-item-original-price">
+                                                                ${subtotal.toLocaleString("es-AR")}
+                                                            </span>
+                                                            <strong className="checkout-item-final-price">
+                                                                ${Math.round(itemFinal).toLocaleString("es-AR")}
+                                                            </strong>
+                                                        </>
+                                                    ) : (
+                                                        <strong>${subtotal.toLocaleString("es-AR")}</strong>
+                                                    )}
+                                                </div>
                                             </div>
-                                            <strong>
-                                                ${(item.product.price * item.quantity).toLocaleString("es-AR")}
-                                            </strong>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
                                 </div>
-                                <div className="checkout-total">
-                                    <span>Total</span>
-                                    <strong>${total.toLocaleString("es-AR")}</strong>
+
+                                <div className="checkout-totals-breakdown">
+                                    <div className="checkout-total-row">
+                                        <span>Subtotal:</span>
+                                        <span>${total.toLocaleString("es-AR")}</span>
+                                    </div>
+                                    {totalDiscountAmount > 0 && (
+                                        <div className="checkout-total-row discount-row">
+                                            <span>Descuento Obra Social:</span>
+                                            <span>-${Math.round(totalDiscountAmount).toLocaleString("es-AR")}</span>
+                                        </div>
+                                    )}
+                                    <div className="checkout-total-row final-row">
+                                        <strong>Total final:</strong>
+                                        <strong>${Math.round(finalTotal).toLocaleString("es-AR")}</strong>
+                                    </div>
                                 </div>
                             </section>
                         </div>
