@@ -31,6 +31,26 @@ export class CustomerRepository implements ICustomerRepository {
         const found = await orm.em.findOne(Customer, { e_mail: email });
         return found ?? undefined;
     }
+    public async findActives(): Promise<Customer[] | undefined> {
+        return await orm.em.find(Customer, { isActive: true })
+    }
+    public async findInactives(): Promise<Customer[] | undefined> {
+        return await orm.em.find(Customer, { isActive: false })
+    }
+    public async activate(id: number): Promise<Customer | undefined> {
+        const found = await orm.em.findOne(Customer, { id });
+        if (!found) return undefined;
+        found.isActive = true;
+        await orm.em.flush();
+        return found;
+    }
+    public async desactivate(id: number): Promise<Customer | undefined> {
+        const found = await orm.em.findOne(Customer, { id });
+        if (!found) return undefined;
+        found.isActive = false;
+        await orm.em.flush();
+        return found;
+    }
     public async update(id: number, item: Customer): Promise<Customer | undefined> {
         const customerToUpdate = await this.findOne({ id });
         if (!customerToUpdate) {

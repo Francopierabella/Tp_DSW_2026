@@ -17,6 +17,12 @@ export class CustomerService {
     async findByEmail(email: string): Promise<Customer | undefined> {
         return await this.repo.findByEmail(email);
     }
+    async findActives(): Promise<Customer[] | undefined> {
+        return await this.repo.findActives();
+    }
+    async findInactives(): Promise<Customer[] | undefined> {
+        return await this.repo.findInactives();
+    }
     async create(input: Omit<Customer, "id">): Promise<Customer | undefined> {
 
         const hashedPassword = await bcrypt.hash(input.password, 10);
@@ -29,6 +35,7 @@ export class CustomerService {
             input.dni,
             input.phoneNumber,
             input.address,
+            input.isActive,
             input.e_mail,
             hashedPassword,
             input.healthInsurance
@@ -37,6 +44,12 @@ export class CustomerService {
     }
     async update(id: number, input: Customer): Promise<Customer | undefined> {
         return await this.repo.update(id, input);
+    }
+    async activate(id: number): Promise<Customer | undefined> {
+        return await this.repo.activate(id);
+    }
+    async desactivate(id: number): Promise<Customer | undefined> {
+        return await this.repo.desactivate(id);
     }
     async remove(id: number): Promise<Customer | undefined> {
         return await this.repo.delete({ id });

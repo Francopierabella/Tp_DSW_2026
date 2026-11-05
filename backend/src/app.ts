@@ -25,6 +25,7 @@ import { supplierRouter } from './supplier/supplier.routes.js';
 import { supplierProductRouter } from './supplierProduct/supplierProduct.routes.js';
 import { authRouter } from './auth/auth.routes.js';
 import { managerRegistrationRequestRouter } from './managerRegistrationRequest/managerRegistrationRequest.routes.js';
+import { productHealthInsuranceRouter } from './productHealthInsurance/productHealthInsurance.routes.js';
 
 // ===============================
 
@@ -64,6 +65,7 @@ app.use("/api/suppliers", supplierRouter);
 app.use("/api/supplierProducts", supplierProductRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/managerRegistrationRequests", managerRegistrationRequestRouter);
+app.use("/api/productHealthInsurances", productHealthInsuranceRouter);
 
 // 404 handler: si no se encuentra ninguna de las rutas anteriores,
 // se ejecuta este middleware. Envía una respuesta con el estado 404

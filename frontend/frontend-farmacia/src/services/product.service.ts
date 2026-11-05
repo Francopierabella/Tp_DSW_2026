@@ -36,7 +36,6 @@ export async function getProductById(id: number): Promise<Product> {
 
 export async function createProduct(product: ProductInput): Promise<Product> {
     const token = getToken();
-
     if (!token) {
         throw new Error("No hay sesión activa");
     }

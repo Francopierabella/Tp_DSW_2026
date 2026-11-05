@@ -16,7 +16,6 @@ export class SupplierProduct extends BaseEntity {
     @ManyToOne(() => Supplier)
     supplier!: number;
 
-
     constructor(product: number, supplier: number, price: number) {
         super();
         this.product = product;

@@ -22,6 +22,11 @@ export async function login(req: Request, res: Response) {
                 message: error.message
             });
         }
+        if (error.message === "Inactive Customer") {
+            return res.status(400).send({
+                message: error.message
+            })
+        }
 
         return res.status(500).send({
             message: "Internal server error"

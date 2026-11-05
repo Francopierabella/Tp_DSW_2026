@@ -12,8 +12,7 @@ export class HealthInsuranceService {
     }
     async create(input: Omit<HealthInsurance, "id">): Promise<HealthInsurance | undefined> {
         const newHealthInsurance = new HealthInsurance(
-            input.name,
-            input.coveragePercentage
+            input.name
         )
         try {
             return await this.repo.add(newHealthInsurance);

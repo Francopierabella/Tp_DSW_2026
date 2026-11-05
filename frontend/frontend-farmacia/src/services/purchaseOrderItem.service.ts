@@ -14,14 +14,14 @@ function getToken() {
 interface CreatePurchaseOrderItemInput {
     quantity: number;
     purchaseOrder: number;
-    product: number;
+    supplierProduct: number;
 }
 
 export async function createPurchaseOrderItem(
     item: CreatePurchaseOrderItemInput
 ): Promise<PurchaseOrderItem> {
     const token = getToken();
-
+    console.log("ITEM: ", item);
     const response = await fetch(API_URL, {
         method: "POST",
         headers: {
@@ -30,7 +30,6 @@ export async function createPurchaseOrderItem(
         },
         body: JSON.stringify(item)
     });
-
     if (!response.ok) {
         throw new Error("Error al crear el detalle del pedido de compra");
     }

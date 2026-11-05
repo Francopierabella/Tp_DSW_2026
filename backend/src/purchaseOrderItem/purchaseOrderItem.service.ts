@@ -20,66 +20,29 @@ export class PurchaseOrderItemService {
     async findOne(id: number): Promise<PurchaseOrderItem | undefined> {
         return await this.repo.findOne({ id });
     }
-    async create(input: PurchaseOrderItem): Promise<PurchaseOrderItem | undefined> {
-
-        const product = await this.productRepo.findOne({ id: input.product });
-
-        if (!product) {
-            throw new Error("The product ID entered is invalid");
-        }
-
-        const purchaseOrder = await this.purchaseOrderRepo.findOne({
-            id: input.purchaseOrder
-        });
-
+    async create(input: { quantity: number; purchaseOrder: number; supplierProduct: number }) {
+        const purchaseOrder = await this.purchaseOrderRepo.findOne({ id: input.purchaseOrder });
         if (!purchaseOrder) {
             throw new Error("The purchase order ID entered is invalid");
         }
 
-        const supplierProduct =
-            await this.supplierProductRepo.findByProductAndSupplier(
-                input.product,
-                purchaseOrder.supplier
-            );
-
+        const supplierProduct = await this.supplierProductRepo.findOne({ id: input.supplierProduct });
         if (!supplierProduct) {
-            throw new Error(
-                "The selected supplier does not offer this product"
-            );
+            throw new Error("The selected SupplierProduct does not exist");
         }
 
-        try {
+        const purchaseOrderItem = new PurchaseOrderItem(
+            input.quantity,
+            supplierProduct.price,
+            input.purchaseOrder,
+            input.supplierProduct
+        );
 
-            const purchaseOrderItem = new PurchaseOrderItem(
-                input.quantity,
-                supplierProduct.price,
-                input.purchaseOrder,
-                input.product
-            );
-
-            const created = await this.repo.add(purchaseOrderItem);
-
-            if (created) {
-                await this.updatePurchaseOrderTotal(input.purchaseOrder);
-            }
-
-            return created;
-
-        } catch (error: any) {
-            if (error.code === "ER_DUP_ENTRY") {
-                throw new Error(
-                    "A purchase order item with that name already exists."
-                );
-            }
-
-            if (error.code === "ER_NO_REFERENCED_ROW_2") {
-                throw new Error(
-                    "The purchase order or product ID entered is invalid"
-                );
-            }
-
-            throw error;
+        const created = await this.repo.add(purchaseOrderItem);
+        if (created) {
+            await this.updatePurchaseOrderTotal(input.purchaseOrder);
         }
+        return created;
     }
     async update(id: number, input: PurchaseOrderItem): Promise<PurchaseOrderItem | undefined> {
         const updated = await this.repo.update(id, input);

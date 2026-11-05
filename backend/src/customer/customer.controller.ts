@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import e, { Request, Response } from "express";
 import { CustomerService } from "./customer.service.js";
 import { CustomerRepository } from "./customer.repository.js";
 import { AppError } from "../shared/appError.js";
@@ -35,6 +35,13 @@ export async function findByEmail(req: Request, res: Response) {
     return res.json(found);
 }
 
+export async function findActives(req: Request, res: Response) {
+    return res.json(await service.findActives());
+}
+export async function findInactives(req: Request, res: Response) {
+    return res.json(await service.findInactives());
+}
+
 export async function create(req: Request, res: Response) {
     try {
 
@@ -58,6 +65,26 @@ export async function update(req: Request, res: Response) {
         throw new AppError(`Customer with id ${customerIdToUpdate} not found`, 404);
     }
     return res.json({ "message": "Customer updated successfully", customerWithThisId });
+}
+
+export async function activate(req: Request, res: Response) {
+    const id = Number(req.params.id);
+    const customerToActivate = await service.findOne(id);
+    if (!customerToActivate) {
+        throw new AppError(`Customer not found`, 404);
+    }
+    const customerActivated = await service.activate(id);
+    return res.json({ "message": `Customer with id: ${id} activated successfully`, customerActivated });
+}
+
+export async function desactivate(req: Request, res: Response) {
+    const id = Number(req.params.id);
+    const customerToDesactivate = await service.findOne(id);
+    if (!customerToDesactivate) {
+        throw new AppError(`Customer not found`, 404);
+    }
+    const customerDesactivated = await service.desactivate(id);
+    return res.json({ "message": `Customer with id: ${id} activated successfully`, customerDesactivated });
 }
 
 export async function remove(req: Request, res: Response) {

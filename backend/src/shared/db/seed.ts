@@ -7,6 +7,7 @@ import { Customer } from "../../customer/customer.entity.js";
 import { Manager } from "../../manager/manager.entity.js";
 import { SupplierProduct } from "../../supplierProduct/supplierProduct.entity.js";
 import { Supplier } from "../../supplier/supplier.entity.js";
+import { ProductHealthInsurance } from "../../productHealthInsurance/productHealthInsurance.entity.js";
 
 //DATOS DE PRUEBA PARA ARRANCAR LA BD
 
@@ -20,19 +21,15 @@ export async function seedDatabase(): Promise<void> {
     const healthInsuranceData = [
         {
             name: "IAPOS",
-            coveragePercentage: 40
         },
         {
             name: "OSDE",
-            coveragePercentage: 50
         },
         {
             name: "Swiss Medical",
-            coveragePercentage: 60
         },
         {
             name: "Galeno",
-            coveragePercentage: 45
         }
     ];
 
@@ -48,7 +45,6 @@ export async function seedDatabase(): Promise<void> {
         if (!healthInsurance) {
             healthInsurance = new HealthInsurance(
                 data.name,
-                data.coveragePercentage
             );
 
             await em.persistAndFlush(healthInsurance);
@@ -97,6 +93,7 @@ export async function seedDatabase(): Promise<void> {
             dni: "45504061",
             phoneNumber: "3415551001",
             address: "San Martín 123",
+            isActive: true,
             e_mail: "franco@example.com",
             healthInsurance: "IAPOS"
         },
@@ -106,6 +103,7 @@ export async function seedDatabase(): Promise<void> {
             dni: "40222333",
             phoneNumber: "3415551002",
             address: "Belgrano 456",
+            isActive: true,
             e_mail: "juan@example.com",
             healthInsurance: "OSDE"
         },
@@ -115,6 +113,7 @@ export async function seedDatabase(): Promise<void> {
             dni: "40333444",
             phoneNumber: "3415551003",
             address: "Mitre 789",
+            isActive: true,
             e_mail: "maria@example.com",
             healthInsurance: "Swiss Medical"
         },
@@ -124,6 +123,7 @@ export async function seedDatabase(): Promise<void> {
             dni: "40444555",
             phoneNumber: "3415551004",
             address: "Rivadavia 321",
+            isActive: true,
             e_mail: "sofia@example.com",
             healthInsurance: "Galeno"
         },
@@ -133,6 +133,7 @@ export async function seedDatabase(): Promise<void> {
             dni: "40555666",
             phoneNumber: "3415551005",
             address: "España 654",
+            isActive: true,
             e_mail: "pedro@example.com",
             healthInsurance: undefined
         }
@@ -153,6 +154,7 @@ export async function seedDatabase(): Promise<void> {
                 data.dni,
                 data.phoneNumber,
                 data.address,
+                data.isActive,
                 data.e_mail,
                 password,
                 data.healthInsurance
@@ -215,7 +217,9 @@ export async function seedDatabase(): Promise<void> {
             stock: 50,
             category: "Medicamentos",
             isFeatured: true,
-            hasHealthInsuranceCoverage: true
+            expirationDate: new Date("2028-02-20"),
+
+            barCode: "7791234567890"
         },
         {
             name: "Ibuprofeno 400",
@@ -226,7 +230,10 @@ export async function seedDatabase(): Promise<void> {
             stock: 40,
             category: "Medicamentos",
             isFeatured: true,
-            hasHealthInsuranceCoverage: false
+            expirationDate: new Date("2028-02-20"),
+
+            barCode: "7791234567891"
+
 
         },
         {
@@ -238,7 +245,9 @@ export async function seedDatabase(): Promise<void> {
             stock: 35,
             category: "Medicamentos",
             isFeatured: false,
-            hasHealthInsuranceCoverage: true
+            expirationDate: new Date("2028-02-20"),
+
+            barCode: "7791234567892"
         },
         {
             name: "Shampoo Nutritivo",
@@ -249,7 +258,10 @@ export async function seedDatabase(): Promise<void> {
             stock: 25,
             category: "Higiene",
             isFeatured: true,
-            hasHealthInsuranceCoverage: false
+            expirationDate: new Date("2028-02-20"),
+
+            barCode: "7791234567893"
+
         },
         {
             name: "Jabón Líquido",
@@ -260,7 +272,10 @@ export async function seedDatabase(): Promise<void> {
             stock: 30,
             category: "Higiene",
             isFeatured: false,
-            hasHealthInsuranceCoverage: false
+            expirationDate: new Date("2028-02-20"),
+
+            barCode: "7791234567894"
+
         },
         {
             name: "Crema Hidratante",
@@ -271,7 +286,10 @@ export async function seedDatabase(): Promise<void> {
             stock: 20,
             category: "Higiene",
             isFeatured: true,
-            hasHealthInsuranceCoverage: false
+            expirationDate: new Date("2028-02-20"),
+
+            barCode: "7791234567895"
+
         },
         {
             name: "Perfume Blue",
@@ -282,7 +300,9 @@ export async function seedDatabase(): Promise<void> {
             stock: 15,
             category: "Perfumería",
             isFeatured: true,
-            hasHealthInsuranceCoverage: true
+            expirationDate: new Date("2028-02-20"),
+
+            barCode: "7791234567896"
         },
         {
             name: "Perfume Floral",
@@ -293,7 +313,9 @@ export async function seedDatabase(): Promise<void> {
             stock: 12,
             category: "Perfumería",
             isFeatured: false,
-            hasHealthInsuranceCoverage: true
+            expirationDate: new Date("2028-02-20"),
+
+            barCode: "7791234567897"
         },
         {
             name: "Pañales Talle M",
@@ -304,7 +326,9 @@ export async function seedDatabase(): Promise<void> {
             stock: 18,
             category: "Bebés",
             isFeatured: false,
-            hasHealthInsuranceCoverage: false
+            expirationDate: new Date("2028-02-20"),
+            barCode: "7791234567898"
+
         },
         {
             name: "Vitamina C",
@@ -315,7 +339,9 @@ export async function seedDatabase(): Promise<void> {
             stock: 25,
             category: "Vitaminas",
             isFeatured: true,
-            hasHealthInsuranceCoverage: true
+            expirationDate: new Date("2028-02-20"),
+
+            barCode: "7791234567899"
         }
     ];
 
@@ -339,7 +365,9 @@ export async function seedDatabase(): Promise<void> {
                 data.stock,
                 category.id!,
                 data.isFeatured,
-                data.hasHealthInsuranceCoverage
+                data.expirationDate,
+                data.barCode
+
             );
 
             await em.persistAndFlush(product);
@@ -503,6 +531,60 @@ export async function seedDatabase(): Promise<void> {
             );
 
             await em.persistAndFlush(supplierProduct);
+        }
+    }
+    // =========================================================
+    // 8. PRODUCT HEALTH INSURANCES (Coberturas de Obras Sociales)
+    // =========================================================
+
+    const productHealthInsuranceData = [
+        // Paracetamol 500
+        { product: "Paracetamol 500", healthInsurance: "IAPOS", coveragePercentage: 50 },
+        { product: "Paracetamol 500", healthInsurance: "OSDE", coveragePercentage: 40 },
+        { product: "Paracetamol 500", healthInsurance: "Swiss Medical", coveragePercentage: 45 },
+        { product: "Paracetamol 500", healthInsurance: "Galeno", coveragePercentage: 35 },
+
+        // Ibuprofeno 400
+        { product: "Ibuprofeno 400", healthInsurance: "IAPOS", coveragePercentage: 40 },
+        { product: "Ibuprofeno 400", healthInsurance: "OSDE", coveragePercentage: 50 },
+        { product: "Ibuprofeno 400", healthInsurance: "Swiss Medical", coveragePercentage: 60 },
+
+        // Aspirina 500
+        { product: "Aspirina 500", healthInsurance: "IAPOS", coveragePercentage: 30 },
+        { product: "Aspirina 500", healthInsurance: "OSDE", coveragePercentage: 40 },
+        { product: "Aspirina 500", healthInsurance: "Galeno", coveragePercentage: 40 },
+
+        // Vitamina C
+        { product: "Vitamina C", healthInsurance: "OSDE", coveragePercentage: 20 },
+        { product: "Vitamina C", healthInsurance: "Swiss Medical", coveragePercentage: 25 },
+
+        // Pañales Talle M
+        { product: "Pañales Talle M", healthInsurance: "IAPOS", coveragePercentage: 15 },
+        { product: "Pañales Talle M", healthInsurance: "OSDE", coveragePercentage: 20 }
+    ];
+
+    for (const data of productHealthInsuranceData) {
+        const product = await em.findOne(Product, { name: data.product });
+        const hi = await em.findOne(HealthInsurance, { name: data.healthInsurance });
+
+        if (!product || !hi) {
+            console.log(`Could not create ProductHealthInsurance: ${data.product} - ${data.healthInsurance}`);
+            continue;
+        }
+
+        const existingPHI = await em.findOne(ProductHealthInsurance, {
+            product: product.id!,
+            healthInsurance: hi.id!
+        });
+
+        if (!existingPHI) {
+            const phi = new ProductHealthInsurance(
+                product.id!,
+                hi.id!,
+                data.coveragePercentage
+            );
+            await em.persistAndFlush(phi);
+            console.log(`Coverage created: ${data.product} with ${data.healthInsurance} (${data.coveragePercentage}%)`);
         }
     }
 

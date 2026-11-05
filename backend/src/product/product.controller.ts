@@ -32,12 +32,14 @@ export async function findOne(req: Request, res: Response) {
 export async function create(req: Request, res: Response) {
     try {
         const newProduct = await service.create(req.body.sanitizedProductInput);
+
         return res.status(201).send({ message: "Product created successfully", data: newProduct });
     }
     catch (error: any) {
         if (error.message === "A product with that name already exists.") {
             throw new AppError(error.message, 409);
         }
+        console.log(error.message);
         throw new AppError("Internal server error", 500);
     }
 }

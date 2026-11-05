@@ -43,9 +43,16 @@ export class PurchaseOrderItemRepository implements IRepository<PurchaseOrderIte
         await orm.em.removeAndFlush(found);
         return found;
     }
-    async findByPurchaseOrder(orderId: number): Promise<PurchaseOrderItem[] | undefined> {
-        return await orm.em.find(PurchaseOrderItem, { purchaseOrder: orderId }, {
-            populate: ["product"] as any
-        });
+    async findByPurchaseOrder(id: number): Promise<PurchaseOrderItem[]> {
+        return await orm.em.find(
+            PurchaseOrderItem,
+            { purchaseOrder: id },
+            {
+                populate: [
+                    'supplierProduct',
+
+                ]
+            }
+        );
     }
 }

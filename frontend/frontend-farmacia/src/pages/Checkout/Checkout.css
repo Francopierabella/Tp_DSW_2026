@@ -324,3 +324,71 @@
     font-size: 22px;
     font-weight: 700;
 }
+
+.checkout-item-badge-discount {
+    display: inline-block;
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #15803d;
+    background-color: #dcfce7;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+}
+
+.checkout-item-badge-neutral {
+    display: inline-block;
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+.checkout-item-pricing {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.checkout-item-original-price {
+    font-size: 0.8rem;
+    text-decoration: line-through;
+    color: #94a3b8;
+}
+
+.checkout-item-final-price {
+    color: #0284c7;
+    font-weight: 700;
+}
+
+.checkout-saved-amount {
+    color: #16a34a !important;
+}
+
+.checkout-totals-breakdown {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.checkout-total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    color: #334155;
+}
+
+.checkout-total-row.discount-row {
+    color: #16a34a;
+    font-weight: 600;
+}
+
+.checkout-total-row.final-row {
+    font-size: 1.15rem;
+    color: #0f172a;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed #cbd5e1;
+}

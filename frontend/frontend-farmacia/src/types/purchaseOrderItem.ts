@@ -4,7 +4,7 @@ export interface PurchaseOrderItem {
     quantity: number;
     unitPrice: number;
     purchaseOrder: number;
-    product: number;
+    supplierProduct: number;
 }
 export interface PurchaseOrderItemResponse {
     id: number;
@@ -12,16 +12,20 @@ export interface PurchaseOrderItemResponse {
     unitPrice: number;
     purchaseOrder: {
         id: number;
-        Date: Date;
+        date: Date;
     };
-    product: {
+    supplierProduct: {
         id: number;
-        name: string;
-        brand?: string;
-        price?: number;
+        price: number;
+        product: {
+            id: number;
+            name: string;
+            brand?: string;
+            price?: number;
+        };
+        supplier: {
+            id: number;
+            name: string;
+        };
     };
-    supplier: {
-        id: number;
-        name: string;
-    }
 }

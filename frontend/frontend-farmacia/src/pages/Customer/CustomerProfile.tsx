@@ -166,10 +166,9 @@ export default function CustomerProfile() {
                         lastName: formData.lastName.trim(),
                         phoneNumber: formData.phoneNumber.trim(),
                         address: formData.address.trim(),
-                        healthInsurance:
-                            formData.healthInsurance
-                                ? Number(formData.healthInsurance)
-                                : undefined
+                        healthInsurance: formData.healthInsurance
+                            ? Number(formData.healthInsurance)
+                            : null
                     })
                 }
             );
@@ -453,9 +452,7 @@ export default function CustomerProfile() {
                                             value={insurance.id}
                                         >
                                             {insurance.name} -{" "}
-                                            {
-                                                insurance.coveragePercentage
-                                            }%
+
                                         </option>
                                     )
                                 )}
@@ -471,13 +468,7 @@ export default function CustomerProfile() {
                                             }
                                         </strong>
 
-                                        <span>
-                                            Cobertura:{" "}
-                                            {
-                                                healthInsurance.coveragePercentage
-                                            }
-                                            %
-                                        </span>
+
                                     </>
                                 ) : (
                                     <span>

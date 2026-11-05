@@ -7,4 +7,8 @@ import { Customer } from "./customer.entity.js";
 export interface ICustomerRepository extends IRepository<Customer> {
     findByEmail(email: string): Promise<Customer | undefined>;
     findByDni(dni: string): Promise<Customer | undefined>;
+    findActives(): Promise<Customer[] | undefined>;
+    findInactives(): Promise<Customer[] | undefined>;
+    activate(id: number): Promise<Customer | undefined>;
+    desactivate(id: number): Promise<Customer | undefined>;
 }

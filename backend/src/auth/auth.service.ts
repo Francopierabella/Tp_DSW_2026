@@ -13,7 +13,7 @@ export class AuthService {
     async login(e_mail: string, password: string) {
 
         const customer = await this.customerRepository.findByEmail(e_mail);
-
+        if (customer?.isActive === false) throw new Error("Inactive Customer");
         if (customer) {
 
             const passwordMatch = await bcrypt.compare(

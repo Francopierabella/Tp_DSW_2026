@@ -8,15 +8,18 @@ import type { PurchaseOrderItemResponse } from "../../types/purchaseOrderItem.js
 import { getProducts } from "../../services/product.service.js";
 import { getSuppliers } from "../../services/suppliers.service.js";
 import { getSupplierProductsByProduct } from "../../services/suppliersProduct.service.js";
-import { createPurchaseOrder, updatePurchaseOrder, getPurchaseOrders, getPurchaseOrderById, receiveOrder } from "../../services/purchaseOrder.service.js";
-import { createPurchaseOrderItem, getPurchaseOrderItemsByOrder } from "../../services/purchaseOrderItem.service.js";
+import { deletePurchaseOrder, getPurchaseOrders, receiveOrder, cancelOrder, confirmPurchaseOrders } from "../../services/purchaseOrder.service.js";
+import { getPurchaseOrderItemsByOrder } from "../../services/purchaseOrderItem.service.js";
 import Header from "../../components/Header/Header.js";
 import Footer from "../../components/Footer/Footer.js";
 import Toast from "../../components/Toast/Toast.js";
+import { useAuth } from "../../context/AuthContext.js";
+import ConfirmModal from "../../components/ConfirmModal/ConfirmModal.js";
 
 interface PurchaseCartItem {
     product: Product;
     supplier: Supplier;
+    supplierProductId: number;
     unitPrice: number;
     quantity: number;
 }
@@ -38,11 +41,11 @@ export default function ManagerSuppliers() {
     const [updatingOrderId, setUpdatingOrderId] = useState<number | null>(null);
     const [error, setError] = useState("");
     const [supplierFilter, setSupplierFilter] = useState<string>("");
-
     const [orderToView, setOrderToView] = useState<PurchaseOrder | null>(null);
-
-
     const [purchaseCart, setPurchaseCart] = useState<PurchaseCartItem[]>([]);
+    const [purchaseOrderToDelete, setPurchaseOrderToDelete] = useState<PurchaseOrder | null>(null)
+
+    const { user } = useAuth();
 
     useEffect(() => {
         loadInitialData();
@@ -148,6 +151,7 @@ export default function ManagerSuppliers() {
                 {
                     product,
                     supplier,
+                    supplierProductId: supplierProduct.id,
                     unitPrice: supplierProduct.price,
                     quantity: 1
                 }
@@ -223,10 +227,6 @@ export default function ManagerSuppliers() {
             }
 
             groups[item.supplier.id].push(item);
-            console.log("aca está el grupo");
-            console.log(groups);
-            console.log("aca está el item");
-            console.log(item);
 
             return groups;
         }, {});
@@ -239,36 +239,20 @@ export default function ManagerSuppliers() {
     //es una optimización de rendimiento para no repetir el agrupamiento en cada render innecesariamente.
 
     async function handleConfirmPurchase() {
-        if (purchaseCart.length === 0) {
+        if (purchaseCart.length === 0 || !user) {
             return;
         }
 
         try {
             setConfirmingPurchase(true);
             setError("");
-            const createdOrders: PurchaseOrder[] = [];
 
-            for (const [supplierId, items] of Object.entries(groupedCart)) {
-                const purchaseOrder = await createPurchaseOrder({
-                    date: new Date().toISOString(),
-                    status: "pending",
-                    supplier: Number(supplierId)
-                });
-
-                for (const item of items) {
-                    await createPurchaseOrderItem({
-                        quantity: item.quantity,
-                        purchaseOrder: purchaseOrder.id,
-                        product: item.product.id
-                    });
-                }
-
-                const updatedOrder = await getPurchaseOrderById(
-                    purchaseOrder.id
-                );
-
-                createdOrders.push(updatedOrder);
-            }
+            const createdOrders = await confirmPurchaseOrders({
+                items: purchaseCart.map((item) => ({
+                    supplierProduct: item.supplierProductId,
+                    quantity: item.quantity
+                }))
+            });
 
             setPurchaseOrders((currentOrders) => [
                 ...createdOrders,
@@ -278,26 +262,17 @@ export default function ManagerSuppliers() {
             setPurchaseCart([]);
         } catch (error) {
             console.error(error);
-
-            setError(
-                "No se pudieron confirmar los pedidos de compra."
-            );
+            setError("No se pudieron confirmar los pedidos de compra.");
         } finally {
             setConfirmingPurchase(false);
         }
     }
 
-    async function handleUpdatePurchaseOrder(
-        orderId: number,
-        status: "received" | "cancelled"
-    ) {
+    async function handleCancelPurchaseOrder(orderId: number,) {
         try {
             setUpdatingOrderId(orderId);
             setError("");
-            const updatedOrder = await updatePurchaseOrder(
-                orderId,
-                status
-            );
+            const updatedOrder = await cancelOrder(orderId);
 
             setPurchaseOrders((currentOrders) =>
                 currentOrders.map((order) =>
@@ -344,7 +319,6 @@ export default function ManagerSuppliers() {
             setError("");
             setLoadingOrderItems(true);
             setOrderToView(order);
-
             const items = await getPurchaseOrderItemsByOrder(order.id);
             setOrderItems(items);
         } catch (error: any) {
@@ -355,12 +329,20 @@ export default function ManagerSuppliers() {
         }
     };
     const filteredOrders = purchaseOrders.filter((order) => {
-        const matchesName = !supplierFilter ||
-            getSupplierById(order.supplier)?.name.toLowerCase()
-                .includes(supplierFilter.toLowerCase());
-
-        return matchesName;
+        return !supplierFilter || order.id.toString().includes(supplierFilter);
     })
+
+    async function handleDeletePurchaseOrder(id: number) {
+        try {
+            await deletePurchaseOrder(id);
+            setToastMessage(`Order con id: ${id}, eliminada`);
+            setPurchaseOrderToDelete(null);
+            setPurchaseOrders((currentPurchases) => currentPurchases.filter(purch => purch.id !== id));
+
+        } catch (error: any) {
+            setError(error.message || "Error al eliminar la orden")
+        }
+    };
 
     return (
         <>
@@ -812,9 +794,7 @@ export default function ManagerSuppliers() {
                         <div className="purchase-orders-list">
 
                             {filteredOrders.map((order) => {
-                                const supplier = getSupplierById(
-                                    order.supplier
-                                );
+                                console.log(order);
                                 return (
                                     <article
                                         key={order.id}
@@ -827,11 +807,7 @@ export default function ManagerSuppliers() {
                                                     Pedido #{order.id}
                                                 </strong>
 
-                                                <span>
-                                                    {supplier
-                                                        ? supplier.name
-                                                        : `Proveedor #${order.supplier}`}
-                                                </span>
+                                                <span>Emitido por Manager #{order.manager.firstName} a <b>{order.supplier.name}</b></span>
                                             </div>
 
                                             <div className="purchase-order-details">
@@ -856,8 +832,6 @@ export default function ManagerSuppliers() {
                                             <span
                                                 className={`purchase-order-status purchase-order-status-${order.status}`}
                                             >
-                                                {order.status === "pending" &&
-                                                    "Pendiente"}
 
                                                 {order.status === "received" &&
                                                     "Recibido"}
@@ -889,12 +863,7 @@ export default function ManagerSuppliers() {
                                                         disabled={
                                                             updatingOrderId === order.id
                                                         }
-                                                        onClick={() =>
-                                                            handleUpdatePurchaseOrder(
-                                                                order.id,
-                                                                "cancelled"
-                                                            )
-                                                        }
+                                                        onClick={() => handleCancelPurchaseOrder(order.id)}
                                                     >
                                                         Cancelar
                                                     </button>
@@ -910,6 +879,20 @@ export default function ManagerSuppliers() {
                                             >
                                                 Ver
                                             </button>
+                                            {
+                                                order.status === "cancelled" && (
+
+                                                    <button
+                                                        type="button"
+                                                        className="purchase-order-delete-button"
+                                                        onClick={() =>
+                                                            setPurchaseOrderToDelete(order)
+                                                        }
+                                                    >
+                                                        🗑️
+                                                    </button>
+                                                )
+                                            }
 
                                         </div>
                                     </article>
@@ -920,6 +903,21 @@ export default function ManagerSuppliers() {
                     )}
 
                 </section>
+
+                {
+                    purchaseOrderToDelete && (
+                        <ConfirmModal
+                            title="Eliminar orden"
+                            message={`¿Estás seguro de que querés eliminar la orden N° ${purchaseOrderToDelete.id} ?`}
+                            onConfirm={() =>
+                                handleDeletePurchaseOrder(purchaseOrderToDelete.id)
+                            }
+                            onCancel={() =>
+                                setPurchaseOrderToDelete(null)
+                            }
+                        />
+                    )
+                }
 
                 {orderToView && (
                     <div className="purchase-order-detail-overlay">
@@ -952,11 +950,8 @@ export default function ManagerSuppliers() {
                                 </div>
 
                                 <div className="purchase-order-detail-row">
-                                    <span>Proveedor</span>
-                                    <strong>
-                                        {getSupplierById(orderToView.supplier)?.name ||
-                                            `Proveedor #${orderToView.supplier}`}
-                                    </strong>
+                                    <span>Manager emisor</span>
+                                    <strong>Manager #{orderToView.manager.firstName}</strong>
                                 </div>
 
                                 <div className="purchase-order-detail-row">
@@ -981,19 +976,12 @@ export default function ManagerSuppliers() {
                                         <p>No hay productos asociados a este pedido.</p>
                                     ) : (
                                         orderItems.map((item) => {
-                                            const productObj =
-                                                typeof item.product === "object" && item.product !== null
-                                                    ? item.product
-                                                    : products.find(
-                                                        (p) => p.id === item.product.id
-                                                    );
+                                            const productObj = item.supplierProduct.product;
 
-                                            const productName =
-                                                productObj?.name ||
-                                                `Producto #${typeof item.product === "number" ? item.product : item.id}`;
 
-                                            const productBrand =
-                                                productObj?.brand || "";
+                                            const productName = productObj.name;
+
+                                            const productBrand = productObj.brand;
 
                                             return (
                                                 <div

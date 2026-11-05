@@ -14,9 +14,12 @@ export const sanitizedProductInput = (
         brand,
         gender,
         isFeatured,
+        expirationDate,
+        barCode,
         category,
-        hasCoverage
     } = req.body;
+
+    const dateToday = new Date()
 
     if (!name || name.trim() === "") {
         return res.status(400).send({
@@ -52,14 +55,12 @@ export const sanitizedProductInput = (
             message: "Category is required"
         });
     }
-    if (
-        hasCoverage !== undefined &&
-        typeof hasCoverage !== "boolean"
-    ) {
+    if (!barCode || barCode.trim() === "" || !(barCode.startsWith("779")) || !(barCode.length === 13)) {
         return res.status(400).send({
-            message: "hasCoverage must be a boolean"
-        });
+            message: "Invalid Bar code"
+        })
     }
+
 
     req.body.sanitizedProductInput = {
         name: name.trim(),
@@ -70,7 +71,8 @@ export const sanitizedProductInput = (
         gender,
         isFeatured,
         category,
-        hasCoverage
+        expirationDate,
+        barCode
     };
 
     next();
@@ -91,8 +93,12 @@ export const sanitizedUpdateProductInput = (
         gender,
         isFeatured,
         category,
-        hasCoverage
+        expirationDate,
+        barCode
     } = req.body;
+
+    const dateToday = new Date()
+
 
     if (name && name.trim() === "") {
         return res.status(400).send({
@@ -129,12 +135,12 @@ export const sanitizedUpdateProductInput = (
             message: "Category must be a number"
         });
     }
-
-    if (hasCoverage && typeof hasCoverage !== "boolean") {
+    if (!barCode || barCode.trim() === "" || !(barCode.startsWith("779")) || !(barCode.length === 13)) {
         return res.status(400).send({
-            message: "hasCoverage must be a boolean"
-        });
+            message: "Invalid Bar code"
+        })
     }
+
 
     //Evita que se agreguen propiedades con valor undefined o false al objeto sanitizado.
     // Solo se incluirán aquellas claves cuyos datos hayan sido proporcionados.
@@ -147,7 +153,8 @@ export const sanitizedUpdateProductInput = (
         ...(gender && { gender }),
         ...(isFeatured !== undefined && { isFeatured }),
         ...(category && { category }),
-        ...(hasCoverage !== undefined && { hasCoverage })
+        ...(expirationDate && { expirationDate }),
+        ...(barCode && { barCode })
     };
 
     next();

@@ -1,4 +1,4 @@
-import type { PurchaseOrder, PurchaseOrderStatus } from "../types/purchaseOrder.js";
+import type { PurchaseOrder, PurchaseOrderStatus, CreatePurchaseOrdersInput } from "../types/purchaseOrder.js";
 import { API_BASE_URL } from "../config/api";
 
 const API_URL = `${API_BASE_URL}/purchaseOrders`;
@@ -88,11 +88,23 @@ export async function updatePurchaseOrder(
     return await response.json();
 }
 
-export async function receiveOrder(id: number): Promise<PurchaseOrder> {
-    const savedAuth = localStorage.getItem("auth");
-    const session = savedAuth ? JSON.parse(savedAuth) : null;
-    const token = session?.token;
+export async function deletePurchaseOrder(id: number): Promise<PurchaseOrder | undefined> {
+    const token = getToken();
+    const response = await fetch(`${API_URL}/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+    if (!response.ok) {
+        throw new Error("Error al eliminar el pedido de compra");
+    }
+    return await response.json();
 
+}
+
+export async function receiveOrder(id: number): Promise<PurchaseOrder> {
+    const token = getToken();
 
     const response = await fetch(`${API_URL}/${id}/receive`, {
         method: "PATCH",
@@ -103,6 +115,43 @@ export async function receiveOrder(id: number): Promise<PurchaseOrder> {
 
     if (!response.ok) {
         throw new Error("Error al recibir el pedido de compra");
+    }
+
+    return await response.json();
+}
+
+export async function cancelOrder(id: number): Promise<PurchaseOrder> {
+    const token = getToken();
+
+    const response = await fetch(`${API_URL}/${id}/cancel`, {
+        method: "PATCH",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+    if (!response.ok) { throw new Error("Error al cancelar el pedido de compra"); }
+    return await response.json();
+}
+export async function confirmPurchaseOrders(
+    input: CreatePurchaseOrdersInput
+): Promise<PurchaseOrder[]> {
+    const token = getToken();
+
+    const response = await fetch(`${API_URL}/confirm`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(input)
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+
+        throw new Error(
+            errorData?.message || "Error al confirmar la compra"
+        );
     }
 
     return await response.json();

@@ -1310,3 +1310,39 @@
     color: #155568;
     font-weight: 700;
 }
+
+.purchase-order-delete-button {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #f5c6c6;
+    border-radius: 50%;
+
+    background-color: #fff5f5;
+    color: #d64545;
+
+    font-size: 17px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.purchase-order-delete-button:hover {
+    background-color: #d64545;
+    color: #ffffff;
+    border-color: #d64545;
+    transform: scale(1.08);
+}
+
+.purchase-order-delete-button:active {
+    transform: scale(0.95);
+}
+
+.purchase-order-delete-button:focus-visible {
+    outline: 3px solid rgba(22, 170, 165, 0.3);
+    outline-offset: 3px;
+}
